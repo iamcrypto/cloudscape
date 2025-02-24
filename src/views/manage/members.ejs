@@ -16,6 +16,10 @@
     .block-click {
       pointer-events: none;
     }
+    .text-sucess
+    {
+      color:green;
+    }
   </style>
 </head>
 
@@ -106,7 +110,23 @@
   <script>
     const Render = (datas) => {
       let html = '';
+      let txt_role_clss = '';
+      let txt_role = 'User';
       datas.map((data) => {
+        if(parseInt(data.level) == 1)
+        {
+          txt_role_clss = "text-danger";
+          txt_role = 'Admin';
+        }
+        else if(parseInt(data.level) == 2)
+        {
+          txt_role_clss = "text-sucess";
+          txt_role = 'Colloborator';
+        }
+        else{
+          txt_role_clss = "";
+          txt_role = 'User';
+        }
         html += `
         <tr class="text-center" style="">
           <td>${data.id_user}</td>
@@ -114,7 +134,7 @@
             <b style="color: #2003db">${data.phone}</b>
           </td>
           <td>
-            <b class="${(data.level == 1) ? 'text-danger' : ''}">${(data.level == 1) ? 'ADMIN' : 'USER'}</b>
+            <b class="`+txt_role_clss+`">`+txt_role+`</b>
           </td>
           <td>
             <b>${data.money}</b>
