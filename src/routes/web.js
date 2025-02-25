@@ -73,6 +73,7 @@ const initWebRouter = (app) => {
     router.get('/mian', middlewareController, homeController.mianPage);
     router.get('/mian/Language', middlewareController, homeController.languegePage);
     router.get('/mian/avatar', middlewareController, homeController.avatarpage);
+    router.get('/mian/safe', middlewareController, homeController.safePage);
     router.patch("/api/webapi/change/avatar",middlewareController, accountController.updateAvatarAPI, ); 
 
     router.get('/recordsalary', middlewareController, homeController.recordsalary);

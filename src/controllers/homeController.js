@@ -151,6 +151,11 @@ const mianPage = async (req, res) => {
     return res.render("member/index.ejs", { level, cskh });
 }
 
+const safePage = async (req, res) => {
+    var sandbox = process.env.SANDBOX_MODE;
+    return res.render("member/safe.ejs",{ sandbox});
+}
+
 const languegePage = async (req, res) => {
     let lang = req.cookies.lang;
     return res.render("member/language.ejs",{lang});
@@ -324,6 +329,7 @@ module.exports = {
     walletPage,
 	wingochat,
     mianPage,
+    safePage,
     myProfilePage,
     promotionmyTeamPage,
     promotionDesPage,
