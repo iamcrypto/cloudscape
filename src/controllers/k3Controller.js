@@ -752,7 +752,7 @@ async function plusMoney(game) {
             for (let i = 0; i < 3; i++) {
                 totalResult2 += Number(totalResult[i]);
             }
-            let total = (orders.money / arr.length / orders.amount);
+            let total = (orders.money / arr.length);
             let fee = total * 0.02;
             let price = total - fee;
             
