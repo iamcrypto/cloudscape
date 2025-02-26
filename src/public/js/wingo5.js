@@ -159,12 +159,12 @@ $.ajax({
         var myModal_result = document.getElementById("myModal_result");
         var lottery_result = document.getElementById("lottery_result");
 var myModal_result_Period = document.getElementById("myModal_result_Period");
-        if (list_orders[0].get == 0) {
+        if (firstGame.get == 0) {
             myModalheader.innerHTML = "Try Again";
-            myModal_result.innerHTML = "LOSS :" + list_orders[0].money;
+            myModal_result.innerHTML = "LOSS :" + firstGame.money;
         } else {
             myModalheader.innerHTML = "congratulations";
-            myModal_result.innerHTML = "WIN :" + list_orders[0].get;
+            myModal_result.innerHTML = "WIN :" + firstGame.get;
         }
         myModal_result_Period.innerHTML = "Period : 5 min " + firstGame.stage;
         
