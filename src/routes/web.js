@@ -10,6 +10,7 @@ import k5Controller from '../controllers/k5Controller';
 import k3Controller from '../controllers/k3Controller';
 import paymentController from '../controllers/paymentController';
 import trxWingoController from "../controllers/trxWingoController.js";
+import promotionController from "../controllers/promotionController.js";
 import vipController from "../controllers/vipController.js";
 
 let router = express.Router();
@@ -40,6 +41,13 @@ const initWebRouter = (app) => {
     router.get('/checkDes', middlewareController, homeController.checkDes);
     router.get('/checkRecord', middlewareController, homeController.checkRecord);
     router.get('/wallet/transfer', middlewareController, homeController.transfer);
+
+    
+  router.get(
+    "/dailytask/record",
+    middlewareController,
+    homeController.rechargeAwardCollectionRecord,
+  );
 
     router.get('/promotion', middlewareController, homeController.promotionPage);
     router.get('/promotion1', middlewareController, homeController.promotion1Page);
@@ -75,6 +83,22 @@ const initWebRouter = (app) => {
     router.get('/mian/avatar', middlewareController, homeController.avatarpage);
     router.get('/mian/safe', middlewareController, homeController.safePage);
     router.patch("/api/webapi/change/avatar",middlewareController, accountController.updateAvatarAPI, ); 
+
+    router.post(
+      "/api/activity/daily_recharge_bonus/record",
+      middlewareController,
+      promotionController.dailyRechargeRewordRecord,
+    );
+    router.post(
+      "/api/activity/daily_recharge_bonus",
+      middlewareController,
+      promotionController.getDailyRechargeReword,
+    );
+    router.post(
+      "/api/activity/daily_recharge_bonus/claim",
+      middlewareController,
+      promotionController.claimDailyRechargeReword,
+    );
 
     router.get('/recordsalary', middlewareController, homeController.recordsalary);
     router.get('/getrecord', middlewareController, homeController.getSalaryRecord);

@@ -111,6 +111,10 @@ const rechargePage = async (req, res) => {
     });
 }
 
+
+const rechargeAwardCollectionRecord = async (req, res) => {
+    return res.render("checkIn/rechargeAwardCollectionRecord.ejs");
+  };
 const rechargerecordPage = async (req, res) => {
     return res.render("wallet/rechargerecord.ejs");
 }
@@ -358,4 +362,5 @@ module.exports = {
     getSalaryRecord,
     transactionhistoryPage,
     d_get_betting,
+    rechargeAwardCollectionRecord,
 }
