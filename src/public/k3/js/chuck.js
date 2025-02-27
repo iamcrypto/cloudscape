@@ -17,6 +17,7 @@ socket.on("data-server-k3", function (msg) {
             let Result = msg.data[1];
             socket_call = "called";
             let check = $('#number_result').attr('data-select');
+            callAjaxMeJoin();
             console.log(check);
             if (check == 'all') {
                 reload_money();
@@ -341,7 +342,6 @@ function callAjaxMeJoin() {
             let data = response.data.gameslist;
             $("#number_result").text("1/" + response.page);
             var modal = document.getElementById("myModal_k3");
-            modal.style.display = "none";
             // Set the value of firstGame to the first game in the gameslist
             firstGame = data[0];
             console.log(firstGame);

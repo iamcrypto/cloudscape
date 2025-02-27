@@ -6,6 +6,8 @@ const getGameType = () => {
   return urlParams.get("game_type") || "1";
 };
 
+
+var firstGame;
 let GAME_TYPE_ID = getGameType();
 let GAME_NAME = GAME_TYPE_ID === "1" ? "trx_wingo" : `trx_wingo${GAME_TYPE_ID}`;
 
@@ -1058,7 +1060,8 @@ function initGameLogics({
       success: function (response) {
         My_Bets_Pages = response.page;
         let data = response.data.gameslist;
-
+        firstGame = data[0];
+        console.log(firstGame);
         $("#number_result__myBet").text(`${page}/${response.page}`);
 
         if (page == 1)
@@ -1396,6 +1399,46 @@ socket.on("data-server-trx-wingo", async function (msg) {
     const lastGame = gameListData?.[0];
     const lastGameHash = lastGame?.hash;
 
+
+    console.log(firstGame);
+              
+              if (firstGame && firstGame.stage === lastGame.period) {
+                var modal = document.getElementById("myModal");
+                modal.style.display = "block";
+                var myModalheader = document.getElementById("myModal_header");
+                var myModal_result = document.getElementById("myModal_result");
+                var lottery_result = document.getElementById("lottery_result");
+                var myModal_result_Period = document.getElementById("myModal_result_Period");
+                if (firstGame.get == 0) {
+                    myModalheader.innerHTML = "Try Again";
+                    myModal_result.innerHTML = "LOSS :" + firstGame.money;
+                } else {
+                    myModalheader.innerHTML = "congratulations";
+                    myModal_result.innerHTML = "WIN :" + firstGame.get;
+                }
+                myModal_result_Period.innerHTML = "Period : 1min " + firstGame.stage;
+                
+                let color;
+                let type;
+        
+                if (firstGame.result >= 0 && firstGame.result <= 4) {
+                    type = "Small";
+                } else if (firstGame.result >= 5 && firstGame.result <= 9) {
+                    type = "Big";
+                }
+        
+                if (firstGame.result == 0) {
+                    color = "Red + Violet";
+                } else if (firstGame.result == 5) {
+                    color = "Green + Violet";
+                } else if (firstGame.result % 2 == 0) {
+                    color = "Red";
+                } else {
+                    color = "Green";
+                }
+        
+                lottery_result.innerHTML = "Lottery Result:<span class='btn-boox'>" + color + "</span><span class='btn-boox'>" + firstGame.result + "</span><span class='btn-boox'>" + type + "</span>";
+            }
     const lastGameBets = betListData?.filter(
       (game) => game.stage === lastGame?.period,
     );
