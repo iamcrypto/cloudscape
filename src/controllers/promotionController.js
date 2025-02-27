@@ -840,7 +840,7 @@ const getInvitationBonus = async (req, res) => {
 const claimInvitationBonus = async (req, res) => {
   try {
     const authToken = req.cookies.auth;
-    const invitationBonusId = req.body.id;
+    const invitationBonusId = req.body.claim_id;
 
     const [userRow] = await connection.execute(
       "SELECT `code`, `invite`, `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
@@ -901,31 +901,29 @@ const claimInvitationBonus = async (req, res) => {
         bonusAmount: item.bonusAmount,
       };
     });
-
     const claimableBonusData = invitationBonusData.filter(
-      (item) => item.isFinished && item.id === invitationBonusId,
+      (item) => item.isFinished && item.id === parseInt(invitationBonusId),
     );
-
     if (claimableBonusData.length === 0) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: false,
         message: "You does not meet the requirements to claim this reword!",
       });
     }
 
     const claimedRewardsData = invitationBonusData.find(
-      (item) => item.isClaimed && item.id === invitationBonusId,
+      (item) => item.isClaimed && item.id === parseInt(invitationBonusId),
     );
 
-    if (claimedRewardsData?.id === invitationBonusId) {
-      return res.status(400).json({
+    if (claimedRewardsData?.id === parseInt(invitationBonusId)) {
+      return res.status(200).json({
         status: false,
         message: "Bonus already claimed",
       });
     }
 
     const claimedBonusData = claimableBonusData?.find(
-      (item) => item.id === invitationBonusId,
+      (item) => item.id === parseInt(invitationBonusId),
     );
 
     const time = moment().valueOf();
@@ -938,7 +936,7 @@ const claimInvitationBonus = async (req, res) => {
     await connection.execute(
       "INSERT INTO `claimed_rewards` (`reward_id`, `type`, `phone`, `amount`, `status`, `time`) VALUES (?, ?, ?, ?, ?, ?)",
       [
-        invitationBonusId,
+        parseInt(invitationBonusId),
         REWARD_TYPES_MAP.INVITATION_BONUS,
         user.phone,
         claimedBonusData.bonusAmount,
@@ -986,6 +984,7 @@ const getInvitedMembers = async (req, res) => {
 
       invitedMembers[index]["rechargeAmount"] = rechargeAmount;
     }
+    console.log(invitedMembers);
 
     return res.status(200).json({
       data: invitedMembers.map((invitedMember) => ({
@@ -1403,7 +1402,7 @@ const claimFirstRechargeReword = async (req, res) => {
     );
 
     if (claimableBonusData.length === 0) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: false,
         message: "You does not meet the requirements to claim this reword!",
       });
@@ -1414,7 +1413,7 @@ const claimFirstRechargeReword = async (req, res) => {
     );
 
     if (isExpired) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: false,
         message: "Bonus already claimed",
       });
@@ -1579,7 +1578,7 @@ const claimAttendanceBonus = async (req, res) => {
     );
 
     if (claimedRewardsRow.map((item) => item.reward_id).includes(7)) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: false,
         message: "You have already claimed the attendance bonus for 7 days",
       });
@@ -1600,7 +1599,7 @@ const claimAttendanceBonus = async (req, res) => {
       const today = moment().startOf("day");
 
       if (today.diff(lastClaimedRewordDate, "days") < 1) {
-        return res.status(400).json({
+        return res.status(200).json({
           status: false,
           message: "You have already claimed the attendance bonus today",
         });
@@ -1624,7 +1623,7 @@ const claimAttendanceBonus = async (req, res) => {
     const check = totalRecharge >= claimedBonusData.requiredAmount;
 
     if (!check)
-      return res.status(400).json({
+      return res.status(200).json({
         status: false,
         message: "Total Recharge amount doesn't met the Required Amount !",
       });

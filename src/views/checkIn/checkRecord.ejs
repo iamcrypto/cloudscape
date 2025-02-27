@@ -27,6 +27,41 @@
             margin: 0;
         }
 
+        .container .item[data-v-67e25db3] {
+            padding: 0.4rem 0.26667rem;
+            background-color: var(--bg_color_L2);
+            border-radius: 0.26667rem;
+        }
+        .container .item > div[data-v-67e25db3] {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+        }
+
+        .container .item .head[data-v-67e25db3] {
+            margin-bottom: 0.45333rem;
+        }
+        .container .item .line[data-v-67e25db3] {
+            color: var(--text_color_L2);
+            font-size: 0.32rem;
+        }
+        .container .item .name[data-v-67e25db3] {
+            font-size: 0.4rem;
+            color: var(--text_color_L1);
+        }
+        .container .item .uid[data-v-67e25db3] {
+            font-size: 0.4rem;
+            color: var(--text_color_L2);
+        }
+        .container .item .line span[data-v-67e25db3] {
+            color: white;
+        }
         .mian[data-v-31900034] {
             background-color: #22275b
         }
@@ -118,6 +153,13 @@
                     </div>
                 </div>
             </div>
+            <div data-v-67e25db3="" class="container" style="--f13b4d11-currentFontFamily: 'Roboto', 'Inter', sans-serif">
+                <div data-v-67e25db3="" role="feed" class="van-list" aria-busy="false">
+                   <div class="van-list__finished-text">No more</div>
+       
+                   <div class="van-list__placeholder"></div>
+                </div>
+             </div>
             <div data-v-31900034="" class="list p-t-80">
                 <div data-v-31900034="" class="van-empty">
                     <div class="van-empty__image"><img src="/images/empty-image-default.png"></div>
@@ -147,8 +189,46 @@
             </div>
         </div>
     </div>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="/js/client.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+             function formatIndianNumber(num) {
+                let formattedNum = new Intl.NumberFormat("en-IN", {
+                   maximumFractionDigits: 2,
+                   minimumFractionDigits: 2,
+                }).format(num)
+                return formattedNum
+             }
+       
+             const initInvitationRecord = async () => {
+                try {
+                   const response = await axios.post("/api/activity/invitation/record")
+                   if (response.data.status === true) {
+                      const data = response.data
+                      const list = data.data
+                      const html = list
+                         .map(item => {
+                            return `
+                               <div data-v-67e25db3="" class="item">
+                                   <div data-v-67e25db3="" class="head"><span data-v-67e25db3="" class="name">${item.username}</span> <span data-v-67e25db3="" class="uid">UID:${item.uid}</span></div>
+                                   <div data-v-67e25db3="" class="line">Registration time<span data-v-67e25db3="" class="time">${item.create_time}</span></div>
+                                   <div data-v-67e25db3="" class="line">Deposit amount<span data-v-67e25db3="" class="amount">₹${formatIndianNumber(item.amount)}</span></div>
+                               </div>`
+                         })
+                         .join("")
+       
+                      $(".van-list").html(html)
+                   }
+                } catch (error) {
+                   console.log(error)
+                }
+             }
+             initInvitationRecord()
+
+    </script>
 </body>
 
 </html>

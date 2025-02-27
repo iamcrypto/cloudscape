@@ -100,6 +100,22 @@ const initWebRouter = (app) => {
       promotionController.claimDailyRechargeReword,
     );
 
+    router.post(
+      "/api/activity/invitation_bonus",
+      middlewareController,
+      promotionController.getInvitationBonus,
+    );
+    router.post(
+      "/api/activity/invitation_bonus/claim",
+      middlewareController,
+      promotionController.claimInvitationBonus,
+    );
+    router.post(
+      "/api/activity/invitation/record",
+      middlewareController,
+      promotionController.getInvitedMembers,
+    );
+
     router.get('/recordsalary', middlewareController, homeController.recordsalary);
     router.get('/getrecord', middlewareController, homeController.getSalaryRecord);
     router.get('/about', middlewareController, homeController.aboutPage);
