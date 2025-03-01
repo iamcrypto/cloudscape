@@ -315,6 +315,17 @@ const getSalaryRecord = async (req, res) => {
         rows: getPhone,
     })
 }
+
+const attendancePage = async (req, res) => {
+    return res.render("checkIn/attendance.ejs");
+  };
+
+  const attendanceRecordPage = async (req, res) => {
+    return res.render("checkIn/attendanceRecord.ejs");
+  };
+  const attendanceRulesPage = async (req, res) => {
+    return res.render("checkIn/attendanceRules.ejs");
+  };
 module.exports = {
     avatarpage,
     languegePage,
@@ -363,4 +374,7 @@ module.exports = {
     transactionhistoryPage,
     d_get_betting,
     rechargeAwardCollectionRecord,
+    attendancePage,
+    attendanceRecordPage,
+    attendanceRulesPage,
 }

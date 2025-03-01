@@ -163,9 +163,30 @@
             <!--<a class="btn btn-danger btn-sm delete-btn" href="#">
               <i class="fas fa-trash"></i> Banner
             </a>-->
+
+            <a class="btn btn-secondary btn-sm colloborator-btn" label_id="${data.phone}" href="#">
+              <i class="fas fa-folder"></i> Make Colloborator</a>
           </td>
         </tr>`;
         $("tbody").html(html);
+      });
+
+      $(document).on("click", '.colloborator-btn', function(e){
+        e.preventDefault();
+        let phone = $(this).attr('label_id');
+        console.log(phone);
+        $.ajax({
+          type: "POST",
+          url: "/admin/manager/makecolloborator",
+          data: {
+            u_phone:phone,
+          },
+          dataType: "json",
+          success: function (response) {
+            alert(response.message);
+            location.reload();
+          }
+        });
       });
       $('.btn-danger').click(function (e) { 
         e.preventDefault();
