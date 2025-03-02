@@ -30,6 +30,7 @@ const initWebRouter = (app) => {
         return res.redirect('/home');
     });
     router.get('/home', homeController.homePage);
+    router.get("/invitation_rules", middlewareController,homeController.invitationRulesPage);
 
     router.get('/checkIn', middlewareController, homeController.checkInPage);
     router.get('/activity', middlewareController, homeController.activityPage);
