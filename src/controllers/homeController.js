@@ -16,6 +16,10 @@ const activityPage = async (req, res) => {
     return res.render("checkIn/activity.ejs");
 }
 
+const invitationRulesPage = async (req, res) => {
+    return res.render("checkIn/invitationRules.ejs");
+  };
+
 const rebatePage = async (req, res) => {
     return res.render("checkIn/rebate.ejs");
 }
@@ -333,6 +337,7 @@ module.exports = {
     checkInPage,
     d5chat,
     invibonusPage,
+    invitationRulesPage,
     rebatePage,
     jackpotPage,
     k3chat,
