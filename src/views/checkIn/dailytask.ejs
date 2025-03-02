@@ -930,7 +930,7 @@
  
        const initDailyRechargeBonus = async () => {
           try {
-             const response = await axios.post("/api/activity/daily_recharge_bonus")
+             const response = await axios.post("/api/activity/daily_betting_bonus")
              console.log(response);
              if (response.data.status === true) {
                 const list = response.data.data
@@ -952,7 +952,7 @@
               </div>
             </div>
             <div data-v-20a4a6c6="" class="type-tip">
-              ${item.rechargeAmount}/${item.requiredRechargeAmount}
+              ${item.bettingAmount}/${item.requiredBettingAmount}
             </div>
           </div>
           <div data-v-20a4a6c6="" class="task-item-description">
@@ -993,7 +993,7 @@
             
             $.ajax({
              type: "POST",
-             url: "/api/activity/daily_recharge_bonus/claim",
+             url: "/api/activity/daily_betting_bonus/claim",
              data: {
                claim_id:$(this).attr("labelid"),
              },

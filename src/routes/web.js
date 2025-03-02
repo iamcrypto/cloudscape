@@ -102,6 +102,24 @@ const initWebRouter = (app) => {
     );
 
     router.post(
+      "/api/activity/daily_betting_bonus/record",
+      middlewareController,
+      promotionController.dailyBetttingRewordRecord,
+    );
+
+    router.post(
+      "/api/activity/daily_betting_bonus",
+      middlewareController,
+      promotionController.getDailyBettingeReword,
+    );
+
+    router.post(
+      "/api/activity/daily_betting_bonus/claim",
+      middlewareController,
+      promotionController.claimDailyBettingReword,
+    );
+
+    router.post(
       "/api/activity/invitation_bonus",
       middlewareController,
       promotionController.getInvitationBonus,

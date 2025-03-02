@@ -252,7 +252,7 @@
                
                      const initDailyRechargeRewordRecord = async () => {
                         try {
-                           const response = await axios.post("/api/activity/daily_recharge_bonus/record")
+                           const response = await axios.post("/api/activity/daily_betting_bonus/record")
                
                            if (response.data.status === true) {
                               const list = response.data.data
@@ -260,7 +260,7 @@
                                  .map(item => {
                                     return `
                                        <div data-v-12a80a3e="" class="item">
-                                           <div data-v-12a80a3e="" class="line rq_am_field">Required Recharge Amount<span data-v-12a80a3e="" class="time">${formatIndianNumber(item.requireRechargeAmount)}</span></div>
+                                           <div data-v-12a80a3e="" class="line rq_am_field">Required Betting Amount<span data-v-12a80a3e="" class="time">${formatIndianNumber(item.requireBettingAmount)}</span></div>
                                            <div data-v-12a80a3e="" class="line time_field">Registration time<span data-v-12a80a3e="" class="time">${item.time}</span></div>
                                            <div data-v-12a80a3e="" class="line">Received Bonus amount<span data-v-12a80a3e="" class="amount">₹${formatIndianNumber(item.amount)}</span></div>
                                        </div>`
