@@ -644,45 +644,9 @@
           </p>
         </div>
       </div>
-      <div data-v-20a4a6c6="" class="task-panel">
+      <div data-v-20a4a6c6="" class="task-panel" id="weekly_bonus">
         <!---->
-        <div data-v-20a4a6c6="" class="task-item">
-          <div data-v-20a4a6c6="" class="task-item-header">
-            <div data-v-20a4a6c6="" class="hearder-status week">
-              weekly tasks
-            </div>
-            <span data-v-20a4a6c6="" class="headerR">
-              Unfinished
-            </span>
-          </div>
-          <div data-v-20a4a6c6="" class="task-item-type">
-            <div data-v-20a4a6c6="" class="type-title weeklyType3">
-              <div data-v-20a4a6c6="">
-                Lottery betting tasks
-              </div>
-            </div>
-            <div data-v-20a4a6c6="" class="type-tip">
-              0/50000
-            </div>
-          </div>
-          <div data-v-20a4a6c6="" class="task-item-description">
-          </div>
-          <div data-v-20a4a6c6="" class="task-item-bottom">
-            <div data-v-20a4a6c6="">
-              Award amount
-            </div>
-            <div data-v-20a4a6c6="" class="bottom-title">
-              <img data-v-20a4a6c6="" data-src="/assets/png/amountIcon-b2c8faab.png"
-              src="/assets/png/amountIcon-b2c8faab.png" lazy="loaded">
-              <span data-v-20a4a6c6="">
-                ₹100.00
-              </span>
-            </div>
-          </div>
-          <div data-v-20a4a6c6="" class="btn btnOther status1">
-            to complete
-          </div>
-        </div>
+     
         </div>
         <div data-v-20a4a6c6="" class="task-panel" id="activity_bonus">
         <div data-v-20a4a6c6="" class="task-item">
@@ -984,9 +948,109 @@
              console.log(error)
           }
        }
+
+       const initWeeklyBettingBonus = async () => {
+        try {
+           const response = await axios.post("/api/activity/weekly_betting_bonus")
+           console.log(response);
+           if (response.data.status === true) {
+              const list = response.data.data
+              const html = list
+                 .map(item => {
+                    return `<div data-v-20a4a6c6="" class="task-item">
+          <div data-v-20a4a6c6="" class="task-item-header">
+            <div data-v-20a4a6c6="" class="hearder-status week">
+              weekly tasks
+            </div>
+            <span data-v-20a4a6c6="" class="headerR">
+              ${item.isFinished ? "Finished" : "Unfinished"}
+            </span>
+          </div>
+          <div data-v-20a4a6c6="" class="task-item-type">
+            <div data-v-20a4a6c6="" class="type-title weeklyType3">
+              <div data-v-20a4a6c6="">
+                Lottery betting tasks
+              </div>
+            </div>
+            <div data-v-20a4a6c6="" class="type-tip">
+              ${item.bettingAmount}/${item.requiredBettingAmount}
+            </div>
+          </div>
+          <div data-v-20a4a6c6="" class="task-item-description">
+          </div>
+          <div data-v-20a4a6c6="" class="task-item-bottom">
+            <div data-v-20a4a6c6="">
+              Award amount
+            </div>
+            <div data-v-20a4a6c6="" class="bottom-title">
+              <img data-v-20a4a6c6="" data-src="/assets/png/amountIcon-b2c8faab.png"
+              src="/assets/png/amountIcon-b2c8faab.png" lazy="loaded">
+              <span data-v-20a4a6c6="">
+                ₹${formatIndianNumber(item.bonusAmount)}
+              </span>
+            </div>
+          </div>
+          <div data-v-20a4a6c6="" class="btnweekclaim btn btnOther  status${item.isFinished && item.isClaimed === false ? 2 : 1}" labelid="${item.id}">
+            ${item.isFinished ? (item.isClaimed ? "Already Claimed" : "Claim") : "to complete"}
+          </div>
+        </div>
+                        `
+                 })
+                 .join("")
+              $("#weekly_bonus").html(html)
+           }
+        } catch (error) {
+           console.log(error)
+        }
+     }
  
-       initDailyRechargeBonus()
- 
+       initDailyRechargeBonus();
+       initWeeklyBettingBonus();
+
+       $(document).on("click", '.btnweekclaim', function(e){
+        e.preventDefault();
+        try {
+          $.ajax({
+           type: "POST",
+           url: "/api/activity/weekly_betting_bonus/claim",
+           data: {
+             claim_id:$(this).attr("labelid"),
+           },
+           dataType: "json",
+           success: function (response) {
+            console.log("response");
+            console.log(response);
+          if (response.status === true) {
+              initDailyRechargeBonus()
+             $(".van-toast__text").text(response.message)
+             $("#successTost").fadeIn(220)
+          } else {
+             $(".van-toast__text").text(response.message)
+             $("#failedTost").fadeIn(220)
+          }
+
+          setTimeout(() => {
+             $("#failedTost").fadeOut()
+             $("#successTost").fadeOut()
+          }, 3000);
+         }
+         });
+       } catch (error) {
+        console.log("error");
+          console.log(error);
+          if (error.response.status === false) {
+             $(".van-toast__text").text(error.response.message)
+             $("#failedTost").fadeIn(220)
+
+             setTimeout(() => {
+                $("#failedTost").fadeOut()
+                $("#successTost").fadeOut()
+             }, 1600)
+          }
+       }
+        
+     });
+
         $(document).on("click", '.btnclaim', function(e){
           e.preventDefault();
           try {

@@ -1978,6 +1978,282 @@ const dailyBetttingRewordRecord = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+const getweeklyBettingeReword = async (req, res) => {
+  try {
+    const authToken = req.cookies.auth;;
+    const [userRow] = await connection.execute(
+      "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
+      [md5(authToken)],
+    );
+    const user = userRow?.[0];
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const today = moment().startOf("day").valueOf();
+
+    const [claimedBettingRow] = await connection.execute(
+      "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? AND `time` >= ?",
+      [REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS, user.phone, today],
+    );
+    console.log(REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS);
+    console.log(user.phone);
+    console.log(today);
+    console.log("claimedBettingRow");
+    console.log(claimedBettingRow);
+    console.log(claimedBettingRow.length);
+    console.log("claimedBettingRow");
+    let total2 = 0;
+	  let total_w = 0;
+    let total_k3 = 0;
+    let total_5d = 0;
+    let total_trx = 0;
+    if (claimedBettingRow.length > 0) {
+        const [curr_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
+        const [curr_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
+        const [curr_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
+        const [curr_trx_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
+        total_w = curr_minutes_1[0].sum || 0;
+        total_k3 = curr_k3_bet_money[0].sum || 0;
+        total_5d = curr_d5_bet_money[0].sum || 0;
+        total_trx = curr_trx_bet_money[0].sum || 0;
+    }
+    else{
+        const [last_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
+        const [last_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
+        const [last_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
+        const [last_trx_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
+        total_w = last_minutes_1[0].sum || 0;
+        total_k3 = last_k3_bet_money[0].sum || 0;
+        total_5d = last_d5_bet_money[0].sum || 0;
+        total_trx = last_trx_bet_money[0].sum || 0;
+    }
+    
+    total2 += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
+	
+    const weekBettingAmount = total2;
+
+    console.log("claimedBettingRow", [
+      REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS,
+      user.phone,
+      today,
+    ]);
+    console.log("claimedRewardsRow", claimedBettingRow);
+
+    const weekBetingRewordList = WeekBettingBonusList.map((item) => {
+      console.log("item", weekBettingAmount);
+      console.log("item", item.bettingAmount);
+      console.log(
+        "item",
+        claimedBettingRow.some(
+          (claimedReward) => claimedReward.reward_id === item.id,
+        ),
+      );
+      console.log(weekBettingAmount);
+      console.log(item.bettingAmount);
+      return {
+        id: item.id,
+        bettingAmount: Math.min(weekBettingAmount, item.bettingAmount),
+        requiredBettingAmount: item.bettingAmount,
+        bonusAmount: item.bonusAmount,
+        isFinished: weekBettingAmount >= item.bettingAmount,
+        isClaimed: claimedBettingRow.some(
+          (claimedReward) => claimedReward.reward_id === item.id,
+        ),
+      };
+    });
+
+    console.log(weekBetingRewordList);
+    return res.status(200).json({
+      data: weekBetingRewordList,
+      status: true,
+      message: "Successfully fetched daily betting bonus data",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
+const claimWeeklyBettingReword = async (req, res) => {
+  try {
+    const authToken = req.cookies.auth;;
+    //const authToken = "5O3Bzs-TIZvFz5wfy7CG47mf7iZ-rXW6oS7XJxMpcE4";
+    const weeklyBettingRewordId = req.body.claim_id;
+    //const weeklyBettingRewordId = 1;
+
+    const [userRow] = await connection.execute(
+      "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
+      [md5(authToken)],
+    );
+    const user = userRow?.[0];
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const today = moment().startOf("day").valueOf();
+    
+    const [claimedBettingRow] = await connection.execute(
+      "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? AND `time` >= ?",
+      [REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS, user.phone, today],
+    );
+
+    let total2 = 0;
+	  let total_w = 0;
+    let total_k3 = 0;
+    let total_5d = 0;
+    let total_trx = 0;
+    if (claimedBettingRow.length > 0) {
+        const [curr_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
+        const [curr_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
+        const [curr_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
+        const [curr_trx_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
+        total_w = curr_minutes_1[0].sum || 0;
+        total_k3 = curr_k3_bet_money[0].sum || 0;
+        total_5d = curr_d5_bet_money[0].sum || 0;
+        total_trx = curr_trx_bet_money[0].sum || 0;
+    }
+    else{
+        const [last_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
+        const [last_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
+        const [last_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
+        const [last_trx_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
+        total_w = last_minutes_1[0].sum || 0;
+        total_k3 = last_k3_bet_money[0].sum || 0;
+        total_5d = last_d5_bet_money[0].sum || 0;
+        total_trx = last_trx_bet_money[0].sum || 0;
+    }
+    
+    total2 += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
+	
+    const weekBettingAmount = total2;
+
+    const weekBetingRewordList = WeekBettingBonusList.map((item) => {
+      console.log("item", weekBettingAmount);
+      console.log("item", item.bettingAmount);
+      console.log(
+        "item",
+        claimedBettingRow.some(
+          (claimedReward) => claimedReward.reward_id === item.id,
+        ),
+      );
+      console.log(weekBettingAmount);
+      console.log(item.bettingAmount);
+      return {
+        id: item.id,
+        bettingAmount: Math.min(weekBettingAmount, item.bettingAmount),
+        requiredBettingAmount: item.bettingAmount,
+        bonusAmount: item.bonusAmount,
+        isFinished: weekBettingAmount >= item.bettingAmount,
+        isClaimed: claimedBettingRow.some(
+          (claimedReward) => claimedReward.reward_id === item.id,
+        ),
+      };
+    });
+
+    const claimableBonusData = weekBetingRewordList.filter(
+      (item) =>
+        item.isFinished && item.bettingAmount >= item.requiredBettingAmount,
+    );
+    if (claimableBonusData.length === 0) {
+      return res.status(200).json({
+        status: false,
+        message: "You does not meet the requirements to claim this reward!",
+      });
+    }
+    const claimedBonusData = claimableBonusData?.find(
+      (item) => item.id === parseInt(weeklyBettingRewordId),
+    );
+    const [bonusList] = await connection.query(
+      "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? AND `time` >= ? AND `reward_id` = ?",
+      [
+        REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS,
+        user.phone,
+        today,
+        claimedBonusData.id,
+      ],
+    );
+    if (bonusList.length > 0) {
+      return res.status(200).json({
+        status: false,
+        message: "Bonus already claimed",
+      });
+    }
+    const time = moment().valueOf();
+
+    await connection.execute(
+      "UPDATE `users` SET `money` = `money` + ?, `total_money` = `total_money` + ? WHERE `phone` = ?",
+      [claimedBonusData.bonusAmount, claimedBonusData.bonusAmount, user.phone],
+    );
+
+    await connection.execute(
+      "INSERT INTO `claimed_rewards` (`reward_id`, `type`, `phone`, `amount`, `status`, `time`) VALUES (?, ?, ?, ?, ?, ?)",
+      [
+        claimedBonusData.id,
+        REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS,
+        user.phone,
+        claimedBonusData.bonusAmount,
+        REWARD_STATUS_TYPES_MAP.SUCCESS,
+        time,
+      ],
+    );
+
+    return res.status(200).json({
+      status: true,
+      message: "Successfully claimed weekly betting bonus",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const weeklyBetttingRewordRecord = async (req, res) => {
+  try {
+    const authToken = req.cookies.auth;;
+    const [userRow] = await connection.execute(
+      "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
+      [md5(authToken)],
+    );
+    const user = userRow?.[0];
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const [claimedRewardsRow] = await connection.execute(
+      "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ?",
+      [REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS, user.phone],
+    );
+
+    const claimedRewardsData = claimedRewardsRow.map((claimedReward) => {
+      const currentDailyBetttingReword = WeekBettingBonusList.find(
+        (item) => item?.id === claimedReward?.reward_id,
+      );
+      return {
+        id: claimedReward.reward_id,
+        requireBettingAmount: currentDailyBetttingReword?.bettingAmount || 0,
+        amount: claimedReward.amount,
+        status: claimedReward.status,
+        time: moment.unix(claimedReward.time).format("YYYY-MM-DD HH:mm:ss"),
+      };
+    });
+    console.log(user);
+    return res.status(200).json({
+      data: claimedRewardsData,
+      status: true,
+      message: "Successfully fetched weekly betting bonus record",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 const promotionController = {
   subordinatesDataAPI,
   subordinatesAPI,
@@ -1995,7 +2271,10 @@ const promotionController = {
   subordinatesDataByTimeAPI,
   getDailyBettingeReword,
   claimDailyBettingReword,
-  dailyBetttingRewordRecord
+  dailyBetttingRewordRecord,
+  getweeklyBettingeReword,
+  claimWeeklyBettingReword,
+  weeklyBetttingRewordRecord
 };
 
 export default promotionController;
