@@ -1005,6 +1005,14 @@ const getInvitedMembers = async (req, res) => {
   }
 };
 
+const WeekBettingBonusList = [
+  {
+    id: 1,
+    bettingAmount: 50000,
+    bonusAmount: 100,
+  },
+]
+
 const DailyBettingBonusList = [
   {
     id: 1,
@@ -1984,20 +1992,26 @@ const getweeklyBettingeReword = async (req, res) => {
     const authToken = req.cookies.auth;;
     const [userRow] = await connection.execute(
       "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
-      [md5(authToken)],
+      [authToken],
     );
+    console.log("1");
     const user = userRow?.[0];
+    console.log("2");
 
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    console.log("3");
     const today = moment().startOf("day").valueOf();
+    console.log("4");
 
     const [claimedBettingRow] = await connection.execute(
       "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? AND `time` >= ?",
       [REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS, user.phone, today],
     );
+
+    console.log("5");
     console.log(REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS);
     console.log(user.phone);
     console.log(today);
@@ -2011,6 +2025,7 @@ const getweeklyBettingeReword = async (req, res) => {
     let total_5d = 0;
     let total_trx = 0;
     if (claimedBettingRow.length > 0) {
+      console.log("6");
         const [curr_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
         const [curr_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
         const [curr_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
@@ -2021,6 +2036,7 @@ const getweeklyBettingeReword = async (req, res) => {
         total_trx = curr_trx_bet_money[0].sum || 0;
     }
     else{
+      console.log("7");
         const [last_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
         const [last_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
         const [last_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
@@ -2030,17 +2046,24 @@ const getweeklyBettingeReword = async (req, res) => {
         total_5d = last_d5_bet_money[0].sum || 0;
         total_trx = last_trx_bet_money[0].sum || 0;
     }
+    console.log("8");
     
     total2 += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
+    console.log("9");
 	
     const weekBettingAmount = total2;
+
+    console.log("10");
 
     console.log("claimedBettingRow", [
       REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS,
       user.phone,
       today,
     ]);
+
+    console.log("11");
     console.log("claimedRewardsRow", claimedBettingRow);
+    console.log("12");
 
     const weekBetingRewordList = WeekBettingBonusList.map((item) => {
       console.log("item", weekBettingAmount);
@@ -2051,6 +2074,7 @@ const getweeklyBettingeReword = async (req, res) => {
           (claimedReward) => claimedReward.reward_id === item.id,
         ),
       );
+      console.log("13");
       console.log(weekBettingAmount);
       console.log(item.bettingAmount);
       return {
@@ -2064,7 +2088,7 @@ const getweeklyBettingeReword = async (req, res) => {
         ),
       };
     });
-
+    console.log("14");
     console.log(weekBetingRewordList);
     return res.status(200).json({
       data: weekBetingRewordList,
@@ -2087,7 +2111,7 @@ const claimWeeklyBettingReword = async (req, res) => {
 
     const [userRow] = await connection.execute(
       "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
-      [md5(authToken)],
+      [authToken],
     );
     const user = userRow?.[0];
 
@@ -2217,7 +2241,7 @@ const weeklyBetttingRewordRecord = async (req, res) => {
     const authToken = req.cookies.auth;;
     const [userRow] = await connection.execute(
       "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
-      [md5(authToken)],
+      [authToken],
     );
     const user = userRow?.[0];
 
