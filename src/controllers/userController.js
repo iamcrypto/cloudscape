@@ -1046,7 +1046,8 @@ const addBank = async (req, res) => {
 }
 
 const infoUserBank = async (req, res) => {
-    let auth = req.cookies.auth;
+    let auth = req.body.access_token;
+    let b_type = req.body.bank_type;
     if (!auth) {
         return res.status(200).json({
             message: 'Failed',
@@ -1054,7 +1055,7 @@ const infoUserBank = async (req, res) => {
             timeStamp: timeNow,
         })
     }
-    const [user] = await connection.query('SELECT `phone`, `code`,`invite`, `money` FROM users WHERE `token` = ? ', [auth]);
+    const [user] = await connection.query('SELECT `phone`, `code`,`invite`, `money` FROM users WHERE `token` = ? ', [md5(auth)]);
     let userInfo = user[0];
     if (!user) {
         return res.status(200).json({
@@ -1095,24 +1096,57 @@ const infoUserBank = async (req, res) => {
     let checkTime = timerJoin(date);
     const [recharge] = await connection.query('SELECT * FROM recharge WHERE phone = ? AND status = 1', [userInfo.phone]);
     const [minutes_1] = await connection.query('SELECT * FROM minutes_1 WHERE phone = ?', [userInfo.phone]);
+    const [d5_minute] = await connection.query('SELECT * FROM result_5d WHERE phone = ?', [userInfo.phone]);
+    const [k3_minute] = await connection.query('SELECT * FROM result_k3 WHERE phone = ?', [userInfo.phone]);
+    const [trx_minute] = await connection.query('SELECT * FROM trx_wingo_bets WHERE phone = ?', [userInfo.phone]);
     let total = 0;
+
     recharge.forEach((data) => {
         total += parseFloat(data.money);
     });
+
     let total2 = 0;
-    minutes_1.forEach((data) => {
-        total2 += parseFloat(data.money);
-    });
+    let total_w = 0;
+    let total_k3 = 0;
+    let total_5d = 0;
+    let total_trx = 0;
+    let total_w_fee = 0;
+    let total_k3_fee = 0;
+    let total_5d_fee = 0;
+    let total_trx_fee = 0;
     let fee = 0;
     minutes_1.forEach((data) => {
-        fee += parseFloat(data.fee);
+        total_w += parseFloat(data.money);
+        total_w_fee += parseFloat(data.fee);
     });
+    k3_minute.forEach((data) => {
+        total_k3 += parseFloat(data.money);
+        total_k3_fee += parseFloat(data.fee);
+    });
+    d5_minute.forEach((data) => {
+        total_5d += parseFloat(data.money);
+        total_5d_fee += parseFloat(data.fee);
+    });
+    trx_minute.forEach((data) => {
+        total_trx += parseFloat(data.money);
+        total_trx_fee += parseFloat(data.fee);
+    });
+    total2 += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
+    fee += parseInt(total_w_fee) + parseInt(total_k3_fee) + parseInt(total_5d_fee) + parseInt(total_trx_fee);
 
     result = Math.max(result, 0);
     let result = 0;
     if (total - total2 > 0) result = total - total2 - fee;
 
-    const [userBank] = await connection.query('SELECT * FROM user_bank WHERE phone = ? ', [userInfo.phone]);
+    var [userBank] = '';
+    if(b_type == "Bank")
+    {
+        [userBank] = await connection.query('SELECT * FROM user_bank WHERE phone = ?', [userInfo.phone]);
+    }
+    else if(b_type == "Pi")
+    {
+        [userBank] = await connection.query('SELECT * FROM user_bank WHERE phone = ? AND `name_bank` = ?', [userInfo.phone,'Pi_pay']);
+    }
     return res.status(200).json({
         message: 'Received successfully',
         datas: userBank,
