@@ -161,7 +161,11 @@ const mianPage = async (req, res) => {
 
 const safePage = async (req, res) => {
     var sandbox = process.env.SANDBOX_MODE;
-    return res.render("member/safe.ejs",{ sandbox});
+    var roi1 = process.env.STAKE_ROI_1;
+    var roi2 = process.env.STAKE_ROI_3;
+    var roi3 = process.env.STAKE_ROI_6;
+    var roi4 = process.env.STAKE_ROI_12;
+    return res.render("member/safe.ejs",{ sandbox,roi1,roi2,roi3,roi4});
 }
 
 const languegePage = async (req, res) => {

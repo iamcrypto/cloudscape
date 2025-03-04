@@ -20,12 +20,25 @@
     <link href="/css/wallet/chunk_2-3.css" rel="stylesheet" />
     <link rel="shortcut icon" href="/images/bitbug_favicon.ico" type="image/x-icon">
     <style>
-        .text_monthly_return
+        #roi_progress
+        {
+            width: 100%;
+            margin-bottom: 2%;
+        }
+        .text_align
         {
             text-align: right;
-    float: right;
-    font-size: 17px;
-    width: 45%;
+            width:50%;
+        }
+        input{
+            color:black !important;
+        }
+        .text_monthly_return
+        {
+            float: right;
+            font-size: 17px;
+            width: 45%;
+            text-align: left;
         }
         .roi_div
         {
@@ -340,7 +353,7 @@
 
     .space-y-2 > :not([hidden]) ~ :not([hidden]) {
         --tw-space-y-reverse: 0;
-        margin-top: calc(0.5rem* calc(1 - var(--tw-space-y-reverse)));
+        margin-top: 2%;
         margin-bottom: calc(0.5rem* var(--tw-space-y-reverse));
     }
 
@@ -657,45 +670,27 @@
                                                 <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path>
                                                 <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path>
                                              </svg>
-                                             <h3 data-lov-id="src\components\stacking\StackingForm.tsx:46:8" data-lov-name="h3" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="46" data-component-file="StackingForm.tsx" data-component-name="h3" data-component-content="%7B%22text%22%3A%22Stack%20Bitcoin%22%2C%22className%22%3A%22text-lg%20font-medium%22%7D" class="text-lg font-medium">Stack Bitcoin</h3>
+                                             <h3 data-lov-id="src\components\stacking\StackingForm.tsx:46:8" data-lov-name="h3" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="46" data-component-file="StackingForm.tsx" data-component-name="h3" data-component-content="%7B%22text%22%3A%22Stack%20Bitcoin%22%2C%22className%22%3A%22text-lg%20font-medium%22%7D" class="text-lg font-medium">Stack Piπ</h3>
                                           </div>
                                           <div data-lov-id="src\components\stacking\StackingForm.tsx:49:6" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="49" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-4%22%7D" class="space-y-4">
                                              <div data-lov-id="src\components\stacking\StackingForm.tsx:50:8" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="50" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-2%22%7D" class="space-y-2">
                                                 <label data-lov-id="src\components\stacking\StackingForm.tsx:51:10" data-lov-name="label" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="51" data-component-file="StackingForm.tsx" data-component-name="label" data-component-content="%7B%22text%22%3A%22Amount%20to%20Stack%22%2C%22className%22%3A%22text-sm%20font-medium%22%7D" for="stack-amount" class="text-sm font-medium">Amount to Stack</label>
-                                                <div data-lov-id="src\components\stacking\StackingForm.tsx:54:10" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="54" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20h-12%20items-center%20rounded-md%20border%20bg-background%20px-3%20py-2%20focus-within-ring%22%7D" class="flex h-12 items-center rounded-md border bg-background px-3 py-2 focus-within-ring"><input data-lov-id="src\components\stacking\StackingForm.tsx:55:12" data-lov-name="input" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="55" data-component-file="StackingForm.tsx" data-component-name="input" data-component-content="%7B%22placeholder%22%3A%220.0%22%2C%22className%22%3A%22input-clean%20text-lg%22%7D" type="number" id="stack-amount" placeholder="0.0" min="0.001" step="0.001" class="input-clean text-lg" value=""><span data-lov-id="src\components\stacking\StackingForm.tsx:65:12" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="65" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Pi%CF%80%22%2C%22className%22%3A%22ml-1%20text-sm%20font-medium%20text-muted-foreground%22%7D" class="ml-1 text-sm font-medium text-muted-foreground">Piπ</span></div>
-                                                <div data-lov-id="src\components\stacking\StackingForm.tsx:67:10" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="67" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20justify-between%20text-xs%22%7D" class="flex justify-between text-xs"><button data-lov-id="src\components\stacking\StackingForm.tsx:68:12" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="68" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%22text%22%3A%220.01%20Pi%CF%80%22%2C%22className%22%3A%22text-bitcoin-orange%20hover%3Aunderline%22%7D" class="text-bitcoin-orange hover:underline">0.01 Piπ</button><button data-lov-id="src\components\stacking\StackingForm.tsx:74:12" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="74" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%22text%22%3A%220.1%20Pi%CF%80%22%2C%22className%22%3A%22text-bitcoin-orange%20hover%3Aunderline%22%7D" class="text-bitcoin-orange hover:underline">0.1 Piπ</button><button data-lov-id="src\components\stacking\StackingForm.tsx:80:12" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="80" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%22text%22%3A%220.5%20Pi%CF%80%22%2C%22className%22%3A%22text-bitcoin-orange%20hover%3Aunderline%22%7D" class="text-bitcoin-orange hover:underline">0.5 Piπ</button><button data-lov-id="src\components\stacking\StackingForm.tsx:86:12" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="86" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%22text%22%3A%221%20Pi%CF%80%22%2C%22className%22%3A%22text-bitcoin-orange%20hover%3Aunderline%22%7D" class="text-bitcoin-orange hover:underline">1 Piπ</button></div>
+                                                <div data-lov-id="src\components\stacking\StackingForm.tsx:54:10" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="54" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20h-12%20items-center%20rounded-md%20border%20bg-background%20px-3%20py-2%20focus-within-ring%22%7D" class="flex h-12 items-center rounded-md border bg-background px-3 py-2 focus-within-ring">
+                                                    <input
+                                                    type="number"
+                                                    id="stack_amount"
+                                                    value=""
+                                                    placeholder="0.0"
+                                                    min="0.001"
+                                                    step="0.001"
+                                                    className="input-clean text-lg"
+                                                  />
+                                                    <span data-lov-id="src\components\stacking\StackingForm.tsx:65:12" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="65" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Pi%CF%80%22%2C%22className%22%3A%22ml-1%20text-sm%20font-medium%20text-muted-foreground%22%7D" class="ml-1 text-sm font-medium text-muted-foreground">Piπ</span></div>
                                              </div>
                                              <div data-lov-id="src\components\stacking\StackingForm.tsx:95:8" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="95" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-2%22%7D" class="space-y-2">
                                                 <label data-lov-id="src\components\stacking\StackingForm.tsx:96:10" data-lov-name="label" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="96" data-component-file="StackingForm.tsx" data-component-name="label" data-component-content="%7B%22text%22%3A%22Stacking%20Period%22%2C%22className%22%3A%22text-sm%20font-medium%22%7D" class="text-sm font-medium">Stacking Period</label>
                                                 <div data-lov-id="src\components\stacking\StackingForm.tsx:97:10" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="97" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22grid%20grid-cols-2%20md%3Agrid-cols-4%20gap-3%22%7D" class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                                   <button data-lov-id="src\components\stacking\StackingForm.tsx:99:14" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="99" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%7D" type="button" class="text_grid flex h-full flex-col items-center justify-center rounded-lg border p-3 text-center transition-all border-muted bg-background text-muted-foreground hover:border-muted-foreground">
-                                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock mb-1 h-4 w-4" data-lov-id="src\components\stacking\StackingForm.tsx:109:16" data-lov-name="Clock" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="109" data-component-file="StackingForm.tsx" data-component-name="Clock" data-component-content="%7B%22className%22%3A%22mb-1%20h-4%20w-4%22%7D">
-                                                         <circle cx="12" cy="12" r="10"></circle>
-                                                         <polyline points="12 6 12 12 16 14"></polyline>
-                                                      </svg>
-                                                      <span data-lov-id="src\components\stacking\StackingForm.tsx:110:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="110" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%22%7D" class="roi_period text-sm font-medium">1 Month</span><span data-lov-id="src\components\stacking\StackingForm.tsx:111:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="111" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22%25%20APR%22%2C%22className%22%3A%22text-xs%22%7D" class="text-xs">4% APR</span>
-                                                   </button>
-                                                   <button data-lov-id="src\components\stacking\StackingForm.tsx:99:14" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="99" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%7D" type="button" class="flex h-full flex-col items-center justify-center rounded-lg border p-3 text-center transition-all border-bitcoin-orange bg-bitcoin-orange/5 text-foreground">
-                                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock mb-1 h-4 w-4" data-lov-id="src\components\stacking\StackingForm.tsx:109:16" data-lov-name="Clock" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="109" data-component-file="StackingForm.tsx" data-component-name="Clock" data-component-content="%7B%22className%22%3A%22mb-1%20h-4%20w-4%22%7D">
-                                                         <circle cx="12" cy="12" r="10"></circle>
-                                                         <polyline points="12 6 12 12 16 14"></polyline>
-                                                      </svg>
-                                                      <span data-lov-id="src\components\stacking\StackingForm.tsx:110:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="110" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%22%7D" class="text-sm font-medium">3 Months</span><span data-lov-id="src\components\stacking\StackingForm.tsx:111:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="111" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22%25%20APR%22%2C%22className%22%3A%22text-xs%22%7D" class="text-xs">4.5% APR</span>
-                                                   </button>
-                                                   <button data-lov-id="src\components\stacking\StackingForm.tsx:99:14" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="99" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%7D" type="button" class="text_grid flex h-full flex-col items-center justify-center rounded-lg border p-3 text-center transition-all border-muted bg-background text-muted-foreground hover:border-muted-foreground">
-                                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock mb-1 h-4 w-4" data-lov-id="src\components\stacking\StackingForm.tsx:109:16" data-lov-name="Clock" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="109" data-component-file="StackingForm.tsx" data-component-name="Clock" data-component-content="%7B%22className%22%3A%22mb-1%20h-4%20w-4%22%7D">
-                                                         <circle cx="12" cy="12" r="10"></circle>
-                                                         <polyline points="12 6 12 12 16 14"></polyline>
-                                                      </svg>
-                                                      <span data-lov-id="src\components\stacking\StackingForm.tsx:110:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="110" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%22%7D" class="roi_period text-sm font-medium">6 Months</span><span data-lov-id="src\components\stacking\StackingForm.tsx:111:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="111" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22%25%20APR%22%2C%22className%22%3A%22text-xs%22%7D" class="text-xs">5% APR</span>
-                                                   </button>
-                                                   <button data-lov-id="src\components\stacking\StackingForm.tsx:99:14" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="99" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%7D" type="button" class="text_grid flex h-full flex-col items-center justify-center rounded-lg border p-3 text-center transition-all border-muted bg-background text-muted-foreground hover:border-muted-foreground">
-                                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock mb-1 h-4 w-4" data-lov-id="src\components\stacking\StackingForm.tsx:109:16" data-lov-name="Clock" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="109" data-component-file="StackingForm.tsx" data-component-name="Clock" data-component-content="%7B%22className%22%3A%22mb-1%20h-4%20w-4%22%7D">
-                                                         <circle cx="12" cy="12" r="10"></circle>
-                                                         <polyline points="12 6 12 12 16 14"></polyline>
-                                                      </svg>
-                                                      <span data-lov-id="src\components\stacking\StackingForm.tsx:110:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="110" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%22%7D" class="roi_period text-sm font-medium">12 Months</span><span data-lov-id="src\components\stacking\StackingForm.tsx:111:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="111" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22%25%20APR%22%2C%22className%22%3A%22text-xs%22%7D" class="text-xs">5.5% APR</span>
-                                                   </button>
+                                                   
                                                 </div>
                                              </div>
                                           </div>
@@ -829,34 +824,62 @@
                                           </div>
                                           <div data-lov-id="src\components\stacking\ROICalculator.tsx:35:6" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="35" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-4%22%7D" class="space-y-4">
                                              <div data-lov-id="src\components\stacking\ROICalculator.tsx:36:8" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="36" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-2%22%7D" class="space-y-2">
-                                                <label data-lov-id="src\components\stacking\ROICalculator.tsx:37:10" data-lov-name="label" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="37" data-component-file="ROICalculator.tsx" data-component-name="label" data-component-content="%7B%22text%22%3A%22Bitcoin%20Amount%22%2C%22className%22%3A%22text-sm%20font-medium%22%7D" for="amount" class="text-sm font-medium">Bitcoin Amount</label>
-                                                <div data-lov-id="src\components\stacking\ROICalculator.tsx:40:10" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="40" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20h-10%20items-center%20rounded-md%20border%20bg-background%20px-3%20py-2%20focus-within-ring%22%7D" class="flex h-10 items-center rounded-md border bg-background px-3 py-2 focus-within-ring"><input data-lov-id="src\components\stacking\ROICalculator.tsx:41:12" data-lov-name="input" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="41" data-component-file="ROICalculator.tsx" data-component-name="input" data-component-content="%7B%22className%22%3A%22input-clean%22%7D" type="number" id="amount" min="0.01" step="0.01" class="input-clean" value="1"><span data-lov-id="src\components\stacking\ROICalculator.tsx:50:12" data-lov-name="span" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="50" data-component-file="ROICalculator.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22z%22%2C%22className%22%3A%22ml-1%20text-sm%20text-muted-foreground%22%7D" class="ml-1 text-sm text-muted-foreground">z</span></div>
+                                                <label data-lov-id="src\components\stacking\ROICalculator.tsx:37:10" data-lov-name="label" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="37" data-component-file="ROICalculator.tsx" data-component-name="label" data-component-content="%7B%22text%22%3A%22Bitcoin%20Amount%22%2C%22className%22%3A%22text-sm%20font-medium%22%7D" for="amount" class="text-sm font-medium">Piπ Amount</label>
+                                                <div data-lov-id="src\components\stacking\ROICalculator.tsx:40:10" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="40" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20h-10%20items-center%20rounded-md%20border%20bg-background%20px-3%20py-2%20focus-within-ring%22%7D" class="flex h-10 items-center rounded-md border bg-background px-3 py-2 focus-within-ring">
+                                                    <input
+                                                    type="number"
+                                                    id="roi_amount"
+                                                    onchange="roi_onchange()"
+                                                    value="5"
+                                                    min="0.01"
+                                                    step="0.01"
+                                                    className="input-clean"
+                                                  />
+                                                    <span data-lov-id="src\components\stacking\ROICalculator.tsx:50:12" data-lov-name="span" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="50" data-component-file="ROICalculator.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22z%22%2C%22className%22%3A%22ml-1%20text-sm%20text-muted-foreground%22%7D" class="ml-1 text-sm text-muted-foreground">Piπ</span></div>
                                              </div>
-                                             <div data-lov-id="src\components\stacking\ROICalculator.tsx:54:8" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="54" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-2%22%7D" class="space-y-2">
-                                                <label data-lov-id="src\components\stacking\ROICalculator.tsx:55:10" data-lov-name="label" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="55" data-component-file="ROICalculator.tsx" data-component-name="label" data-component-content="%7B%22text%22%3A%22Stacking%20Period%22%2C%22className%22%3A%22text-sm%20font-medium%22%7D" for="period" class="text-sm font-medium">Stacking Period</label>
-                                                <div data-lov-id="src\components\stacking\ROICalculator.tsx:58:10" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="58" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-3%22%7D" class="space-y-3">
-                                                   <div data-lov-id="src\components\stacking\ROICalculator.tsx:59:12" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="59" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20h-10%20items-center%20justify-between%20rounded-md%20border%20bg-background%20px-3%20py-2%20focus-within-ring%22%7D" class="roi_div flex h-10 items-center justify-between rounded-md border bg-background px-3 py-2 focus-within-ring"><input data-lov-id="src\components\stacking\ROICalculator.tsx:60:14" data-lov-name="input" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="60" data-component-file="ROICalculator.tsx" data-component-name="input" data-component-content="%7B%22className%22%3A%22w-full%20h-1%20bg-muted%20rounded-lg%20appearance-none%20cursor-pointer%22%7D" type="range" id="period" min="1" max="12" step="1" class="roi_text w-full h-1 bg-muted rounded-lg appearance-none cursor-pointer" value="3"><span data-lov-id="src\components\stacking\ROICalculator.tsx:70:14" data-lov-name="span" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="70" data-component-file="ROICalculator.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22ml-3%20text-sm%20min-w-16%20text-right%22%7D" class="roi_span ml-3 text-sm min-w-16 text-right">3 months</span></div>
-                                                   <div data-lov-id="src\components\stacking\ROICalculator.tsx:74:12" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="74" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20justify-between%20text-xs%20text-muted-foreground%20px-3%22%7D" class="flex justify-between text-xs text-muted-foreground px-3"><span data-lov-id="src\components\stacking\ROICalculator.tsx:75:14" data-lov-name="span" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="75" data-component-file="ROICalculator.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%221%20month%22%7D">1 month</span><span data-lov-id="src\components\stacking\ROICalculator.tsx:76:14" data-lov-name="span" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="76" data-component-file="ROICalculator.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%226%20months%22%7D">6 months</span><span data-lov-id="src\components\stacking\ROICalculator.tsx:77:14" data-lov-name="span" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="77" data-component-file="ROICalculator.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%2212%20months%22%7D">12 months</span></div>
-                                                </div>
+                                             <div class="period_list">
+                                                <input
+                                                type="range"
+                                                id="roi_period_range"
+                                                value="3"
+                                                onchange="roi_onchange();"                                                
+                                                min="1"
+                                                max="12"
+                                                step="1"
+                                                style="width: 80%;"
+                                                className="w-full h-1 bg-muted rounded-lg appearance-none cursor-pointer"
+                                              />
+                                              <span id="roi_period">1 month</span>
+                                              <div style="width: 100%;">
+                                                <a> 1 month</a>
+                                                <a> 3 month</a>
+                                                <a> 6 month</a>
+                                                <a> 12 month</a>
+                                            </div>
+                                            
                                              </div>
-                                             <div data-lov-id="src\components\stacking\ROICalculator.tsx:82:8" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="82" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22pt-2%20space-y-2%22%7D" class="pt-2 space-y-2">
-                                                <div data-lov-id="src\components\stacking\ROICalculator.tsx:83:10" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="83" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20justify-between%20items-center%22%7D" class="flex justify-between items-center">
-                                                   <p data-lov-id="src\components\stacking\ROICalculator.tsx:84:12" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="84" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Estimated%20APR%22%2C%22className%22%3A%22text-sm%20font-medium%22%7D" class="text-sm font-medium">Estimated APR</p>
-                                                   <p data-lov-id="src\components\stacking\ROICalculator.tsx:85:12" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="85" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22%25%22%2C%22className%22%3A%22text-sm%20font-mono%20text-bitcoin-orange%22%7D" class="text-sm font-mono text-bitcoin-orange">4.5%</p>
-                                                </div>
-                                                <div data-lov-id="src\components\stacking\ROICalculator.tsx:90:10" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="90" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22h-2%20bg-secondary%20rounded-full%20overflow-hidden%22%7D" class="h-2 bg-secondary rounded-full overflow-hidden">
-                                                   <div data-lov-id="src\components\stacking\ROICalculator.tsx:91:12" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="91" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22h-full%20bg-gradient-to-r%20from-bitcoin-orange%20to-bitcoin-light%22%7D" class="h-full bg-gradient-to-r from-bitcoin-orange to-bitcoin-light" style="width: 45%;"></div>
-                                                </div>
+                                             <div>
+                                               <h4 style="margin-top: 2%;">Estimated APR</h4> 
+                                               
+                                               <progress min="0" max="100" value="45" id="estim_progress" style="width:80%;" ></progress>
+                                               <span ><span id="roi_rate"> </span>%</span>
                                              </div>
+                                             <input type="hidden" id="hdd_roi1" value="<%=roi1%>">
+                                             <input type="hidden" id="hdd_roi3" value="<%=roi2%>">
+                                             <input type="hidden" id="hdd_roi6" value="<%=roi3%>">
+                                             <input type="hidden" id="hdd_roi12" value="<%=roi4%>">
+
+
                                           </div>
                                           <div data-lov-id="src\components\stacking\ROICalculator.tsx:99:6" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="99" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22rounded-lg%20bg-background%20p-4%20space-y-3%22%7D" class="rounded-lg bg-background p-4 space-y-3">
                                              <div data-lov-id="src\components\stacking\ROICalculator.tsx:100:8" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="100" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20justify-between%20items-center%22%7D" class="flex justify-between items-center">
                                                 <p data-lov-id="src\components\stacking\ROICalculator.tsx:101:10" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="101" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Monthly%20Return%22%2C%22className%22%3A%22text-sm%20text-muted-foreground%22%7D" class="text_monthly_return text-sm text-muted-foreground">Monthly Return</p>
-                                                <p data-lov-id="src\components\stacking\ROICalculator.tsx:102:10" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="102" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%20font-mono%22%7D" class="text-sm font-medium font-mono"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" class="font-mono transition-all duration-150">0.00375 Piπ</span></p>
+                                                <p data-lov-id="src\components\stacking\ROICalculator.tsx:102:10" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="102" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%20font-mono%22%7D" class="text_align text-sm font-medium font-mono"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" id="span_month_interest" class="font-mono transition-all duration-150"> </span></p>
                                              </div>
+
                                              <div data-lov-id="src\components\stacking\ROICalculator.tsx:111:8" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="111" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20justify-between%20items-center%20border-t%20pt-3%22%7D" class="flex justify-between items-center border-t pt-3">
-                                                <p data-lov-id="src\components\stacking\ROICalculator.tsx:112:10" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="112" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Total%20Value%20after%22%2C%22className%22%3A%22text-sm%20font-medium%22%7D" class="text-sm font-medium">Total Value after 3 months</p>
-                                                <p data-lov-id="src\components\stacking\ROICalculator.tsx:113:10" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="113" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22className%22%3A%22text-lg%20font-bold%20font-mono%20text-bitcoin-orange%22%7D" class="text-lg font-bold font-mono text-bitcoin-orange"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" class="font-mono transition-all duration-150">1.01125 Piπ</span></p>
+                                                <p data-lov-id="src\components\stacking\ROICalculator.tsx:112:10" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="112" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Total%20Value%20after%22%2C%22className%22%3A%22text-sm%20font-medium%22%7D" class="text-sm font-medium">Total Value after <span id="span_month">3</span> months</p>
+                                                <p data-lov-id="src\components\stacking\ROICalculator.tsx:113:10" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="113" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22className%22%3A%22text-lg%20font-bold%20font-mono%20text-bitcoin-orange%22%7D" class="text-lg font-bold font-mono text-bitcoin-orange"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" id="span_total_interest" class="font-mono transition-all duration-150"></span></p>
                                              </div>
                                           </div>
                                        </div>
@@ -867,7 +890,7 @@
                                           <div data-lov-id="src\pages\Index.tsx:89:14" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="89" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-4%22%7D" class="space-y-4">
                                              <div data-lov-id="src\pages\Index.tsx:90:16" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="90" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20gap-4%20p-3%20rounded-lg%20hover%3Abg-background%20transition-colors%22%7D" class="flex gap-4 p-3 rounded-lg hover:bg-background transition-colors">
                                                 <div data-lov-id="src\pages\Index.tsx:91:18" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="91" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22rounded-full%20bg-bitcoin-orange%2F10%20h-10%20w-10%20flex%20items-center%20justify-center%20flex-shrink-0%22%7D" class="lastet_plat rounded-full bg-bitcoin-orange/10 h-10 w-10 flex items-center justify-center flex-shrink-0">
-                                                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bitcoin h-5 w-5 text-bitcoin-orange" data-lov-id="src\pages\Index.tsx:92:20" data-lov-name="Bitcoin" data-component-path="src\pages\Index.tsx" data-component-line="92" data-component-file="Index.tsx" data-component-name="Bitcoin" data-component-content="%7B%22className%22%3A%22h-5%20w-5%20text-bitcoin-orange%22%7D">
+                                                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bitcoin h-5 w-5 text-bitcoin-orange" data-lov-id="src\pages\Index.tsx:92:20" data-lov-name="Piπ" data-component-path="src\pages\Index.tsx" data-component-line="92" data-component-file="Index.tsx" data-component-name="Piπ" data-component-content="%7B%22className%22%3A%22h-5%20w-5%20text-bitcoin-orange%22%7D">
                                                       <path d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.155-6.2L8.29 4.26m5.908 1.042.348-1.97M7.48 20.364l3.126-17.727"></path>
                                                    </svg>
                                                 </div>
@@ -919,7 +942,48 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
             <script src="/js/client.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-      
+      <script>
+        
+        $( document ).ready(function() {
+            roi_onchange();
+        });
+        
+
+        function roi_onchange()
+        {
+            var roi_amount = $("#roi_amount").val().trim();
+            var roi_period = $("#roi_period_range").val().trim();
+            $("#roi_period").text(roi_period + " month");
+            if(parseInt(roi_period) < 3)
+            {
+                $("#roi_rate").text($("#hdd_roi1").val());
+                $("#estim_progress").text(40);
+            }
+            else if(parseInt(roi_period) < 6)
+            {
+                $("#roi_rate").text($("#hdd_roi3").val());
+                $("#estim_progress").text(45);
+            }
+            else if(parseInt(roi_period) < 9)
+            {
+                $("#roi_rate").text($("#hdd_roi6").val());
+                $("#estim_progress").text(50);
+            }
+            else
+            {
+                $("#roi_rate").text($("#hdd_roi12").val());
+                $("#estim_progress").text(55); 
+            }
+            $("#span_month").text(parseInt(roi_period));
+            var roi_rinterest = $("#roi_rate").text(); 
+            const periodInYears = parseInt(roi_period) / 12;
+            const totalInterest = parseInt(roi_amount) * ((roi_rinterest) / 100) * periodInYears;
+            var totalreturn =    parseInt(roi_amount) + totalInterest;
+            var monthlyreturn = totalInterest / parseInt(roi_period);
+            $("#span_month_interest").text(parseFloat(monthlyreturn).toFixed(4) + " Piπ");
+            $("#span_total_interest").text(parseFloat(totalreturn).toFixed(4) + " Piπ");
+        }
+      </script>
 </body>
 
 </html>

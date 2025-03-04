@@ -1559,15 +1559,14 @@ const getAttendanceBonus = async (req, res) => {
       const lastClaimedReword =
         claimedRewardsRow?.[claimedRewardsRow.length - 1];
       const lastClaimedRewordTime = lastClaimedReword?.time || 0;
+      let clamed_date = new Date(timerJoin(lastClaimedRewordTime));
+      let todays_date = new Date(timerJoin(moment().valueOf()));
+      let Difference_In_Time =  todays_date.getTime() - clamed_date.getTime();
+      let Difference_In_Days =  Math.round(Difference_In_Time / (1000 * 3600 * 24));
 
-      const lastClaimedRewordDate = moment
-        .unix(lastClaimedRewordTime)
-        .startOf("day");
-      const today = moment().startOf("day");
-
-      if (today.diff(lastClaimedRewordDate, "days") < 1) {
+      if (parseInt(Difference_In_Days)  < 1) {
         attendanceBonusId = lastClaimedReword.reward_id;
-      } else if (today.diff(lastClaimedRewordDate, "days") >= 2) {
+      } else if (parseInt(Difference_In_Days) >= 2) {
         attendanceBonusId = 0;
       } else {
         attendanceBonusId = lastClaimedReword.reward_id;
@@ -1630,17 +1629,17 @@ const claimAttendanceBonus = async (req, res) => {
         claimedRewardsRow?.[claimedRewardsRow.length - 1];
       const lastClaimedRewordTime = lastClaimedReword?.time || 0;
 
-      const lastClaimedRewordDate = moment
-        .unix(lastClaimedRewordTime)
-        .startOf("day");
-      const today = moment().startOf("day");
+      let clamed_date = new Date(timerJoin(lastClaimedRewordTime));
+      let todays_date = new Date(timerJoin(moment().valueOf()));
+      let Difference_In_Time =  todays_date.getTime() - clamed_date.getTime();
+      let Difference_In_Days =  Math.round(Difference_In_Time / (1000 * 3600 * 24));
 
-      if (today.diff(lastClaimedRewordDate, "days") < 1) {
+      if (parseInt(Difference_In_Days) < 1) {
         return res.status(200).json({
           status: false,
           message: "You have already claimed the attendance bonus today",
         });
-      } else if (today.diff(lastClaimedRewordDate, "days") >= 2) {
+      } else if (parseInt(Difference_In_Days) >= 2) {
         attendanceBonusId = 1;
       } else {
         attendanceBonusId = lastClaimedReword.reward_id + 1;
@@ -2007,25 +2006,21 @@ const getweeklyBettingeReword = async (req, res) => {
     console.log("4");
 
     const [claimedBettingRow] = await connection.execute(
-      "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? AND `time` >= ?",
-      [REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS, user.phone, today],
+      "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? ",
+      [REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS, user.phone],
     );
-
-    console.log("5");
-    console.log(REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS);
-    console.log(user.phone);
-    console.log(today);
-    console.log("claimedBettingRow");
-    console.log(claimedBettingRow);
-    console.log(claimedBettingRow.length);
-    console.log("claimedBettingRow");
+    const lastClaimedReword = claimedBettingRow?.[claimedBettingRow.length - 1];
+    const lastClaimedRewordTime = lastClaimedReword?.time || 0;
+    let clamed_date = new Date(timerJoin(lastClaimedRewordTime));
+    let todays_date = new Date(timerJoin(moment().valueOf()));
+    let Difference_In_Time =  todays_date.getTime() - clamed_date.getTime();
+    let Difference_In_Days =  Math.round(Difference_In_Time / (1000 * 3600 * 24));
     let total2 = 0;
 	  let total_w = 0;
     let total_k3 = 0;
     let total_5d = 0;
     let total_trx = 0;
-    if (claimedBettingRow.length > 0) {
-      console.log("6");
+    if (parseInt(Difference_In_Days) > 0) {
         const [curr_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
         const [curr_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
         const [curr_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE phone = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1);", [user.phone]);
@@ -2036,7 +2031,6 @@ const getweeklyBettingeReword = async (req, res) => {
         total_trx = curr_trx_bet_money[0].sum || 0;
     }
     else{
-      console.log("7");
         const [last_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
         const [last_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
         const [last_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE phone = ? AND `today` > current_date - interval '7' day;", [user.phone]);
@@ -2046,24 +2040,14 @@ const getweeklyBettingeReword = async (req, res) => {
         total_5d = last_d5_bet_money[0].sum || 0;
         total_trx = last_trx_bet_money[0].sum || 0;
     }
-    console.log("8");
-    
     total2 += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
-    console.log("9");
-	
     const weekBettingAmount = total2;
-
-    console.log("10");
-
     console.log("claimedBettingRow", [
       REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS,
       user.phone,
       today,
     ]);
-
-    console.log("11");
     console.log("claimedRewardsRow", claimedBettingRow);
-    console.log("12");
 
     const weekBetingRewordList = WeekBettingBonusList.map((item) => {
       console.log("item", weekBettingAmount);
@@ -2074,7 +2058,6 @@ const getweeklyBettingeReword = async (req, res) => {
           (claimedReward) => claimedReward.reward_id === item.id,
         ),
       );
-      console.log("13");
       console.log(weekBettingAmount);
       console.log(item.bettingAmount);
       return {
@@ -2088,7 +2071,6 @@ const getweeklyBettingeReword = async (req, res) => {
         ),
       };
     });
-    console.log("14");
     console.log(weekBetingRewordList);
     return res.status(200).json({
       data: weekBetingRewordList,
