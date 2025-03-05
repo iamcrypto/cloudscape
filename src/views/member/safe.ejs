@@ -1022,11 +1022,10 @@
             {
                 stack_apr = $("#hdd_roi12").val();
             }
-            console.log(stack_apr);
             const annualReturn = stack_amt * (stack_apr / 100);
             const monthlyReturn =  annualReturn / 12;
             $(".monthly_stack_val").text(parseFloat(monthlyReturn).toFixed(4));
-            $(".total_stack_val").text(parseFloat(annualReturn).toFixed(4));
+            $(".total_stack_val").text(parseFloat(  monthlyReturn * parseInt(check) ).toFixed(4));
         }
       </script>
 </body>
