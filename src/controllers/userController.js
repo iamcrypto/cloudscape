@@ -1046,8 +1046,8 @@ const addBank = async (req, res) => {
 }
 
 const infoUserBank = async (req, res) => {
-    let auth = req.body.access_token;
-    let b_type = req.body.bank_type;
+    let auth = req.cookies.auth;
+    let b_type = "Bank";
     if (!auth) {
         return res.status(200).json({
             message: 'Failed',
@@ -1055,7 +1055,7 @@ const infoUserBank = async (req, res) => {
             timeStamp: timeNow,
         })
     }
-    const [user] = await connection.query('SELECT `phone`, `code`,`invite`, `money` FROM users WHERE `token` = ? ', [md5(auth)]);
+    const [user] = await connection.query('SELECT `phone`, `code`,`invite`, `money` FROM users WHERE `token` = ? ', [auth]);
     let userInfo = user[0];
     if (!user) {
         return res.status(200).json({
@@ -1131,12 +1131,22 @@ const infoUserBank = async (req, res) => {
         total_trx += parseFloat(data.money);
         total_trx_fee += parseFloat(data.fee);
     });
+    
     total2 += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
     fee += parseInt(total_w_fee) + parseInt(total_k3_fee) + parseInt(total_5d_fee) + parseInt(total_trx_fee);
-
-    result = Math.max(result, 0);
+    console.log("Betting Fees");
+    console.log(fee);
+    console.log("Total Bet");
+    console.log(total2);
+    console.log("Total Recharge");
+    console.log(total);
     let result = 0;
     if (total - total2 > 0) result = total - total2 - fee;
+    console.log("Result Before");
+    console.log(result);
+    result = Math.max(result, 0);
+    console.log("Result After");
+    console.log(result);
 
     var [userBank] = '';
     if(b_type == "Bank")
