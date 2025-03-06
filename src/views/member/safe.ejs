@@ -1338,23 +1338,23 @@
             $("#modal_roi_period").text(roi_period + " month");
             if(parseInt(roi_period) < 3)
             {
-                $("#roi_modal_roi_raterate").text($("#hdd_roi1").val());
-                $("#model_estim_progress").text(40);
+                $("#modal_roi_rate").text($("#hdd_roi1").val());
+                $("#model_estim_progress").val(40);
             }
             else if(parseInt(roi_period) < 6)
             {
-                $("#roi_modal_roi_raterate").text($("#hdd_roi3").val());
-                $("#model_estim_progress").text(45);
+                $("#modal_roi_rate").text($("#hdd_roi3").val());
+                $("#model_estim_progress").val(45);
             }
             else if(parseInt(roi_period) < 9)
             {
-                $("#roi_modal_roi_raterate").text($("#hdd_roi6").val());
-                $("#model_estim_progress").text(50);
+                $("#modal_roi_rate").text($("#hdd_roi6").val());
+                $("#model_estim_progress").val(50);
             }
             else
             {
-                $("#roi_modal_roi_raterate").text($("#hdd_roi12").val());
-                $("#model_estim_progress").text(55); 
+                $("#modal_roi_rate").text($("#hdd_roi12").val());
+                $("#model_estim_progress").val(55); 
             }
             $("#modal_span_month").text(parseInt(roi_period));
             var roi_rinterest = $("#roi_rate").text(); 
