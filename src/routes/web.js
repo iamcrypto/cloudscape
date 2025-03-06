@@ -120,6 +120,18 @@ const initWebRouter = (app) => {
     );
 
     router.post(
+      "/api/activity/stake_details/claim",
+      middlewareController,
+      promotionController.addonstake,
+    );
+
+    router.post(
+      "/api/webapi/stake/details",
+      middlewareController,
+      promotionController.getstakedetails,
+    );
+
+    router.post(
       "/api/activity/weekly_betting_bonus",
       promotionController.getweeklyBettingeReword,
     );

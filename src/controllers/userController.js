@@ -1134,19 +1134,10 @@ const infoUserBank = async (req, res) => {
     
     total2 += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
     fee += parseInt(total_w_fee) + parseInt(total_k3_fee) + parseInt(total_5d_fee) + parseInt(total_trx_fee);
-    console.log("Betting Fees");
-    console.log(fee);
-    console.log("Total Bet");
-    console.log(total2);
-    console.log("Total Recharge");
-    console.log(total);
     let result = 0;
     if (total - total2 > 0) result = total - total2 - fee;
-    console.log("Result Before");
-    console.log(result);
+
     result = Math.max(result, 0);
-    console.log("Result After");
-    console.log(result);
 
     var [userBank] = '';
     if(b_type == "Bank")

@@ -20,6 +20,281 @@
     <link href="/css/wallet/chunk_2-3.css" rel="stylesheet" />
     <link rel="shortcut icon" href="/images/bitbug_favicon.ico" type="image/x-icon">
     <style>
+        .data_text
+        {
+            width: 75% !important;
+        }
+        .stake_small
+        {
+            font-size: 18px !important;
+        }
+        .total_class
+        {
+            text-align: right;
+            float: right;
+        }
+        .modal-content
+        {
+            background: white;
+            width: 18%;
+            margin: auto;
+            border-radius: 7px;
+            height: 55%;
+        }
+        .modal {
+            display: blocked;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 20001;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+          }
+          .div_pi_input
+          {
+            display: flex;
+          }
+          .div_pi_input .ml-1 
+          {
+            margin-left:2%;
+          }
+          .pi_amount_class
+          {
+            text-align: left;
+            padding-left: 5%;
+            width: 90%;
+          }
+          .btn_class
+          {
+            text-align: center;
+            height: 20px;
+            margin-top: 4%;
+          }
+          .btn_class button
+          {
+            height: 40px;
+    width: 150px;
+    background: #22275b;
+    color: white;
+    border-radius: 10px;
+          }
+          .pi_amount_class .text-bitcoin-orange
+          {
+            text-align: right;
+            font-size: 18px;
+          }
+          #myModal_header
+          {
+            height: 40px;
+            color: #22275b;
+            font-size: 20px;
+            font-weight: 600;
+            padding-top: 3%;
+          }
+          .modal-content .text-sm
+          {
+            color:#22275b;
+          }
+          .modal-content .margin-text
+          {
+            color:#22275b; 
+          }
+      
+          .text-over-image {
+            position: absolute;
+            /* Position relative to the parent element */
+            top: 35%;
+            /* Center vertically */
+            left: 50%;
+            /* Center horizontally */
+            transform: translate(-50%, -50%);
+            /* Adjust the positioning */
+            color: #22275b;
+            /* Text color */
+            font-size: 24px;
+            /* Text size */
+            font-weight: bold;
+            /* Text weight */
+            text-align: center;
+            /* Center text */
+          }
+      
+          .text-over-image-l {
+            position: absolute;
+            /* Position relative to the parent element */
+            top: 48%;
+            /* Center vertically */
+            left: 49%;
+            /* Center horizontally */
+            transform: translate(-50%, -50%);
+            /* Adjust the positioning */
+            color: #fff;
+            /* Text color */
+            font-size: 10px;
+            /* Text size */
+            font-weight: bold;
+            /* Text weight */
+            text-align: center;
+            /* Center text */
+          }
+      
+          /* Modal Content */
+          .modal-content {
+            text-align: -webkit-center;
+            position: relative;
+            top: 20%;
+          }
+      
+          .modal-content img {
+            width: 280px;
+            /* Use this to ensure the image is full width */
+            height: auto;
+            /* Adjust height automatically */
+            display: block;
+            /* Change display to block to avoid extra space */
+          }
+      
+          /* The Close Button */
+          .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+          }
+      
+          .close:hover,
+          .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+          }
+      
+          /* Circle button style */
+          .close-btn {
+            border: 2px solid #fff;
+            /* Black border */
+            border-radius: 50%;
+            /* Circle shape */
+            background-color: transparent;
+            /* Transparent background */
+            width: 30px;
+            /* Width and height should be equal for a circle */
+            height: 30px;
+            /* Width and height should be equal for a circle */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-top: 20%;
+          }
+      
+          .close-btn:hover {
+            background-color: #ddd;
+            /* Light grey background on hover */
+          }
+      
+          /* "X" line style */
+          .close-x {
+            font-size: 35px;
+            /* Large font size for the "X" */
+            font-family: none;
+            line-height: 1;
+            /* Tight line height for the "X" */
+            color: #fff;
+            /* Black color for the "X" */
+            padding: 0;
+            /* No padding */
+            margin: 0;
+            /* No margin */
+          }
+      
+          .text-over-image-2 {
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff850f;
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+          }
+      
+          .text-over-image-3 {
+            position: absolute;
+            top: 72%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #8c4500;
+            font-size: 12px;
+            font-weight: none;
+            text-align: center;
+          }
+      
+          .btn-boox {
+            background: linear-gradient(to bottom, #20d90a, #aae69d);
+            border: none;
+            color: white;
+            padding: 5px 6px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 10px;
+            margin: 4px 4px;
+            cursor: pointer;
+            font-family: monospace;
+            border-radius: 5px;
+          }
+        .margin-text
+        {
+            margin-top: 10% !important;
+        }
+    .tab[data-v-a9660e98] {
+            width: calc(100% - 0.69333rem);
+            height: 0.96rem;
+            line-height: .96rem;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            margin: 0.32rem auto 0;
+            margin-top: 8% !important;
+        }
+
+        .tab .li[data-v-a9660e98] {
+            width: 48%;
+            margin-top: 2%;
+        }
+        .tab .li .txt[data-v-a9660e98] {
+            display: block;
+            height: 1.06667rem;
+            line-height: 1.06667rem;
+            text-align: center;
+            width: 100%;
+            border-radius: 0.21333rem;
+            overflow: hidden;
+            background: #1e234d;
+            color: #a6a9ae;
+        }
+
+        .tab .li .txt.action[data-v-a9660e98] {
+            background: -webkit-linear-gradient(rgb(250, 229, 159), rgb(196, 147, 63));
+            background: linear-gradient(rgb(250, 229, 159), rgb(196, 147, 63));
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .tab .li .txt.action[data-v-a9660e98] {
+            background: linear-gradient(rgb(5 7 26), rgb(4 8 37)) !important;
+        }
         .stack_span_text
         {
             width: 50%;
@@ -28,6 +303,7 @@
         .grid_select
         {
             color:#22275b;
+            margin-top: 10%;
         }
         #roi_progress
         {
@@ -64,6 +340,8 @@
         input[type=number]
         {
             width:100%;
+            height: 35px;
+            padding: 15px;
         }
         .from-bitcoin-orange {
             --tw-gradient-from: #F7931A var(--tw-gradient-from-position);
@@ -143,7 +421,8 @@
             background: rgb(247 147 26 / 0.05);
             --tw-border-opacity: 1;
             color: white !important;
-            border-color: #22275b;        
+            border-color: #22275b; 
+            margin-top: 10%;       
         }
         .text-foreground {
             color: #22275b;
@@ -218,7 +497,7 @@
         .text-sm {
             font-size: 20px;
             line-height: 25px;
-            margin-top: 20px;
+            margin-top: 0px;
         }
         .py-1\.5 {
             padding-top: 0.375rem;
@@ -569,7 +848,7 @@
                                        <h1 data-lov-id="src\components\hero\Hero.tsx:15:10" data-lov-name="h1" data-component-path="src\components\hero\Hero.tsx" data-component-line="15" data-component-file="Hero.tsx" data-component-name="h1" data-component-content="%7B%22text%22%3A%22Stack%20Bitcoin.%22%2C%22className%22%3A%22text-4xl%20md%3Atext-5xl%20lg%3Atext-6xl%20font-bold%20tracking-tight%22%7D" class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">Stack Piπ.   <span data-lov-id="src\components\hero\Hero.tsx:17:12" data-lov-name="span" data-component-path="src\components\hero\Hero.tsx" data-component-line="17" data-component-file="Hero.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Earn%20Rewards.%22%2C%22className%22%3A%22text-bitcoin-orange%22%7D" class="text-bitcoin-orange">Earn Rewards.</span></h1>
                                        <p data-lov-id="src\components\hero\Hero.tsx:20:10" data-lov-name="p" data-component-path="src\components\hero\Hero.tsx" data-component-line="20" data-component-file="Hero.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Securely%20stack%20your%20Bitcoin%20for%20predetermined%20periods%20and%20earn%20consistent%20returns%20at%20regular%20intervals.%22%2C%22className%22%3A%22text-xl%20text-muted-foreground%22%7D" class="text-xl text-muted-foreground">Securely stack your Piπ for predetermined periods and earn consistent returns at regular intervals.</p>
                                        <div data-lov-id="src\components\hero\Hero.tsx:24:10" data-lov-name="div" data-component-path="src\components\hero\Hero.tsx" data-component-line="24" data-component-file="Hero.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20flex-col%20sm%3Aflex-row%20gap-4%22%7D" class="flex flex-col sm:flex-row gap-4">
-                                          <button data-lov-id="src\components\hero\Hero.tsx:25:12" data-lov-name="button" data-component-path="src\components\hero\Hero.tsx" data-component-line="25" data-component-file="Hero.tsx" data-component-name="button" data-component-content="%7B%22text%22%3A%22Start%20Stacking%22%2C%22className%22%3A%22inline-flex%20items-center%20justify-center%20rounded-xl%20bg-foreground%20font-medium%20text-background%20border-2%20border-transparent%20px-5%20py-3%20shadow%20transition-colors%20hover%3Abg-foreground%2F90%20focus-visible%3Aoutline-none%20focus-visible%3Aring-1%20focus-visible%3Aring-ring%20btn-glow%22%7D" class="inline-flex items-center justify-center rounded-xl bg-foreground font-medium text-background border-2 border-transparent px-5 py-3 shadow transition-colors hover:bg-foreground/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring btn-glow">
+                                          <button  class="inline-flex items-center justify-center rounded-xl bg-foreground font-medium text-background border-2 border-transparent px-5 py-3 shadow transition-colors hover:bg-foreground/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring btn-glow" onclick="btn_stack();">
                                              Start Stacking
                                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right ml-2 h-4 w-4" data-lov-id="src\components\hero\Hero.tsx:27:14" data-lov-name="ArrowRight" data-component-path="src\components\hero\Hero.tsx" data-component-line="27" data-component-file="Hero.tsx" data-component-name="ArrowRight" data-component-content="%7B%22className%22%3A%22ml-2%20h-4%20w-4%22%7D">
                                                 <path d="M5 12h14"></path>
@@ -612,7 +891,7 @@
                                        <div data-lov-id="src\components\ui\GlassCard.tsx:14:4" data-lov-name="div" data-component-path="src\components\ui\GlassCard.tsx" data-component-line="14" data-component-file="GlassCard.tsx" data-component-name="div" data-component-content="%7B%7D" class="opt-grill glass-card relative rounded-xl p-6 transition-all duration-300 flex flex-col justify-between animate-fade-in">
                                           <div data-lov-id="src\components\hero\Hero.tsx:65:12" data-lov-name="div" data-component-path="src\components\hero\Hero.tsx" data-component-line="65" data-component-file="Hero.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-1%22%7D" class="space-y-1">
                                              <p data-lov-id="src\components\hero\Hero.tsx:66:14" data-lov-name="p" data-component-path="src\components\hero\Hero.tsx" data-component-line="66" data-component-file="Hero.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Total%20Stacked%22%2C%22className%22%3A%22text-sm%20font-medium%20text-muted-foreground%22%7D" class=" text-sm font-medium text-muted-foreground">Total Stacked</p>
-                                             <p data-lov-id="src\components\hero\Hero.tsx:67:14" data-lov-name="p" data-component-path="src\components\hero\Hero.tsx" data-component-line="67" data-component-file="Hero.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%221%2C234%20Pi%CF%80%22%2C%22className%22%3A%22text-2xl%20font-bold%22%7D" class="text-2xl font-bold" style="font-size: 30px;margin-top: 20%;">1,234 Piπ</p>
+                                             <p data-lov-id="src\components\hero\Hero.tsx:67:14" data-lov-name="p" data-component-path="src\components\hero\Hero.tsx" data-component-line="67" data-component-file="Hero.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%221%2C234%20Pi%CF%80%22%2C%22className%22%3A%22text-2xl%20font-bold%22%7D" class="text-2xl font-bold" style="font-size: 30px;margin-top: 20%;"> Piπ</p>
                                           </div>
                                           <div data-lov-id="src\components\hero\Hero.tsx:70:12" data-lov-name="div" data-component-path="src\components\hero\Hero.tsx" data-component-line="70" data-component-file="Hero.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22h-12%20w-full%20mt-4%20relative%20overflow-hidden%20rounded-md%22%7D" class="h-12 w-full mt-4 relative overflow-hidden rounded-md">
                                              <div data-lov-id="src\components\hero\Hero.tsx:71:14" data-lov-name="div" data-component-path="src\components\hero\Hero.tsx" data-component-line="71" data-component-file="Hero.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22absolute%20inset-0%20bg-gradient-to-r%20from-bitcoin-orange%20to-bitcoin-light%20opacity-20%22%7D" class="absolute inset-0 bg-gradient-to-r from-bitcoin-orange to-bitcoin-light opacity-20"></div>
@@ -627,9 +906,9 @@
                                     <div data-lov-id="src\components\ui\GlassCard.tsx:14:4" data-lov-name="div" data-component-path="src\components\ui\GlassCard.tsx" data-component-line="14" data-component-file="GlassCard.tsx" data-component-name="div" data-component-content="%7B%7D" class="stack-grill glass-card relative rounded-xl p-6 transition-all duration-300 flex justify-between items-center animate-fade-in">
                                        <div data-lov-id="src\pages\Index.tsx:24:12" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="24" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%7D">
                                           <p data-lov-id="src\pages\Index.tsx:25:14" data-lov-name="p" data-component-path="src\pages\Index.tsx" data-component-line="25" data-component-file="Index.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Total%20Stacked%22%2C%22className%22%3A%22text-sm%20text-muted-foreground%22%7D" class="text-sm text-muted-foreground">Total Stacked</p>
-                                          <div data-lov-id="src\pages\Index.tsx:26:14" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="26" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-baseline%20gap-1%22%7D" class="flex items-baseline gap-1">
-                                             <h3 data-lov-id="src\pages\Index.tsx:27:16" data-lov-name="h3" data-component-path="src\pages\Index.tsx" data-component-line="27" data-component-file="Index.tsx" data-component-name="h3" data-component-content="%7B%22className%22%3A%22text-2xl%20font-bold%22%7D" class="text-2xl font-bold"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" class="font-mono transition-all duration-150">1,234.56</span></h3>
-                                             <span data-lov-id="src\pages\Index.tsx:33:16" data-lov-name="span" data-component-path="src\pages\Index.tsx" data-component-line="33" data-component-file="Index.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Pi%CF%80%22%2C%22className%22%3A%22text-sm%20font-medium%20text-bitcoin-orange%22%7D" class="text-sm font-medium text-bitcoin-orange">Piπ</span>
+                                          <div data-lov-id="src\pages\Index.tsx:26:14" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="26" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-baseline%20gap-1%22%7D" class="total_class flex items-baseline gap-1">
+                                             <h3 data-lov-id="src\pages\Index.tsx:27:16" data-lov-name="h3" data-component-path="src\pages\Index.tsx" data-component-line="27" data-component-file="Index.tsx" data-component-name="h3" data-component-content="%7B%22className%22%3A%22text-2xl%20font-bold%22%7D" class="text-2xl font-bold"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" class="font-mono transition-all duration-150"></span></h3>
+                                             <span data-lov-id="src\pages\Index.tsx:33:16" data-lov-name="span" data-component-path="src\pages\Index.tsx" data-component-line="33" data-component-file="Index.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Pi%CF%80%22%2C%22className%22%3A%22text-sm%20font-medium%20text-bitcoin-orange%22%7D" class="text-sm font-medium text-bitcoin-orange"><span class="total_stake"></span> Piπ</span>
                                           </div>
                                        </div>
                                        <div data-lov-id="src\pages\Index.tsx:36:12" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="36" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22rounded-full%20bg-bitcoin-orange%2F10%20p-3%22%7D" class="rounded-full bg-bitcoin-orange/10 p-3">
@@ -641,9 +920,9 @@
                                     <div data-lov-id="src\components\ui\GlassCard.tsx:14:4" data-lov-name="div" data-component-path="src\components\ui\GlassCard.tsx" data-component-line="14" data-component-file="GlassCard.tsx" data-component-name="div" data-component-content="%7B%7D" class="stack-grill glass-card relative rounded-xl p-6 transition-all duration-300 flex justify-between items-center animate-fade-in">
                                        <div data-lov-id="src\pages\Index.tsx:42:12" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="42" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%7D">
                                           <p data-lov-id="src\pages\Index.tsx:43:14" data-lov-name="p" data-component-path="src\pages\Index.tsx" data-component-line="43" data-component-file="Index.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Total%20Users%22%2C%22className%22%3A%22text-sm%20text-muted-foreground%22%7D" class="text-sm text-muted-foreground">Total Users</p>
-                                          <div data-lov-id="src\pages\Index.tsx:44:14" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="44" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-baseline%20gap-1%22%7D" class="flex items-baseline gap-1">
-                                             <h3 data-lov-id="src\pages\Index.tsx:45:16" data-lov-name="h3" data-component-path="src\pages\Index.tsx" data-component-line="45" data-component-file="Index.tsx" data-component-name="h3" data-component-content="%7B%22className%22%3A%22text-2xl%20font-bold%22%7D" class="text-2xl font-bold"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" class="font-mono transition-all duration-150">5,643</span></h3>
-                                             <span data-lov-id="src\pages\Index.tsx:48:16" data-lov-name="span" data-component-path="src\pages\Index.tsx" data-component-line="48" data-component-file="Index.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22%2B12%25%22%2C%22className%22%3A%22text-sm%20font-medium%20text-green-600%22%7D" class="text-sm font-medium text-green-600">+12%</span>
+                                          <div data-lov-id="src\pages\Index.tsx:44:14" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="44" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-baseline%20gap-1%22%7D" class="total_class flex items-baseline gap-1">
+                                             <h3 data-lov-id="src\pages\Index.tsx:45:16" data-lov-name="h3" data-component-path="src\pages\Index.tsx" data-component-line="45" data-component-file="Index.tsx" data-component-name="h3" data-component-content="%7B%22className%22%3A%22text-2xl%20font-bold%22%7D" class="text-2xl font-bold"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" class="font-mono transition-all duration-150"></span></h3>
+                                             <span data-lov-id="src\pages\Index.tsx:48:16" data-lov-name="span" data-component-path="src\pages\Index.tsx" data-component-line="48" data-component-file="Index.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22%2B12%25%22%2C%22className%22%3A%22text-sm%20font-medium%20text-green-600%22%7D" class="text-sm font-medium text-green-600"><span class="total_users"></span> </span>
                                           </div>
                                        </div>
                                        <div data-lov-id="src\pages\Index.tsx:51:12" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="51" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22rounded-full%20bg-green-100%20p-3%20dark%3Abg-green-900%22%7D" class="rounded-full bg-green-100 p-3 dark:bg-green-900">
@@ -656,9 +935,9 @@
                                     <div data-lov-id="src\components\ui\GlassCard.tsx:14:4" data-lov-name="div" data-component-path="src\components\ui\GlassCard.tsx" data-component-line="14" data-component-file="GlassCard.tsx" data-component-name="div" data-component-content="%7B%7D" class="stack-grill glass-card relative rounded-xl p-6 transition-all duration-300 flex justify-between items-center animate-fade-in">
                                        <div data-lov-id="src\pages\Index.tsx:57:12" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="57" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%7D">
                                           <p data-lov-id="src\pages\Index.tsx:58:14" data-lov-name="p" data-component-path="src\pages\Index.tsx" data-component-line="58" data-component-file="Index.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Rewards%20Paid%22%2C%22className%22%3A%22text-sm%20text-muted-foreground%22%7D" class="text-sm text-muted-foreground">Rewards Paid</p>
-                                          <div data-lov-id="src\pages\Index.tsx:59:14" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="59" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-baseline%20gap-1%22%7D" class="flex items-baseline gap-1">
-                                             <h3 data-lov-id="src\pages\Index.tsx:60:16" data-lov-name="h3" data-component-path="src\pages\Index.tsx" data-component-line="60" data-component-file="Index.tsx" data-component-name="h3" data-component-content="%7B%22className%22%3A%22text-2xl%20font-bold%22%7D" class="text-2xl font-bold"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" class="font-mono transition-all duration-150">37.89</span></h3>
-                                             <span data-lov-id="src\pages\Index.tsx:66:16" data-lov-name="span" data-component-path="src\pages\Index.tsx" data-component-line="66" data-component-file="Index.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Pi%CF%80%22%2C%22className%22%3A%22text-sm%20font-medium%20text-bitcoin-orange%22%7D" class="text-sm font-medium text-bitcoin-orange">Piπ</span>
+                                          <div data-lov-id="src\pages\Index.tsx:59:14" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="59" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-baseline%20gap-1%22%7D" class="total_class flex items-baseline gap-1">
+                                             <h3 data-lov-id="src\pages\Index.tsx:60:16" data-lov-name="h3" data-component-path="src\pages\Index.tsx" data-component-line="60" data-component-file="Index.tsx" data-component-name="h3" data-component-content="%7B%22className%22%3A%22text-2xl%20font-bold%22%7D" class="text-2xl font-bold"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" class="font-mono transition-all duration-150"></span></h3>
+                                             <span data-lov-id="src\pages\Index.tsx:66:16" data-lov-name="span" data-component-path="src\pages\Index.tsx" data-component-line="66" data-component-file="Index.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Pi%CF%80%22%2C%22className%22%3A%22text-sm%20font-medium%20text-bitcoin-orange%22%7D" class="text-sm font-medium text-bitcoin-orange"><span class="rewards_paid"></span> Piπ</span>
                                           </div>
                                        </div>
                                        <div data-lov-id="src\pages\Index.tsx:69:12" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="69" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22rounded-full%20bg-blue-100%20p-3%20dark%3Abg-blue-900%22%7D" class="rounded-full bg-blue-100 p-3 dark:bg-blue-900">
@@ -697,13 +976,13 @@
                                                   />
                                                     <span data-lov-id="src\components\stacking\StackingForm.tsx:65:12" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="65" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Pi%CF%80%22%2C%22className%22%3A%22ml-1%20text-sm%20font-medium%20text-muted-foreground%22%7D" class="ml-1 text-sm font-medium text-muted-foreground">Piπ</span></div>
                                              </div>
-                                             <div data-lov-id="src\components\stacking\StackingForm.tsx:95:8" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="95" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-2%22%7D" class="space-y-2" id="stack_buttons">
+                                             <div data-lov-id="src\components\stacking\StackingForm.tsx:95:8" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="95" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-2%22%7D" class="margin-text space-y-2" id="stack_buttons">
                                                 <label data-lov-id="src\components\stacking\StackingForm.tsx:96:10" data-lov-name="label" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="96" data-component-file="StackingForm.tsx" data-component-name="label" data-component-content="%7B%22text%22%3A%22Stacking%20Period%22%2C%22className%22%3A%22text-sm%20font-medium%22%7D" class="text-sm font-medium">Stacking Period</label>
                                                 <div data-lov-id="src\components\stacking\StackingForm.tsx:98:10" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="98" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22grid%20grid-cols-2%20md%3Agrid-cols-4%20gap-3%22%7D" class="grid grid-cols-2 md:grid-cols-4 gap-3"><button data-lov-id="src\components\stacking\StackingForm.tsx:100:14" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="100" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%7D" type="button" id="btn_stack_roi1" data-month="1" onclick="stack_roi_click(1);" class="grid_select flex h-full flex-col items-center justify-center rounded-lg border p-3 text-center transition-all border-muted bg-background text-muted-foreground hover:border-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock mb-1 h-4 w-4" data-lov-id="src\components\stacking\StackingForm.tsx:110:16" data-lov-name="Clock" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="110" data-component-file="StackingForm.tsx" data-component-name="Clock" data-component-content="%7B%22className%22%3A%22mb-1%20h-4%20w-4%22%7D"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span data-lov-id="src\components\stacking\StackingForm.tsx:111:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="111" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%22%7D" class="text-sm font-medium">1 Month</span><span data-lov-id="src\components\stacking\StackingForm.tsx:112:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="112" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22%25%20APR%22%2C%22className%22%3A%22text-xs%22%7D" class="text-xs"><%=roi1%>% APR</span></button><button data-lov-id="src\components\stacking\StackingForm.tsx:100:14" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="100" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%7D" type="button" id="btn_stack_roi3" data-month="3" onclick="stack_roi_click(3);" class="flex h-full flex-col items-center justify-center rounded-lg border p-3 text-center transition-all border-bitcoin-orange bg-bitcoin-orange/5 text-foreground"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock mb-1 h-4 w-4" data-lov-id="src\components\stacking\StackingForm.tsx:110:16" data-lov-name="Clock" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="110" data-component-file="StackingForm.tsx" data-component-name="Clock" data-component-content="%7B%22className%22%3A%22mb-1%20h-4%20w-4%22%7D"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span data-lov-id="src\components\stacking\StackingForm.tsx:111:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="111" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%22%7D" class="text-sm font-medium">3 Months</span><span data-lov-id="src\components\stacking\StackingForm.tsx:112:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="112" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22%25%20APR%22%2C%22className%22%3A%22text-xs%22%7D" class="text-xs"><%=roi2%>% APR</span></button><button data-lov-id="src\components\stacking\StackingForm.tsx:100:14" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="100" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%7D" type="button" id="btn_stack_roi6" data-month="6" onclick="stack_roi_click(6);" class="grid_select flex h-full flex-col items-center justify-center rounded-lg border p-3 text-center transition-all border-muted bg-background text-muted-foreground hover:border-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock mb-1 h-4 w-4" data-lov-id="src\components\stacking\StackingForm.tsx:110:16" data-lov-name="Clock" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="110" data-component-file="StackingForm.tsx" data-component-name="Clock" data-component-content="%7B%22className%22%3A%22mb-1%20h-4%20w-4%22%7D"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span data-lov-id="src\components\stacking\StackingForm.tsx:111:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="111" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%22%7D" class="text-sm font-medium">6 Months</span><span data-lov-id="src\components\stacking\StackingForm.tsx:112:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="112" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22%25%20APR%22%2C%22className%22%3A%22text-xs%22%7D" class="text-xs"><%=roi3%>% APR</span></button><button data-lov-id="src\components\stacking\StackingForm.tsx:100:14" data-lov-name="button" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="100" data-component-file="StackingForm.tsx" data-component-name="button" data-component-content="%7B%7D" type="button" id="btn_stack_roi12" data-month="12" onclick="stack_roi_click(12);" class="grid_select flex h-full flex-col items-center justify-center rounded-lg border p-3 text-center transition-all border-muted bg-background text-muted-foreground hover:border-muted-foreground"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock mb-1 h-4 w-4" data-lov-id="src\components\stacking\StackingForm.tsx:110:16" data-lov-name="Clock" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="110" data-component-file="StackingForm.tsx" data-component-name="Clock" data-component-content="%7B%22className%22%3A%22mb-1%20h-4%20w-4%22%7D"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span data-lov-id="src\components\stacking\StackingForm.tsx:111:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="111" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%22%7D" class="text-sm font-medium">12 Months</span><span data-lov-id="src\components\stacking\StackingForm.tsx:112:16" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="112" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22%25%20APR%22%2C%22className%22%3A%22text-xs%22%7D" class="text-xs"><%=roi4%>% APR</span></button></div>
                                              </div>
                                           </div>
                                           <div data-lov-id="src\components\stacking\StackingForm.tsx:118:6" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="118" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22rounded-lg%20bg-background%20p-4%20space-y-3%22%7D" class="rounded-lg bg-background p-4 space-y-3">
-                                             <div data-lov-id="src\components\stacking\StackingForm.tsx:119:8" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="119" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-center%20justify-between%22%7D" class="flex items-center justify-between">
+                                             <div data-lov-id="src\components\stacking\StackingForm.tsx:119:8" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="119" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-center%20justify-between%22%7D" class="margin-text flex items-center justify-between">
                                                 <div data-lov-id="src\components\stacking\StackingForm.tsx:120:10" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="120" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-center%20gap-2%22%7D" class="flex items-center gap-2">
                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-coins h-4 w-4 text-muted-foreground" data-lov-id="src\components\stacking\StackingForm.tsx:121:12" data-lov-name="Coins" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="121" data-component-file="StackingForm.tsx" data-component-name="Coins" data-component-content="%7B%22className%22%3A%22h-4%20w-4%20text-muted-foreground%22%7D">
                                                       <circle cx="8" cy="8" r="6"></circle>
@@ -715,9 +994,9 @@
                                                 </div>
                                                 <span data-lov-id="src\components\stacking\StackingForm.tsx:124:10" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="124" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%20font-mono%22%7D" class="stack_span_text text-sm font-medium font-mono"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" class="font-mono transition-all duration-150"><span class="monthly_stack_val"></span> Piπ</span></span>
                                              </div>
-                                             <div data-lov-id="src\components\stacking\StackingForm.tsx:133:8" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="133" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-center%20justify-between%20pt-2%22%7D" class="flex items-center justify-between pt-2"><span data-lov-id="src\components\stacking\StackingForm.tsx:134:10" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="134" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Total%20Return%20(after%20)%22%2C%22className%22%3A%22text-sm%22%7D" class="text_total text-sm">Total Return (after <span class="stack_total_month"></span> months)</span><span data-lov-id="src\components\stacking\StackingForm.tsx:135:10" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="135" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%20font-mono%20text-bitcoin-orange%22%7D" class="text-sm font-medium font-mono text-bitcoin-orange"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" class="font-mono transition-all duration-150"><span class="total_stack_val"></span> Piπ</span></span></div>
+                                             <div data-lov-id="src\components\stacking\StackingForm.tsx:133:8" data-lov-name="div" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="133" data-component-file="StackingForm.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-center%20justify-between%20pt-2%22%7D" class="margin-text flex items-center justify-between pt-2"><span data-lov-id="src\components\stacking\StackingForm.tsx:134:10" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="134" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Total%20Return%20(after%20)%22%2C%22className%22%3A%22text-sm%22%7D" class="text_total text-sm">Total Return (after <span class="stack_total_month"></span> months)</span><span data-lov-id="src\components\stacking\StackingForm.tsx:135:10" data-lov-name="span" data-component-path="src\components\stacking\StackingForm.tsx" data-component-line="135" data-component-file="StackingForm.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%20font-mono%20text-bitcoin-orange%22%7D" class="text-sm font-medium font-mono text-bitcoin-orange"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" class="font-mono transition-all duration-150"><span class="total_stack_val"></span> Piπ</span></span></div>
                                           </div>
-                                          <button data-lov-id="src\components\hero\Hero.tsx:25:12" data-lov-name="button" data-component-path="src\components\hero\Hero.tsx" data-component-line="25" data-component-file="Hero.tsx" data-component-name="button" data-component-content="%7B%22text%22%3A%22Start%20Stacking%22%2C%22className%22%3A%22inline-flex%20items-center%20justify-center%20rounded-xl%20bg-foreground%20font-medium%20text-background%20border-2%20border-transparent%20px-5%20py-3%20shadow%20transition-colors%20hover%3Abg-foreground%2F90%20focus-visible%3Aoutline-none%20focus-visible%3Aring-1%20focus-visible%3Aring-ring%20btn-glow%22%7D" class="inside_btn inline-flex items-center justify-center rounded-xl bg-foreground font-medium text-background border-2 border-transparent px-5 py-3 shadow transition-colors hover:bg-foreground/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring btn-glow">
+                                          <button  class="inside_btn inline-flex items-center justify-center rounded-xl bg-foreground font-medium text-background border-2 border-transparent px-5 py-3 shadow transition-colors hover:bg-foreground/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring btn-glow" onclick="btn_stack();">
                                             Start Stacking
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right ml-2 h-4 w-4" data-lov-id="src\components\hero\Hero.tsx:27:14" data-lov-name="ArrowRight" data-component-path="src\components\hero\Hero.tsx" data-component-line="27" data-component-file="Hero.tsx" data-component-name="ArrowRight" data-component-content="%7B%22className%22%3A%22ml-2%20h-4%20w-4%22%7D">
                                                <path d="M5 12h14"></path>
@@ -725,90 +1004,25 @@
                                             </svg>
                                          </button>
                                        </div>
-                                       <div data-lov-id="src\components\ui\GlassCard.tsx:14:4" data-lov-name="div" data-component-path="src\components\ui\GlassCard.tsx" data-component-line="14" data-component-file="GlassCard.tsx" data-component-name="div" data-component-content="%7B%7D" class="glass-card relative rounded-xl p-6 transition-all duration-300 w-full space-y-6">
-                                          <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:59:6" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="59" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-center%20justify-between%22%7D" class="flex items-center justify-between">
-                                             <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:60:8" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="60" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-center%20gap-2%22%7D" class="text_active flex items-center gap-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-5 w-5 text-bitcoin-orange" data-lov-id="src\components\dashboard\ActiveStakes.tsx:61:10" data-lov-name="Calendar" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="61" data-component-file="ActiveStakes.tsx" data-component-name="Calendar" data-component-content="%7B%22className%22%3A%22h-5%20w-5%20text-bitcoin-orange%22%7D">
-                                                   <path d="M8 2v4"></path>
-                                                   <path d="M16 2v4"></path>
-                                                   <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                                                   <path d="M3 10h18"></path>
-                                                </svg>
-                                                <h3 data-lov-id="src\components\dashboard\ActiveStakes.tsx:62:10" data-lov-name="h3" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="62" data-component-file="ActiveStakes.tsx" data-component-name="h3" data-component-content="%7B%22text%22%3A%22Active%20Stakes%22%2C%22className%22%3A%22text-lg%20font-medium%22%7D" class="text_active_stake text-lg font-medium">Active Stakes</h3>
-                                             </div>
-                                          </div>
-                                          <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:71:8" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="71" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-4%22%7D" class="space-y-4">
-                                             <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:73:12" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="73" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22rounded-lg%20border%20bg-background%20p-4%20transition-all%20hover%3Ashadow-md%22%7D" class="class_active rounded-lg border bg-background p-4 transition-all hover:shadow-md">
-                                                <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:77:14" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="77" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20flex-col%20sm%3Aflex-row%20sm%3Aitems-center%20justify-between%20gap-4%20mb-4%22%7D" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                                                   <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:78:16" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="78" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%7D">
-                                                      <p data-lov-id="src\components\dashboard\ActiveStakes.tsx:79:18" data-lov-name="p" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="79" data-component-file="ActiveStakes.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Pi%CF%80%22%2C%22className%22%3A%22text-xl%20font-bold%20font-mono%22%7D" class="text-xl font-bold font-mono">0.25 Piπ</p>
-                                                      <p data-lov-id="src\components\dashboard\ActiveStakes.tsx:80:18" data-lov-name="p" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="80" data-component-file="ActiveStakes.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22-%22%2C%22className%22%3A%22text-sm%20text-muted-foreground%22%7D" class="text-sm text-muted-foreground">Sep 15, 2023 - Dec 15, 2023</p>
-                                                   </div>
-                                                   <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:84:16" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="84" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22text%22%3A%22%25%20APR%22%2C%22className%22%3A%22bg-bitcoin-orange%2F10%20text-bitcoin-orange%20px-3%20py-1%20rounded-full%20text-sm%20font-medium%22%7D" class="bg-bitcoin-orange/10 text-bitcoin-orange px-3 py-1 rounded-full text-sm font-medium"><%=roi2%>% APR</div>
-                                                </div>
-                                                <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:89:14" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="89" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-3%22%7D" class="space-y-3">
-                                                   <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:90:16" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="90" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-center%20justify-between%20text-sm%22%7D" class="flex items-center justify-between text-sm">
-                                                      <span data-lov-id="src\components\dashboard\ActiveStakes.tsx:91:18" data-lov-name="span" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="91" data-component-file="ActiveStakes.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Progress%22%2C%22className%22%3A%22text-muted-foreground%20flex%20items-center%22%7D" class="text-muted-foreground flex items-center">
-                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="class_clock lucide lucide-clock mr-1 h-3 w-3" data-lov-id="src\components\dashboard\ActiveStakes.tsx:92:20" data-lov-name="Clock" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="92" data-component-file="ActiveStakes.tsx" data-component-name="Clock" data-component-content="%7B%22className%22%3A%22mr-1%20h-3%20w-3%22%7D">
-                                                            <circle cx="12" cy="12" r="10"></circle>
-                                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                                         </svg>
-                                                         Progress
-                                                      </span>
-                                                      <span data-lov-id="src\components\dashboard\ActiveStakes.tsx:94:18" data-lov-name="span" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="94" data-component-file="ActiveStakes.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22days%20remaining%22%2C%22className%22%3A%22font-medium%22%7D" class="class_perce font-medium">-445 days remaining</span>
-                                                   </div>
-                                                   <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:99:16" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="99" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22h-2%20bg-secondary%20rounded-full%20overflow-hidden%22%7D" class="h-2 bg-secondary rounded-full overflow-hidden">
-                                                      <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:100:18" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="100" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22h-full%20bg-gradient-to-r%20from-bitcoin-orange%20to-bitcoin-light%20transition-all%20duration-1000%22%7D" class="h-full bg-gradient-to-r from-bitcoin-orange to-bitcoin-light transition-all duration-1000" style="width: 100%;"></div>
-                                                   </div>
-                                                   <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:111:16" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="111" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-center%20justify-between%20text-sm%20pt-2%22%7D" class="flex items-center justify-between text-sm pt-2">
-                                                      <span data-lov-id="src\components\dashboard\ActiveStakes.tsx:112:18" data-lov-name="span" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="112" data-component-file="ActiveStakes.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Next%20payout%22%2C%22className%22%3A%22text-muted-foreground%20flex%20items-center%22%7D" class="text-muted-foreground flex items-center">
-                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="class-timer lucide lucide-timer mr-1 h-3 w-3" data-lov-id="src\components\dashboard\ActiveStakes.tsx:113:20" data-lov-name="Timer" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="113" data-component-file="ActiveStakes.tsx" data-component-name="Timer" data-component-content="%7B%22className%22%3A%22mr-1%20h-3%20w-3%22%7D">
-                                                            <line x1="10" x2="14" y1="2" y2="2"></line>
-                                                            <line x1="12" x2="15" y1="14" y2="11"></line>
-                                                            <circle cx="12" cy="14" r="8"></circle>
-                                                         </svg>
-                                                         Next payout
-                                                      </span>
-                                                      <span data-lov-id="src\components\dashboard\ActiveStakes.tsx:115:18" data-lov-name="span" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="115" data-component-file="ActiveStakes.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22font-medium%22%7D" class="class_perce font-medium">Oct 15, 2023</span>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                             <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:73:12" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="73" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22rounded-lg%20border%20bg-background%20p-4%20transition-all%20hover%3Ashadow-md%22%7D" class="class_active rounded-lg border bg-background p-4 transition-all hover:shadow-md">
-                                                <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:77:14" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="77" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20flex-col%20sm%3Aflex-row%20sm%3Aitems-center%20justify-between%20gap-4%20mb-4%22%7D" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                                                   <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:78:16" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="78" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%7D">
-                                                      <p data-lov-id="src\components\dashboard\ActiveStakes.tsx:79:18" data-lov-name="p" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="79" data-component-file="ActiveStakes.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Pi%CF%80%22%2C%22className%22%3A%22text-xl%20font-bold%20font-mono%22%7D" class="text-xl font-bold font-mono">0.5 Piπ</p>
-                                                      <p data-lov-id="src\components\dashboard\ActiveStakes.tsx:80:18" data-lov-name="p" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="80" data-component-file="ActiveStakes.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22-%22%2C%22className%22%3A%22text-sm%20text-muted-foreground%22%7D" class="text-sm text-muted-foreground">Aug 1, 2023 - Feb 1, 2024</p>
-                                                   </div>
-                                                   <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:84:16" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="84" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22text%22%3A%22%25%20APR%22%2C%22className%22%3A%22bg-bitcoin-orange%2F10%20text-bitcoin-orange%20px-3%20py-1%20rounded-full%20text-sm%20font-medium%22%7D" class="bg-bitcoin-orange/10 text-bitcoin-orange px-3 py-1 rounded-full text-sm font-medium"><%=roi3%>% APR</div>
-                                                </div>
-                                                <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:89:14" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="89" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-3%22%7D" class="space-y-3">
-                                                   <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:90:16" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="90" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-center%20justify-between%20text-sm%22%7D" class="flex items-center justify-between text-sm">
-                                                      <span data-lov-id="src\components\dashboard\ActiveStakes.tsx:91:18" data-lov-name="span" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="91" data-component-file="ActiveStakes.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Progress%22%2C%22className%22%3A%22text-muted-foreground%20flex%20items-center%22%7D" class="text-muted-foreground flex items-center">
-                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="class_clock lucide lucide-clock mr-1 h-3 w-3" data-lov-id="src\components\dashboard\ActiveStakes.tsx:92:20" data-lov-name="Clock" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="92" data-component-file="ActiveStakes.tsx" data-component-name="Clock" data-component-content="%7B%22className%22%3A%22mr-1%20h-3%20w-3%22%7D">
-                                                            <circle cx="12" cy="12" r="10"></circle>
-                                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                                         </svg>
-                                                         Progress
-                                                      </span>
-                                                      <span data-lov-id="src\components\dashboard\ActiveStakes.tsx:94:18" data-lov-name="span" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="94" data-component-file="ActiveStakes.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22days%20remaining%22%2C%22className%22%3A%22font-medium%22%7D" class="class_perce font-medium">-397 days remaining</span>
-                                                   </div>
-                                                   <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:99:16" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="99" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22h-2%20bg-secondary%20rounded-full%20overflow-hidden%22%7D" class="h-2 bg-secondary rounded-full overflow-hidden">
-                                                      <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:100:18" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="100" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22h-full%20bg-gradient-to-r%20from-bitcoin-orange%20to-bitcoin-light%20transition-all%20duration-1000%22%7D" class="h-full bg-gradient-to-r from-bitcoin-orange to-bitcoin-light transition-all duration-1000" style="width: 100%;"></div>
-                                                   </div>
-                                                   <div data-lov-id="src\components\dashboard\ActiveStakes.tsx:111:16" data-lov-name="div" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="111" data-component-file="ActiveStakes.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20items-center%20justify-between%20text-sm%20pt-2%22%7D" class="flex items-center justify-between text-sm pt-2">
-                                                      <span data-lov-id="src\components\dashboard\ActiveStakes.tsx:112:18" data-lov-name="span" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="112" data-component-file="ActiveStakes.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22Next%20payout%22%2C%22className%22%3A%22text-muted-foreground%20flex%20items-center%22%7D" class="text-muted-foreground flex items-center">
-                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="class-timer lucide lucide-timer mr-1 h-3 w-3" data-lov-id="src\components\dashboard\ActiveStakes.tsx:113:20" data-lov-name="Timer" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="113" data-component-file="ActiveStakes.tsx" data-component-name="Timer" data-component-content="%7B%22className%22%3A%22mr-1%20h-3%20w-3%22%7D">
-                                                            <line x1="10" x2="14" y1="2" y2="2"></line>
-                                                            <line x1="12" x2="15" y1="14" y2="11"></line>
-                                                            <circle cx="12" cy="14" r="8"></circle>
-                                                         </svg>
-                                                         Next payout
-                                                      </span>
-                                                      <span data-lov-id="src\components\dashboard\ActiveStakes.tsx:115:18" data-lov-name="span" data-component-path="src\components\dashboard\ActiveStakes.tsx" data-component-line="115" data-component-file="ActiveStakes.tsx" data-component-name="span" data-component-content="%7B%22className%22%3A%22font-medium%22%7D" class="class_perce font-medium">Oct 1, 2023</span>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          </div>
+                                       <div data-v-a9660e98="" class="tab c-row c-row-between" id="tab_list">
+                                        <div data-v-a9660e98="" class="li c-row c-row-center">
+                                            <span data-v-a9660e98="" class="txt action" >
+                                                Active Stakes
+                                            </span>
+                                        </div>
+                                        <div data-v-a9660e98="" class="li c-row c-row-center">
+                                            <span data-v-a9660e98="" class="txt"> My Stakes </span>
+                                        </div>
+                                       
+                                        
+                                    </div>
+                                       <div class="margin-text glass-card relative rounded-xl p-6 transition-all duration-300 w-full space-y-6">
+                                        <div data-v-a9660e98="" class="con-box" id="active_stake_data">
+                                            
+                                        </div>
+                                        <div data-v-a9660e98="" class="con-box" id="all_stake_data">
+                                           
+                                        </div>
                                        </div>
                                     </div>
                                     <div data-lov-id="src\pages\Index.tsx:81:10" data-lov-name="div" data-component-path="src\pages\Index.tsx" data-component-line="81" data-component-file="Index.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-8%22%7D" class="space-y-8">
@@ -833,7 +1047,7 @@
                                           <div data-lov-id="src\components\stacking\ROICalculator.tsx:35:6" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="35" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-4%22%7D" class="space-y-4">
                                              <div data-lov-id="src\components\stacking\ROICalculator.tsx:36:8" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="36" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22space-y-2%22%7D" class="space-y-2">
                                                 <label data-lov-id="src\components\stacking\ROICalculator.tsx:37:10" data-lov-name="label" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="37" data-component-file="ROICalculator.tsx" data-component-name="label" data-component-content="%7B%22text%22%3A%22Bitcoin%20Amount%22%2C%22className%22%3A%22text-sm%20font-medium%22%7D" for="amount" class="text-sm font-medium">Piπ Amount</label>
-                                                <div data-lov-id="src\components\stacking\ROICalculator.tsx:40:10" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="40" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20h-10%20items-center%20rounded-md%20border%20bg-background%20px-3%20py-2%20focus-within-ring%22%7D" class="flex h-10 items-center rounded-md border bg-background px-3 py-2 focus-within-ring">
+                                                <div data-lov-id="src\components\stacking\ROICalculator.tsx:40:10" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="40" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20h-10%20items-center%20rounded-md%20border%20bg-background%20px-3%20py-2%20focus-within-ring%22%7D" class="margin-text flex h-10 items-center rounded-md border bg-background px-3 py-2 focus-within-ring">
                                                     <input
                                                     type="number"
                                                     id="roi_amount"
@@ -845,7 +1059,7 @@
                                                   />
                                                     <span data-lov-id="src\components\stacking\ROICalculator.tsx:50:12" data-lov-name="span" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="50" data-component-file="ROICalculator.tsx" data-component-name="span" data-component-content="%7B%22text%22%3A%22z%22%2C%22className%22%3A%22ml-1%20text-sm%20text-muted-foreground%22%7D" class="ml-1 text-sm text-muted-foreground">Piπ</span></div>
                                              </div>
-                                             <div class="period_list">
+                                             <div class="margin-text period_list">
                                                 <input
                                                 type="range"
                                                 id="roi_period_range"
@@ -866,7 +1080,7 @@
                                             </div>
                                             
                                              </div>
-                                             <div>
+                                             <div class="margin-text">
                                                <h4 style="margin-top: 2%;">Estimated APR</h4> 
                                                
                                                <progress min="0" max="100" value="45" id="estim_progress" style="width:80%;" ></progress>
@@ -878,14 +1092,14 @@
                                              <input type="hidden" id="hdd_roi12" value="<%=roi4%>">
 
 
-                                          </div>
+                                            </div class= "margin-text">
                                           <div data-lov-id="src\components\stacking\ROICalculator.tsx:99:6" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="99" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22rounded-lg%20bg-background%20p-4%20space-y-3%22%7D" class="rounded-lg bg-background p-4 space-y-3">
-                                             <div data-lov-id="src\components\stacking\ROICalculator.tsx:100:8" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="100" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20justify-between%20items-center%22%7D" class="flex justify-between items-center">
+                                             <div data-lov-id="src\components\stacking\ROICalculator.tsx:100:8" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="100" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20justify-between%20items-center%22%7D" class="margin-text flex justify-between items-center">
                                                 <p data-lov-id="src\components\stacking\ROICalculator.tsx:101:10" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="101" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Monthly%20Return%22%2C%22className%22%3A%22text-sm%20text-muted-foreground%22%7D" class="text_monthly_return text-sm text-muted-foreground">Monthly Return</p>
                                                 <p data-lov-id="src\components\stacking\ROICalculator.tsx:102:10" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="102" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22className%22%3A%22text-sm%20font-medium%20font-mono%22%7D" class="text_align text-sm font-medium font-mono"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" id="span_month_interest" class="font-mono transition-all duration-150"> </span></p>
                                              </div>
 
-                                             <div data-lov-id="src\components\stacking\ROICalculator.tsx:111:8" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="111" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20justify-between%20items-center%20border-t%20pt-3%22%7D" class="flex justify-between items-center border-t pt-3">
+                                             <div data-lov-id="src\components\stacking\ROICalculator.tsx:111:8" data-lov-name="div" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="111" data-component-file="ROICalculator.tsx" data-component-name="div" data-component-content="%7B%22className%22%3A%22flex%20justify-between%20items-center%20border-t%20pt-3%22%7D" class="margin-text flex justify-between items-center border-t pt-3">
                                                 <p data-lov-id="src\components\stacking\ROICalculator.tsx:112:10" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="112" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22text%22%3A%22Total%20Value%20after%22%2C%22className%22%3A%22text-sm%20font-medium%22%7D" class="text-sm font-medium">Total Value after <span id="span_month">3</span> months</p>
                                                 <p data-lov-id="src\components\stacking\ROICalculator.tsx:113:10" data-lov-name="p" data-component-path="src\components\stacking\ROICalculator.tsx" data-component-line="113" data-component-file="ROICalculator.tsx" data-component-name="p" data-component-content="%7B%22className%22%3A%22text-lg%20font-bold%20font-mono%20text-bitcoin-orange%22%7D" class="text-lg font-bold font-mono text-bitcoin-orange"><span data-lov-id="src\components\ui\AnimatedNumber.tsx:51:4" data-lov-name="span" data-component-path="src\components\ui\AnimatedNumber.tsx" data-component-line="51" data-component-file="AnimatedNumber.tsx" data-component-name="span" data-component-content="%7B%7D" id="span_total_interest" class="font-mono transition-all duration-150"></span></p>
                                              </div>
@@ -945,9 +1159,103 @@
                         </div>
                      </div>
                 </div>
+
+                <div id="myModal" class="modal"  style="display: none">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                      <div class="">
+                        <div id="myModal_header">Start Staking</div>
+                      </div>
+                      <div class="pi_amount_class">
+                        <label  class="text-sm font-medium">Piπ Amount</label>
+                        <div class="div_pi_input">
+                        <input
+                        type="number"
+                        id="modal_roi_amount"
+                        onchange="modal_roi_onchange()"
+                        value="5"
+                        min="0.01"
+                        step="0.01"
+                        className="input-clean"
+                      />
+                      <span  class="ml-1 text-sm text-muted-foreground">Piπ</span>
+                        <br>
+                    </div>
+                      </div>
+                      <div class="pi_amount_class">
+                        <div class="margin-text period_list">
+                            <input
+                            type="range"
+                            id="modal_roi_period_range"
+                            value="3"
+                            onchange="modal_roi_onchange();"                                                
+                            min="1"
+                            max="12"
+                            step="1"
+                            style="width: 80%;"
+                            className="w-full h-1 bg-muted rounded-lg appearance-none cursor-pointer"
+                          />
+                          <span id="modal_roi_period">1 month</span>
+                          <div style="width: 100%;">
+                            <a> 1 month</a>
+                            <a> 3 month</a>
+                            <a> 6 month</a>
+                            <a> 12 month</a>
+                        </div>
+                        </div>
+                        <div class="">
+                            <div class="margin-text">
+                                <h4 style="margin-top: 2%;">Estimated APR</h4> 
+                                <progress min="0" max="100" value="45" id="model_estim_progress" style="width:80%;" ></progress>
+                                <span ><span id="modal_roi_rate">4 </span>%</span>
+                              </div>
+                              <input type="hidden" id="hdd_roi1" value="<%=roi1%>">
+                              <input type="hidden" id="hdd_roi3" value="<%=roi2%>">
+                              <input type="hidden" id="hdd_roi6" value="<%=roi3%>">
+                              <input type="hidden" id="hdd_roi12" value="<%=roi4%>">
+                             </div>
+                        </div>
+
+                        <div class="pi_amount_class">
+                            <div  class="rounded-lg bg-background p-4 space-y-3">
+                                <div  class="margin-text flex justify-between items-center">
+                                   <p class="text_monthly_return text-sm text-muted-foreground">Monthly Return</p>
+                                   <p class="text_align text-sm font-medium font-mono">
+                                   <span id="modal_span_month_interest" class="font-mono transition-all duration-150"> </span></p>
+                                </div>
+        
+                                <div class="margin-text flex justify-between items-center border-t pt-3">
+                                   <p  class="text-sm font-medium">Total Value after <span id="modal_span_month">3</span> months</p>
+                                   <p class="text-lg font-bold font-mono text-bitcoin-orange"><span id="modal_span_total_interest" class="font-mono transition-all duration-150"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pi_amount_class btn_class">
+                            <button type="button" onclick="confirm_stack();">Confirm Stake</button>
+                        </div>
+                      <div class="close-btn">
+                        <span class="close-x">&times;</span>
+                      </div>
+                    </div>
+                  </div>
                 
             </div>
+
+            <div role="dialog" tabindex="0" id="successTost"
+            class="van-popup van-popup--center van-toast van-toast--middle van-toast--success"
+            style="z-index: 2005; display: none">
+            <i class="van-badge__wrapper van-icon van-icon-success van-toast__icon"></i>
+            <div class="van-toast__text">Copy successful</div>
+         </div>
+         <div role="dialog" tabindex="0" id="failedTost"
+            class="van-popup van-popup--center van-toast van-toast--middle van-toast--break-word van-toast--fail"
+            style="z-index: 2004; display: none">
+            <i class="van-badge__wrapper van-icon van-icon-fail van-toast__icon"></i>
+            <div class="van-toast__text">Error: 183 Please bind your bank card first</div>
+         </div>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
             <script src="/js/client.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
       <script>
@@ -955,8 +1263,38 @@
         $( document ).ready(function() {
             roi_onchange();
             stack_roi_click(3);
+            $(".con-box").css("display","none");
+            $(".con-box:eq(0)").css("display","block");
+            getstakedetails();
         });
         
+        $("#tab_list .li").click(function(e) {
+            $("#tab_list .li").find("span").removeClass("action");
+            $(this).find("span").addClass("action");
+            $(".con-box").css("display","none");
+            $(".con-box:eq("+$(this).index()+")").css("display","block");
+        });
+          
+
+        var modal = document.getElementById("myModal");
+        var closeBtn = document.querySelector(".close-btn");
+        closeBtn.onclick = function () {
+          modal.style.display = "none";
+
+        }
+        window.onclick = function (event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+        function btn_stack()
+        {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "block";
+            $("#modal_roi_amount").val(5);
+            $("#modal_roi_period_range").val(3);
+            modal_roi_onchange();
+        }
 
         function roi_onchange()
         {
@@ -991,6 +1329,260 @@
             var monthlyreturn = totalInterest / parseInt(roi_period);
             $("#span_month_interest").text(parseFloat(monthlyreturn).toFixed(4) + " Piπ");
             $("#span_total_interest").text(parseFloat(totalreturn).toFixed(4) + " Piπ");
+        }
+
+        function modal_roi_onchange()
+        {
+            var roi_amount = $("#modal_roi_amount").val().trim();
+            var roi_period = $("#modal_roi_period_range").val().trim();
+            $("#modal_roi_period").text(roi_period + " month");
+            if(parseInt(roi_period) < 3)
+            {
+                $("#roi_modal_roi_raterate").text($("#hdd_roi1").val());
+                $("#model_estim_progress").text(40);
+            }
+            else if(parseInt(roi_period) < 6)
+            {
+                $("#roi_modal_roi_raterate").text($("#hdd_roi3").val());
+                $("#model_estim_progress").text(45);
+            }
+            else if(parseInt(roi_period) < 9)
+            {
+                $("#roi_modal_roi_raterate").text($("#hdd_roi6").val());
+                $("#model_estim_progress").text(50);
+            }
+            else
+            {
+                $("#roi_modal_roi_raterate").text($("#hdd_roi12").val());
+                $("#model_estim_progress").text(55); 
+            }
+            $("#modal_span_month").text(parseInt(roi_period));
+            var roi_rinterest = $("#roi_rate").text(); 
+            const periodInYears = parseInt(roi_period) / 12;
+            const totalInterest = parseInt(roi_amount) * ((roi_rinterest) / 100) * periodInYears;
+            var totalreturn =    parseInt(roi_amount) + totalInterest;
+            var monthlyreturn = totalInterest / parseInt(roi_period);
+            $("#modal_span_month_interest").text(parseFloat(monthlyreturn).toFixed(4) + " Piπ");
+            $("#modal_span_total_interest").text(parseFloat(totalreturn).toFixed(4) + " Piπ");
+        }
+
+        function confirm_stack()
+        {
+            $.ajax({
+                type: "POST",
+                url: "/api/activity/stake_details/claim",
+                data: {
+                    stack_amt: $("#modal_roi_amount").val(),
+                    stack_period: $("#modal_roi_period_range").val(),
+                    stack_monthly_roi: $("#modal_span_month_interest").text().replace(" Piπ",""),
+                    stack_yealy_roi: $("#modal_span_total_interest").text().replace(" Piπ",""),
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.status === true) {
+                        var modal = document.getElementById("myModal");
+                        modal.style.display = "none";
+                        $(".van-toast__text").text(response.message)
+                        $("#successTost").fadeIn(220);
+                        setTimeout(function() {
+                            $("#successTost").fadeOut(220);
+                        }, 1000);
+                        
+
+                     } else {
+                        $(".van-toast__text").text(response.message)
+                        $("#failedTost").fadeIn(220)
+                     }
+                }
+            }); 
+        }
+
+        function formateT(params) {
+            let result = (params < 10) ? "0" + params : params;
+            return result;
+            }
+            
+            function timerJoin(params = '', addHours = 0) {
+                let date = '';
+                if (params) {
+                    date = new Date(Number(params));
+                } else {
+                    date = new Date();
+                }
+            
+                date.setHours(date.getHours() + addHours);
+            
+                let years = formateT(date.getFullYear());
+                let months = formateT(date.getMonth() + 1);
+                let days = formateT(date.getDate());
+            
+                let hours = date.getHours() % 12;
+                hours = hours === 0 ? 12 : hours;
+                let ampm = date.getHours() < 12 ? "AM" : "PM";
+            
+                let minutes = formateT(date.getMinutes());
+                let seconds = formateT(date.getSeconds());
+            
+                return years + '-' + months + '-' + days + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+            }
+        function getactivestakes(active_date)
+        {
+            if (active_date.length == 0) {
+                $('#active_stake_data').html(`
+                    <span class="data_class"> No Data</span>
+                  `);
+                return;
+            }
+            var apr_val = '0' ;
+            var remaining_days = "0";
+            var complete_days = "0";
+            var stack_from_date = "";
+            var stack_to_date = "";
+            var stake_period = 0;
+
+            let html = '';
+            let show = active_date.map((data) => {
+                stake_period = data.type.toString().match(/\d+/); 
+                if(parseInt(stake_period) < 3)
+                {
+                    apr_val = $("#hdd_roi1").val();
+                }
+                else if(parseInt(stake_period) < 6)
+                {
+                    apr_val = $("#hdd_roi3").val();
+                }
+                else if(parseInt(stake_period) < 9)
+                {
+                    apr_val = $("#hdd_roi6").val();
+                }
+                else
+                {
+                    apr_val = $("#hdd_roi12").val();
+                }
+                var stack_from_date = moment(data.from_date).format('DD-MM-YYYY');
+                var stack_to_date = moment(data.to_date).format('DD-MM-YYYY');
+                var diffDate = ( new Date(data.to_date) -  new Date(data.from_date)) / (1000 * 60 * 60 * 24);
+                remaining_days = Math.round(diffDate);
+                var comp_diffDate = ( new Date() -  new Date(data.from_date)) / (1000 * 60 * 60 * 24);
+                complete_days = Math.round(comp_diffDate);
+                html += `<div class="space-y-4">
+   <div class="class_active rounded-lg border bg-background p-4 transition-all hover:shadow-md">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+         <div >
+            <p class="text-xl font-bold font-mono">`+ (data.amount)+` Piπ</p>
+             <p class="stake_small text-sm text-muted-foreground">`+ stack_from_date+` - `+ stack_to_date+`</p>
+         </div>
+         <div class="bg-bitcoin-orange/10 text-bitcoin-orange px-3 py-1 rounded-full text-sm font-medium">`+apr_val+`% APR</div>
+      </div>
+      <div class="space-y-3">
+         <div class="flex items-center justify-between text-sm">
+            <span class="data_text text-muted-foreground flex items-center" >
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="class_clock lucide lucide-clock mr-1 h-3 w-3" >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+               </svg>
+               Progress
+            </span>
+            <span class="class_perce font-medium">`+remaining_days+` days</span>
+         </div>
+         <progress min="0" max="100" value="`+complete_days+`" class="stack_progress" style="width:100%;margin-top: 5%;" ></progress>
+         <div class="h-2 bg-secondary rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-bitcoin-orange to-bitcoin-light transition-all duration-1000" style="width: 100%;"></div>
+         </div>
+      </div>
+   </div>
+</div>`
+            });
+            $('#active_stake_data').html(html);
+        }
+        function getallstakes(all_date)
+        {
+            if (all_date.length == 0) {
+                $('#all_stake_data').html(`
+                    <span class="data_class"> No Data</span>
+                  `);
+                return;
+            }  
+            var apr_val = '0' ;
+            var remaining_days = "0";
+            var complete_days = "0";
+            var stack_from_date = "";
+            var stack_to_date = "";
+            var stake_period = 0;
+
+            let html = '';
+            let show = all_date.map((data) => {
+                stake_period = data.type.toString().match(/\d+/); 
+                if(parseInt(stake_period) < 3)
+                {
+                    apr_val = $("#hdd_roi1").val();
+                }
+                else if(parseInt(stake_period) < 6)
+                {
+                    apr_val = $("#hdd_roi3").val();
+                }
+                else if(parseInt(stake_period) < 9)
+                {
+                    apr_val = $("#hdd_roi6").val();
+                }
+                else
+                {
+                    apr_val = $("#hdd_roi12").val();
+                }
+                var stack_from_date = moment(data.from_date).format('DD-MM-YYYY');
+                var stack_to_date = moment(data.to_date).format('DD-MM-YYYY');
+                var diffDate = ( new Date(data.to_date) -  new Date(data.from_date)) / (1000 * 60 * 60 * 24);
+                remaining_days = Math.round(diffDate);
+                var comp_diffDate = ( new Date() -  new Date(data.from_date)) / (1000 * 60 * 60 * 24);
+                complete_days = Math.round(comp_diffDate);
+                html += `<div class="space-y-4">
+   <div class="class_active rounded-lg border bg-background p-4 transition-all hover:shadow-md">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+         <div >
+            <p class="text-xl font-bold font-mono">`+ (data.amount)+` Piπ</p>
+            <p class="stake_small text-sm text-muted-foreground">`+ stack_from_date+` - `+ stack_to_date+`</p>
+         </div>
+         <div class="bg-bitcoin-orange/10 text-bitcoin-orange px-3 py-1 rounded-full text-sm font-medium">`+apr_val+`% APR</div>
+      </div>
+      <div class="space-y-3">
+         <div class="flex items-center justify-between text-sm">
+            <span class="data_text text-muted-foreground flex items-center">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="class_clock lucide lucide-clock mr-1 h-3 w-3" >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+               </svg>
+               Progress
+            </span>
+            <span class="class_perce font-medium">`+remaining_days+` days</span>
+         </div>
+         <progress min="0" max="100" value="`+complete_days+`" class="stack_progress" style="width:100%;margin-top: 5%;" ></progress>
+         <div class="h-2 bg-secondary rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-bitcoin-orange to-bitcoin-light transition-all duration-1000" style="width: 100%;"></div>
+         </div>
+      </div>
+   </div>
+</div>`
+            });
+            $('#all_stake_data').html(html); 
+        }
+
+        function getstakedetails()
+        {
+            $.ajax({
+                type: "POST",
+                url: "/api/webapi/stake/details",
+                data: {
+                  
+                },
+                dataType: "json",
+                success: function (response) {
+                    $(".total_stake").text(parseFloat(response.totalstakes).toFixed(4));
+                    $(".total_users").text(response.totalstakeusers);
+                    $(".rewards_paid").text(parseFloat(response.totalclaimedrewards).toFixed(4));
+                    getactivestakes(response.useractivestakes);
+                    getallstakes(response.userstakedetails);
+                }
+              });
         }
 
         function stack_roi_click(check)

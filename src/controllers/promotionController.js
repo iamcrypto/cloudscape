@@ -19,6 +19,8 @@ function getOrdinal(n) {
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
+let timeNow = Date.now();
+
 const getSubordinateDataByPhone = async (phone) => {
   const [[row_1]] = await connection.execute(
     "SELECT COUNT(*) AS `count` FROM `recharge` WHERE `phone` = ? AND `status` = ?",
@@ -2083,6 +2085,35 @@ const getweeklyBettingeReword = async (req, res) => {
   }
 };
 
+function formateT(params) {
+  let result = (params < 10) ? "0" + params : params;
+  return result;
+}
+
+function timerJoin(params = '', addHours = 0) {
+  let date = '';
+  if (params) {
+      date = new Date(Number(params));
+  } else {
+      date = new Date();
+  }
+
+  date.setHours(date.getHours() + addHours);
+
+  let years = formateT(date.getFullYear());
+  let months = formateT(date.getMonth() + 1);
+  let days = formateT(date.getDate());
+
+  let hours = date.getHours() % 12;
+  hours = hours === 0 ? 12 : hours;
+  let ampm = date.getHours() < 12 ? "AM" : "PM";
+
+  let minutes = formateT(date.getMinutes());
+  let seconds = formateT(date.getSeconds());
+
+  return years + '-' + months + '-' + days + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+}
+
 
 const claimWeeklyBettingReword = async (req, res) => {
   try {
@@ -2220,7 +2251,7 @@ const claimWeeklyBettingReword = async (req, res) => {
 
 const weeklyBetttingRewordRecord = async (req, res) => {
   try {
-    const authToken = req.cookies.auth;;
+    const authToken = req.cookies.auth;
     const [userRow] = await connection.execute(
       "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
       [authToken],
@@ -2260,6 +2291,122 @@ const weeklyBetttingRewordRecord = async (req, res) => {
   }
 };
 
+
+const addonstake = async (req, res) => {
+  const authToken = req.cookies.auth;
+  let stack_amt = req.body.stack_amt;
+  let stack_period = req.body.stack_period;
+  let stack_monthly_roi = req.body.stack_monthly_roi;
+  let stack_yealy_roi = req.body.stack_yealy_roi;
+  if (!stack_amt && !stack_period ) {
+      return res.status(200).json({
+          message: 'Failed',
+          status: false,
+          timeStamp: timeNow,
+      })
+  }
+  const [userRow] = await connection.execute(
+    "SELECT `phone`,`money` FROM `users` WHERE `token` = ? AND `veri` = 1",
+    [authToken],
+  );
+  const user = userRow?.[0];
+
+  if (!user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  var rewardid_bonus = '';
+  if(parseInt(stack_period) == 1)
+  {
+    rewardid_bonus = REWARD_TYPES_MAP.ROI_STAKE_1;
+  }
+  else if(parseInt(stack_period) == 3)
+  {
+    rewardid_bonus = REWARD_TYPES_MAP.ROI_STAKE_3;
+  }
+  else if(parseInt(stack_period) == 6)
+  {
+    rewardid_bonus = REWARD_TYPES_MAP.ROI_STAKE_6; 
+  }
+  else if(parseInt(stack_period) == 12)
+  {
+    rewardid_bonus = REWARD_TYPES_MAP.ROI_STAKE_12;
+  }
+
+  if (user.money - stack_amt >= 0) {
+    let date = new Date();
+    let checkTime = timerJoin(date.getTime());
+    var toDate = new Date(new Date(date).setMonth(date.getMonth() + parseInt(stack_period)));
+    let checkTime2 = timerJoin(toDate.getTime());
+    await connection.execute(
+      "INSERT INTO `claimed_rewards` (`reward_id`, `type`, `phone`, `amount`, `status`, `time`, `stake_amnt`, `from_date`, `to_date`) VALUES (?, ?, ?, ?, ?, ?,?, ?, ?)",
+      [
+        parseInt("136"),
+        rewardid_bonus,
+        user.phone,
+        stack_yealy_roi,
+        2,
+        timeNow,
+        stack_amt,
+        checkTime,
+        checkTime2
+      ],
+    );
+    return res.status(200).json({
+      status: true,
+      message: "Successfully raised stake",
+    });
+  }
+  else
+  {
+    return res.status(200).json({
+      message: 'The balance is not enough to fulfill the request',
+      status: false,
+      timeStamp: timeNow,
+  });
+  }
+}
+
+const getstakedetails = async (req, res) => {
+  const authToken = req.cookies.auth;
+
+  const [userRow] = await connection.execute(
+    "SELECT `phone`,`money` FROM `users` WHERE `token` = ? AND `veri` = 1",
+    [authToken],
+  );
+  const user = userRow?.[0];
+
+  if (!user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  const [row_1] = await connection.execute(
+    "SELECT phone AS phone FROM `claimed_rewards` where `reward_id` = 136 GROUP BY phone;"
+  );
+  const stakeusers = row_1.length || 0;
+
+  const [[row_2]] = await connection.execute(
+    "SELECT SUM(stake_amnt) AS `sum` FROM `claimed_rewards` WHERE `reward_id` = 136;"
+  );
+  const stakeamount = row_2.sum || 0;
+
+  const [[row_3]] = await connection.execute(
+    "SELECT SUM(amount) AS `sum` FROM `claimed_rewards` WHERE `reward_id` = 136 AND status = 1;"
+  );
+  const stakerewards =  row_3.sum || 0;
+
+  const [userstackes] = await connection.query('SELECT * FROM claimed_rewards WHERE `phone` = ? AND `reward_id` = 136 ', [user.phone]);
+  const [useractivestakes] = await connection.query('SELECT * FROM claimed_rewards WHERE status = 2 AND `phone` = ? AND `reward_id` = 136 ', [user.phone]);
+  return res.status(200).json({
+    message: 'Success',
+    status: true,
+    totalstakes : stakeamount,
+    totalstakeusers : stakeusers,
+    totalclaimedrewards : stakerewards,
+    userstakedetails : userstackes,
+    useractivestakes: useractivestakes,
+  });
+}
+
+
 const promotionController = {
   subordinatesDataAPI,
   subordinatesAPI,
@@ -2280,7 +2427,9 @@ const promotionController = {
   dailyBetttingRewordRecord,
   getweeklyBettingeReword,
   claimWeeklyBettingReword,
-  weeklyBetttingRewordRecord
+  weeklyBetttingRewordRecord,
+  addonstake,
+  getstakedetails,
 };
 
 export default promotionController;
