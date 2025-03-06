@@ -1193,7 +1193,7 @@
                             min="1"
                             max="12"
                             step="1"
-                            style="width: 80%;"
+                            style="width: 90%;"
                             className="w-full h-1 bg-muted rounded-lg appearance-none cursor-pointer"
                           />
                           <span id="modal_roi_period">1 month</span>
@@ -1207,7 +1207,7 @@
                         <div class="">
                             <div class="margin-text">
                                 <h4 style="margin-top: 2%;">Estimated APR</h4> 
-                                <progress min="0" max="100" value="45" id="model_estim_progress" style="width:80%;" ></progress>
+                                <progress min="0" max="100" value="45" id="model_estim_progress" style="width:90%;" ></progress>
                                 <span ><span id="modal_roi_rate">4 </span>%</span>
                               </div>
                               <input type="hidden" id="hdd_roi1" value="<%=roi1%>">
@@ -1232,7 +1232,7 @@
                             </div>
                         </div>
                         <div class="pi_amount_class btn_class">
-                            <button type="button"  id="confirm_stack">Confirm Stake</button>
+                            <button type="button"  onclick="confirm_stack();">Confirm Stake</button>
                         </div>
                       <div class="close-btn">
                         <span class="close-x">&times;</span>

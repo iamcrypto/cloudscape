@@ -2315,19 +2315,19 @@ const addonstake = async (req, res) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
   var rewardid_bonus = '';
-  if(parseInt(stack_period) == 1)
+  if(parseInt(stack_period) < 3)
   {
     rewardid_bonus = REWARD_TYPES_MAP.ROI_STAKE_1;
   }
-  else if(parseInt(stack_period) == 3)
+  else if(parseInt(stack_period) < 6)
   {
     rewardid_bonus = REWARD_TYPES_MAP.ROI_STAKE_3;
   }
-  else if(parseInt(stack_period) == 6)
+  else if(parseInt(stack_period) < 9)
   {
     rewardid_bonus = REWARD_TYPES_MAP.ROI_STAKE_6; 
   }
-  else if(parseInt(stack_period) == 12)
+  else
   {
     rewardid_bonus = REWARD_TYPES_MAP.ROI_STAKE_12;
   }
