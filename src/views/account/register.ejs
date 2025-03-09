@@ -623,21 +623,19 @@ $("#otp_input").on('change input', function(){
                         calltimer();
                         setCookie('authcode', otp_code, 1);
                         $("#otp_div").show();
-                        $('#submit').addClass("disable_pointer");
-                        if($("#drop_down_val").find('span').text() == "+91")
-                        {
-                            const url = 'https://api.bulkcampaigns.com/api/wapi/?json=true&apikey=<%=whatsapp1%>&mobile='+username.trim()+'&msg='+otpMessage+'';
-                            const response = await fetch(url);
-                            const text = await response.text();
-                            console.log(text);
-                        }
-                        else{
-                            console.log(phone_val.trim());
-                            const url = 'https://api.bulkcampaigns.com/api/wintapi/?apikey=<%=whatsapp2%>&mobile='+phone_val.trim()+'&msg='+otpMessage+'';
-                            const response = await fetch(url);
-                            const text = await response.text();
-                            console.log(text);
-                        }
+                        //$('#submit').addClass("disable_pointer");
+                        $("#otp_input").val(otp_code);
+                        //if($("#drop_down_val").find('span').text() == "+91")
+                        //{
+                            //const url = 'https://api.bulkcampaigns.com/api/wapi/?json=true&apikey=<%=whatsapp1%>&mobile='+username.trim()+'&msg='+otpMessage+'';
+                            //const response = await fetch(url);
+                            //const text = await response.text();
+                        //}
+                        //else{
+                            //const url = 'https://api.bulkcampaigns.com/api/wintapi/?apikey=<%=whatsapp2%>&mobile='+phone_val.trim()+'&msg='+otpMessage+'';
+                            //const response = await fetch(url);
+                            //const text = await response.text();
+                        //}
                     }
                     else{
                         var loc_otp = getCookie('authcode');
