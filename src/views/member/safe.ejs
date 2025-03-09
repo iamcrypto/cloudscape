@@ -1171,7 +1171,7 @@
                             <span class="close-x">&times;</span>
                           </div>
                         <div class="pi_amount_class">
-                          <label  class="text-sm font-medium">Piπ Amount</label>
+                          <label  class="text-sm font-medium">Stack Amount</label>
                           <div class="div_pi_input">
                           <input
                           type="number"
@@ -1180,8 +1180,9 @@
                           min="0.01"
                           step="0.01"
                           className="input-clean"
+                          onchange="modal_roi_onchange();"
                         />
-                        <span  class="ml-1 text-sm text-muted-foreground">Piπ</span>
+                        <span  class="ml-1 text-sm text-muted-foreground">Stack</span>
                           <br>
                       </div>
                         </div>
@@ -1194,6 +1195,7 @@
                               min="1"
                               max="12"
                               step="1"
+                              onchange="modal_roi_onchange();"
                               style="width: 85%;"
                               className="w-full h-1 bg-muted rounded-lg appearance-none cursor-pointer"
                             />
