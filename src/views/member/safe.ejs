@@ -19,6 +19,7 @@
     <link href="/css/wallet/chunk_2-2.css" rel="stylesheet" />
     <link href="/css/wallet/chunk_2-3.css" rel="stylesheet" />
     <link rel="shortcut icon" href="/images/bitbug_favicon.ico" type="image/x-icon">
+   
     <style>
         .data_text
         {
@@ -36,10 +37,10 @@
         .modal-content
         {
             background: white;
-            width: 80%;
+            width: 90%;
             margin: auto;
             border-radius: 7px;
-            height: 67%;
+            height: 59%;
         }
         .modal {
             display: blocked;
@@ -149,7 +150,7 @@
           .modal-content {
             text-align: -webkit-center;
             position: relative;
-            top: 10%;
+            top: 20%;
           }
       
           .modal-content img {
@@ -1162,82 +1163,80 @@
 
                 <div id="myModal" class="modal"  style="display: none">
 
-                    <!-- Modal content -->
-                    <div class="modal-content">
-                      <div class="">
-                        <div id="myModal_header">Start Staking</div>
-                      </div>
-                      <div class="pi_amount_class">
-                        <label  class="text-sm font-medium">₹ Amount</label>
-                        <div class="div_pi_input">
-                        <input
-                        type="number"
-                        id="modal_roi_amount"
-                        onchange="modal_roi_onchange()"
-                        value="5"
-                        min="0.01"
-                        step="0.01"
-                        className="input-clean"
-                      />
-                      <span  class="ml-1 text-sm text-muted-foreground">₹</span>
-                        <br>
-                    </div>
-                      </div>
-                      <div class="pi_amount_class">
-                        <div class="margin-text period_list">
-                            <input
-                            type="range"
-                            id="modal_roi_period_range"
-                            value="3"
-                            onchange="modal_roi_onchange();"                                                
-                            min="1"
-                            max="12"
-                            step="1"
-                            style="width: 90%;"
-                            className="w-full h-1 bg-muted rounded-lg appearance-none cursor-pointer"
-                          />
-                          <span id="modal_roi_period">1 month</span>
-                          <div style="width: 100%;">
-                            <a> 1 month</a>
-                            <a> 3 month</a>
-                            <a> 6 month</a>
-                            <a> 12 month</a>
-                        </div>
-                        </div>
+                     <!-- Modal content -->
+                     <div class="modal-content">
                         <div class="">
-                            <div class="margin-text">
-                                <h4 style="margin-top: 2%;">Estimated APR</h4> 
-                                <progress min="0" max="100" value="45" id="model_estim_progress" style="width:90%;" ></progress>
-                                <span ><span id="modal_roi_rate">4 </span>%</span>
-                              </div>
-                              <input type="hidden" id="hdd_roi1" value="<%=roi1%>">
-                              <input type="hidden" id="hdd_roi3" value="<%=roi2%>">
-                              <input type="hidden" id="hdd_roi6" value="<%=roi3%>">
-                              <input type="hidden" id="hdd_roi12" value="<%=roi4%>">
-                             </div>
+                          <div id="myModal_header">Start Staking</div>
                         </div>
-
                         <div class="pi_amount_class">
-                            <div  class="rounded-lg bg-background p-4 space-y-3">
-                                <div  class="margin-text flex justify-between items-center">
-                                   <p class="text_monthly_return text-sm text-muted-foreground">Monthly Return</p>
-                                   <p class="text_align text-sm font-medium font-mono">
-                                   <span id="modal_span_month_interest" class="font-mono transition-all duration-150"> </span></p>
-                                </div>
-        
-                                <div class="margin-text flex justify-between items-center border-t pt-3">
-                                   <p  class="text-sm font-medium">Total Value after <span id="modal_span_month">3</span> months</p>
-                                   <p class="text-lg font-bold font-mono text-bitcoin-orange"><span id="modal_span_total_interest" class="font-mono transition-all duration-150"></span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pi_amount_class btn_class">
-                            <button type="button"  onclick="confirm_stack();">Confirm Stake</button>
-                        </div>
-                      <div class="close-btn">
-                        <span class="close-x">&times;</span>
+                          <label  class="text-sm font-medium">Piπ Amount</label>
+                          <div class="div_pi_input">
+                          <input
+                          type="number"
+                          id="modal_roi_amount"
+                          value="5"
+                          min="0.01"
+                          step="0.01"
+                          className="input-clean"
+                        />
+                        <span  class="ml-1 text-sm text-muted-foreground">Piπ</span>
+                          <br>
                       </div>
-                    </div>
+                        </div>
+                        <div class="pi_amount_class">
+                          <div class="margin-text period_list">
+                              <input
+                              type="range"
+                              id="modal_roi_period_range"
+                              value="3"
+                              min="1"
+                              max="12"
+                              step="1"
+                              style="width: 85%;"
+                              className="w-full h-1 bg-muted rounded-lg appearance-none cursor-pointer"
+                            />
+                            <span id="modal_roi_period">1 month</span>
+                            <div style="width: 100%;">
+                              <a> 1 month</a>
+                              <a> 3 month</a>
+                              <a> 6 month</a>
+                              <a> 12 month</a>
+                          </div>
+                          </div>
+                          <div class="">
+                              <div class="margin-text">
+                                  <h4 style="margin-top: 2%;">Estimated APR</h4> 
+                                  <progress min="0" max="100" value="45" id="model_estim_progress" style="width:80%;" ></progress>
+                                  <span ><span id="modal_roi_rate">4 </span>%</span>
+                                </div>
+                                <input type="hidden" id="hdd_roi1" value="<%=roi1%>">
+                                <input type="hidden" id="hdd_roi3" value="<%=roi2%>">
+                                <input type="hidden" id="hdd_roi6" value="<%=roi3%>">
+                                <input type="hidden" id="hdd_roi12" value="<%=roi4%>">
+                               </div>
+                          </div>
+  
+                          <div class="pi_amount_class">
+                              <div  class="rounded-lg bg-background p-4 space-y-3">
+                                  <div  class="margin-text flex justify-between items-center">
+                                     <p class="text_monthly_return text-sm text-muted-foreground">Monthly Return</p>
+                                     <p class="text_align text-sm font-medium font-mono">
+                                     <span id="modal_span_month_interest" class="font-mono transition-all duration-150"> </span></p>
+                                  </div>
+          
+                                  <div class="margin-text flex justify-between items-center border-t pt-3">
+                                     <p  class="text-sm font-medium">Total Value after <span id="modal_span_month">3</span> months</p>
+                                     <p class="text-lg font-bold font-mono text-bitcoin-orange"><span id="modal_span_total_interest" class="font-mono transition-all duration-150"></span></p>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="pi_amount_class btn_class">
+                              <button type="button"  id="confirm_stack">Confirm Stake</button>
+                          </div>
+                        <div class="close-btn">
+                          <span class="close-x">&times;</span>
+                        </div>
+                      </div>
                   </div>
                 
             </div>
