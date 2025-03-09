@@ -1390,8 +1390,13 @@
                         getstakedetails();
 
                      } else {
+                        var modal = document.getElementById("myModal");
+                        modal.style.display = "none";
                         $(".van-toast__text").text(response.message)
-                        $("#failedTost").fadeIn(220)
+                        $("#failedTost").fadeIn(220);
+                        setTimeout(function() {
+                            $("#successTost").fadeOut(220);
+                        }, 1000);
                      }
                 }
             }); 
