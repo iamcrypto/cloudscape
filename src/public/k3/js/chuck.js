@@ -4,7 +4,7 @@ var socket_call = "";
 
 
 $(document).ready(function(){
-    callAjaxMeJoin();
+    //callListOrder();
   });
 socket.on("data-server-k3", function (msg) {
     if (msg) {

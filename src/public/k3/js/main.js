@@ -1125,6 +1125,10 @@ $('.confirm').click(async function (e) {
     setTimeout(
         function() 
         {
+            $('.header-history').addClass('d-none');
+            $('#myBet').addClass('block-click action');
+            $('#history').removeClass('block-click action');
+            $('#number_result').attr('data-select', 'mybet');
             callAjaxMeJoin();
         }, 2000);
     }
