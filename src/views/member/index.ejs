@@ -466,11 +466,11 @@
                       <div data-v-4ac977f5="">
                         <div data-v-4ac977f5="">
                           <span data-v-4ac977f5="">
-                            Safe
+                            Lockup
                           </span>
                           <div data-v-4ac977f5="" class="financialServices__container-footer-des">
-                            <h4 data-v-4ac977f5="">
-                              ₹0.00
+                            <h4 data-v-4ac977f5="" id="stake_amt">
+                              
                             </h4>
                             <i data-v-4ac977f5="" class="van-badge__wrapper van-icon van-icon-arrow">
                               <!---->
@@ -918,6 +918,7 @@
                         $("#vip_lev_img").css('background-image', 'url(/assets/png/vip_img'+img_ind+'.png)');
                     }
                 });
+                $("#stake_amt").text("₹" +response.user_stake);
                 }
                 });
         fetch('/api/webapi/GetUserInfo')

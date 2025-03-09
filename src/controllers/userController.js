@@ -2065,6 +2065,8 @@ const xpgain_value = async (req, res) => {
     let auth = req.cookies.auth;
     let xp_gain_val = 0;
     let [user] = await connection.query('SELECT * FROM users WHERE `token` = ?', [auth]);
+    const [user_stoke] = await connection.query('SELECT SUM(stake_amnt) AS `sum` FROM claimed_rewards WHERE status = 2 AND `reward_id` = 136 AND `phone` = ?', [user[0].phone]);
+    const stakeamount = user_stoke[0].sum || 0;
     const [trx_xp] = await connection.query(`SELECT SUM(money) as total FROM trx_wingo_bets WHERE phone = ? `, user[0].phone);
     const [wingo_xp] = await connection.query(`SELECT SUM(money) as total FROM minutes_1 WHERE phone = ? `, user[0].phone);
     const [k3_xp] = await connection.query(`SELECT SUM(money) as total FROM result_k3 WHERE phone = ? `, user[0].phone);
@@ -2095,6 +2097,7 @@ const xpgain_value = async (req, res) => {
         level: level,
         status: true,
         language:user[0].lang_code,
+        user_stake:stakeamount,
     });
 
 };

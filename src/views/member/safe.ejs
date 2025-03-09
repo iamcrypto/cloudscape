@@ -1327,8 +1327,8 @@
             const totalInterest = parseInt(roi_amount) * ((roi_rinterest) / 100) * periodInYears;
             var totalreturn =    parseInt(roi_amount) + totalInterest;
             var monthlyreturn = totalInterest / parseInt(roi_period);
-            $("#span_month_interest").text(parseFloat(monthlyreturn).toFixed(4) + " ₹");
-            $("#span_total_interest").text(parseFloat(totalreturn).toFixed(4) + " ₹");
+            $("#span_month_interest").text(parseFloat(monthlyreturn).toFixed(2) + " ₹");
+            $("#span_total_interest").text(parseFloat(totalreturn).toFixed(2) + " ₹");
         }
 
         function modal_roi_onchange()
@@ -1362,8 +1362,8 @@
             const totalInterest = parseInt(roi_amount) * ((roi_rinterest) / 100) * periodInYears;
             var totalreturn =    parseInt(roi_amount) + totalInterest;
             var monthlyreturn = totalInterest / parseInt(roi_period);
-            $("#modal_span_month_interest").text(parseFloat(monthlyreturn).toFixed(4) + " ₹");
-            $("#modal_span_total_interest").text(parseFloat(totalreturn).toFixed(4) + " ₹");
+            $("#modal_span_month_interest").text(parseFloat(monthlyreturn).toFixed(2) + " ₹");
+            $("#modal_span_total_interest").text(parseFloat(totalreturn).toFixed(2) + " ₹");
         }
 
         function confirm_stack()
@@ -1576,9 +1576,9 @@
                 },
                 dataType: "json",
                 success: function (response) {
-                    $(".total_stake").text(parseFloat(response.totalstakes).toFixed(4));
+                    $(".total_stake").text(parseFloat(response.totalstakes).toFixed(2));
                     $(".total_users").text(response.totalstakeusers);
-                    $(".rewards_paid").text(parseFloat(response.totalclaimedrewards).toFixed(4));
+                    $(".rewards_paid").text(parseFloat(response.totalclaimedrewards).toFixed(2));
                     getactivestakes(response.useractivestakes);
                     getallstakes(response.userstakedetails);
                 }
@@ -1616,8 +1616,8 @@
             }
             const annualReturn = stack_amt * (stack_apr / 100);
             const monthlyReturn =  annualReturn / 12;
-            $(".monthly_stack_val").text(parseFloat(monthlyReturn).toFixed(4));
-            $(".total_stack_val").text(parseFloat(  monthlyReturn * parseInt(check) ).toFixed(4));
+            $(".monthly_stack_val").text(parseFloat(monthlyReturn).toFixed(2));
+            $(".total_stack_val").text(parseFloat(  monthlyReturn * parseInt(check) ).toFixed(2));
         }
       </script>
 </body>
