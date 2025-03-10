@@ -21,7 +21,7 @@ const invitationRulesPage = async (req, res) => {
   };
 
 const rabateRatioPage = async (req, res) => {
-    return res.render("promotion/invitationRules.ejs");
+    return res.render("promotion/rebateratio.ejs");
 };
 
 const rebatePage = async (req, res) => {
