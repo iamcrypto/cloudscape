@@ -20,9 +20,9 @@ const invitationRulesPage = async (req, res) => {
     return res.render("checkIn/invitationRules.ejs");
   };
 
-  const rabateRatioPage = async (req, res) => {
-    return res.render("promotion/rebateratio.ejs");
-  };
+const rabateRatioPage = async (req, res) => {
+    return res.render("promotion/invitationRules.ejs");
+};
 
 const rebatePage = async (req, res) => {
     return res.render("checkIn/rebate.ejs");
