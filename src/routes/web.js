@@ -31,7 +31,6 @@ const initWebRouter = (app) => {
     });
     router.get('/home', homeController.homePage);
     router.get("/invitation_rules", middlewareController,homeController.invitationRulesPage);
-    router.get("/rebate/rebate_ratio", middlewareController,homeController.rabateRatioPage);
 
     router.get('/checkIn', middlewareController, homeController.checkInPage);
     router.get('/activity', middlewareController, homeController.activityPage);
@@ -59,6 +58,7 @@ const initWebRouter = (app) => {
     router.get('/promotion/comhistory', middlewareController, homeController.comhistoryPage);
     router.get('/promotion/bethistory', middlewareController, homeController.mybethistoryPage);
     router.get('/promotion/tutorial', middlewareController, homeController.tutorialPage);
+    router.get('/promotion/rebate_ratio', middlewareController, homeController.bonusRecordPage);
     router.get('/promotion/bonusrecord', middlewareController, homeController.bonusRecordPage);
 
     router.get('/wallet', middlewareController, homeController.walletPage);
