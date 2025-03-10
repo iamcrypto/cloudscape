@@ -20,6 +20,10 @@ const invitationRulesPage = async (req, res) => {
     return res.render("checkIn/invitationRules.ejs");
   };
 
+  const rabateRatioPage = async (req, res) => {
+    return res.render("promotion/rebateratio.ejs");
+  };
+
 const rebatePage = async (req, res) => {
     return res.render("checkIn/rebate.ejs");
 }
@@ -354,6 +358,7 @@ module.exports = {
 	wingochat,
     mianPage,
     safePage,
+    rabateRatioPage,
     myProfilePage,
     promotionmyTeamPage,
     promotionDesPage,
