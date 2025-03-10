@@ -65,7 +65,10 @@ const addBank = async (req, res) => {
 
 // promotion
 const promotionPage = async (req, res) => {
-    return res.render("promotion/promotion.ejs");
+    let auth = req.cookies.auth;
+    const [rows] = await connection.execute('SELECT `user_level` FROM `users` WHERE `token` = ? AND veri = 1', [auth]);
+    var user_level = rows[0].user_level;
+    return res.render("promotion/promotion.ejs", {user_level});
 }
 
 const subordinatesPage = async (req, res) => {

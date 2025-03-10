@@ -496,6 +496,9 @@
                               Today's total commission
                             </div>
                             <div data-v-167a3387="" class="tip">
+                                Level : <span id= "span_level"></span>
+                              </div>
+                            <div data-v-167a3387="" class="tip">
                               Upgrade the level to increase commission income
                             </div>
                             <div data-v-167a3387="" class="info_content">
@@ -759,7 +762,7 @@
                 const f1Count =response.invite.f1_today;
                 $('#f_all_today').text(response.invite.f_all_today);
                 $('#f_total').text(response.invite.total_f);
-
+                $('#span_level').text(response.info[0].user_level);
                 $('#roses_f1').text("Direct Commission: " + response.invite.roses_f1);
                 $('#roses_f').text("Team Commission: " + response.invite.roses_f);
                 $('#roses_all').text(response.invite.roses_all);

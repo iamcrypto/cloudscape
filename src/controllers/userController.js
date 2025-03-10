@@ -441,7 +441,7 @@ const promotion = async (req, res) => {
         });
     }
 
-    const [user] = await connection.query('SELECT `phone`, `code`,`invite`, `roses_f`, `roses_f1`, `roses_today` FROM users WHERE `token` = ? ', [auth]);
+    const [user] = await connection.query('SELECT `phone`, `code`,`invite`, `roses_f`, `roses_f1`, `roses_today`,`user_level`  FROM users WHERE `token` = ? ', [auth]);
     const [level] = await connection.query('SELECT * FROM level');
 
     if (!user) {
@@ -2087,7 +2087,7 @@ const xpgain_value = async (req, res) => {
     {
         trx_xp[0].total = 0;
     }
-    let level = user[0].level;
+    let level = user[0].user_level;
 
     xp_gain_val = parseInt(wingo_xp[0].total) + parseInt(k3_xp[0].total) + parseInt(d5_xp[0].total) + parseInt(trx_xp[0].total);
 
