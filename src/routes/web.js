@@ -31,7 +31,7 @@ const initWebRouter = (app) => {
     });
     router.get('/home', homeController.homePage);
     router.get("/invitation_rules", middlewareController,homeController.invitationRulesPage);
-    router.get("/rebate_ratio", middlewareController,homeController.rabateRatioPage);
+    router.get("/rebate/rebate_ratio", middlewareController,homeController.rabateRatioPage);
 
     router.get('/checkIn', middlewareController, homeController.checkInPage);
     router.get('/activity', middlewareController, homeController.activityPage);
