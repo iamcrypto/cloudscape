@@ -39,6 +39,8 @@ const cronJobGame1p = (io) => {
         const data3 = k3; // Cầu mới chưa có kết quả
         io.emit('data-server-k3', { data: data3, 'game': '1' });
         io.emit('data-server-chatk3', { data: data3, 'game': '1' });
+
+        //await winGoController.distributeCommission();
     });
 
     cron.schedule('*/3 * * * *', async() => {
@@ -140,6 +142,15 @@ const cronJobGame1p = (io) => {
     cron.schedule("0 2 1 * *", async () => {
       vipController.releaseVIPLevel();
     });
+    cron.schedule(
+      "0 0 * * *",
+      async () => {
+        await winGoController.distributeCommission(),
+        await k3Controller.distributeCommission(),
+        await k5Controller.distributeCommission(),
+        await trxWingoController.distributeCommission()
+      }
+    );
 }
 
 module.exports = {

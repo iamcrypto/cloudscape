@@ -3,7 +3,9 @@ import connection from "../config/connectDB.js";
 import axios from "axios";
 import _ from "lodash";
 import GameRepresentationIds from "../constants/game_representation_id.js";
-import { generatePeriod } from "../helpers/games.js";
+import { generateCommissionId,
+    generatePeriod,
+    yesterdayTime, } from "../helpers/games.js";
 
 
 
@@ -64,7 +66,6 @@ const rosesPlus = async (auth, money) => {
     const [user] = await connection.query('SELECT `phone`, `code`, `invite`, `user_level`, `total_money` FROM users WHERE token = ? AND veri = 1 LIMIT 1 ', [auth]);
     let userInfo = user[0];
     const [f1] = await connection.query('SELECT `phone`, `code`, `invite`, `rank`, `user_level`, `total_money` FROM users WHERE code = ? AND veri = 1 LIMIT 1 ', [userInfo.invite]);
-
     if (userInfo.total_money >= 100) {
         if (f1.length > 0) {
             let infoF1 = f1[0];
@@ -208,6 +209,121 @@ const rosesPlus = async (auth, money) => {
 //     }
 // }
 
+
+const rosesPlus1 = async (phone, money, levels = [], timeNow = "") => {
+    try {
+      const [userResult] = await connection.query(
+        "SELECT `phone`, `code`, `invite`, `money` FROM users WHERE phone = ? AND veri = 1 LIMIT 1",
+        [phone],
+      );
+      const userInfo = userResult[0];
+  
+      if (!userInfo) {
+        return;
+      }
+  
+      let userReferrer = userInfo.invite;
+      let commissionsToInsert = [];
+      let usersToUpdate = [];
+
+      for (let i = 0; i < levels.length; i++) {
+        const levelCommission = levels[i] * money;
+        const [referrerRows] = await connection.query(
+          "SELECT phone, money, code, invite FROM users WHERE code = ?",
+          [userReferrer],
+        );
+        const referrerInfo = referrerRows[0];
+  
+        if (referrerInfo) {
+          const commissionId = generateCommissionId();
+          commissionsToInsert.push([
+            commissionId,
+            referrerInfo.phone,
+            userInfo.phone,
+            levelCommission,
+            i + 1,
+            timeNow,
+          ]);
+          usersToUpdate.push([levelCommission, referrerInfo.phone]);
+          userReferrer = referrerInfo.invite;
+        } else {
+          console.log(`Level ${i + 1} referrer not found.`);
+          break;
+        }
+      }
+      if (commissionsToInsert.length > 0) {
+        await connection.query(
+          "INSERT INTO commissions (commission_id, phone, from_user_phone, money, level, time) VALUES ?",
+          [commissionsToInsert],
+        );
+      }
+  
+      if (usersToUpdate.length > 0) {
+        const updatePromises = usersToUpdate.map(([money, phone]) =>
+          connection.query("UPDATE users SET money = money + ? WHERE phone = ?", [
+            money,
+            phone,
+          ]),
+        );
+        await Promise.all(updatePromises);
+      }
+  
+      return {
+        success: true,
+        message: "Commissions calculated and inserted successfully.",
+      };
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: error.message };
+    }
+  };
+
+const distributeCommission = async () => {
+    try {
+      const { startOfYesterdayTimestamp, endOfYesterdayTimestamp } =
+        yesterdayTime();
+      const [levelResult] = await connection.query("SELECT f1 FROM level");
+      const levels = levelResult.map((row) => row.f1 / 100);
+  
+      // const [bets] = await connection.query('SELECT phone, SUM(money + fee) AS total_money FROM minutes_1 WHERE time > ? AND time <= ? GROUP BY phone', [startOfDay, endTime]);
+  
+      const [bets] = await connection.query(
+        `
+        SELECT phone, SUM(total_money) AS total_money
+        FROM (
+          SELECT phone, SUM(money + fee) AS total_money
+          FROM minutes_1
+          WHERE time > ? AND time <= ?
+          GROUP BY phone
+          UNION ALL
+          SELECT phone, SUM(money + fee) AS total_money
+          FROM minutes_1
+          WHERE time > ? AND time <= ?
+          GROUP BY phone
+        ) AS combined
+        GROUP BY phone
+        `,
+        [
+          startOfYesterdayTimestamp,
+          endOfYesterdayTimestamp,
+          startOfYesterdayTimestamp,
+          endOfYesterdayTimestamp,
+        ],
+      );
+      
+      const promises = bets.map((bet) =>
+        rosesPlus1(bet.phone, bet.total_money, levels, endOfYesterdayTimestamp),
+      );
+      const response = await Promise.all(promises);
+      return {
+        success: true,
+        message: "Commissions distributed successfully.",
+      };
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: error.message };
+    }
+  };
 
 const betWinGo = async (req, res) => {
     let { typeid, join, x, money } = req.body;
@@ -892,5 +1008,6 @@ module.exports = {
     addWinGo,
     winGoPage3,
     winGoPage5,
-    winGoPage10
+    winGoPage10,
+    distributeCommission,
 }

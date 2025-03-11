@@ -3,7 +3,9 @@ import connection from "../config/connectDB.js";
 import axios from "axios";
 import _ from "lodash";
 import GameRepresentationIds from "../constants/game_representation_id.js";
-import { generatePeriod } from "../helpers/games.js";
+import { generateCommissionId,
+    generatePeriod,
+    yesterdayTime, } from "../helpers/games.js";
 
 
 const K3Page = async (req, res) => {
@@ -55,6 +57,14 @@ const rosesPlus = async (auth, money) => {
         if (f1.length > 0) {
             let infoF1 = f1[0];
             let rosesF1 = (money / 100) * level0.f1;
+            const sql6 = `
+            INSERT INTO turn_over (phone, code, invite, daily_turn_over, total_turn_over)
+            VALUES (?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+            daily_turn_over = daily_turn_over + VALUES(daily_turn_over),
+            total_turn_over = total_turn_over + VALUES(total_turn_over)
+            `;
+            await connection.execute(sql6, [infoF1.phone, infoF1.code, infoF1.invite, money, money]);
             await connection.query('UPDATE users SET money = money + ?, roses_f1 = roses_f1 + ?, roses_f = roses_f + ?, roses_today = roses_today + ? WHERE phone = ? ', [rosesF1, rosesF1, rosesF1, rosesF1, infoF1.phone]);
             const [f2] = await connection.query('SELECT `phone`, `code`, `invite`, `rank` FROM users WHERE code = ? AND veri = 1  LIMIT 1 ', [infoF1.invite]);
             if (f2.length > 0) {
@@ -1006,6 +1016,122 @@ async function plusMoney(game) {
     }
 }
 
+const rosesPlus1 = async (phone, money, levels = [], timeNow = "") => {
+    try {
+      const [userResult] = await connection.query(
+        "SELECT `phone`, `code`, `invite`, `money` FROM users WHERE phone = ? AND veri = 1 LIMIT 1",
+        [phone],
+      );
+      const userInfo = userResult[0];
+  
+      if (!userInfo) {
+        return;
+      }
+  
+      let userReferrer = userInfo.invite;
+      let commissionsToInsert = [];
+      let usersToUpdate = [];
+
+      for (let i = 0; i < levels.length; i++) {
+        const levelCommission = levels[i] * money;
+        const [referrerRows] = await connection.query(
+          "SELECT phone, money, code, invite FROM users WHERE code = ?",
+          [userReferrer],
+        );
+        const referrerInfo = referrerRows[0];
+  
+        if (referrerInfo) {
+          const commissionId = generateCommissionId();
+          commissionsToInsert.push([
+            commissionId,
+            referrerInfo.phone,
+            userInfo.phone,
+            levelCommission,
+            i + 1,
+            timeNow,
+          ]);
+          usersToUpdate.push([levelCommission, referrerInfo.phone]);
+          userReferrer = referrerInfo.invite;
+        } else {
+          console.log(`Level ${i + 1} referrer not found.`);
+          break;
+        }
+      }
+      if (commissionsToInsert.length > 0) {
+        await connection.query(
+          "INSERT INTO commissions (commission_id, phone, from_user_phone, money, level, time) VALUES ?",
+          [commissionsToInsert],
+        );
+      }
+  
+      if (usersToUpdate.length > 0) {
+        const updatePromises = usersToUpdate.map(([money, phone]) =>
+          connection.query("UPDATE users SET money = money + ? WHERE phone = ?", [
+            money,
+            phone,
+          ]),
+        );
+        await Promise.all(updatePromises);
+      }
+  
+      return {
+        success: true,
+        message: "Commissions calculated and inserted successfully.",
+      };
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: error.message };
+    }
+  };
+
+
+  const distributeCommission = async () => {
+      try {
+        const { startOfYesterdayTimestamp, endOfYesterdayTimestamp } =
+          yesterdayTime();
+        const [levelResult] = await connection.query("SELECT f1 FROM level");
+        const levels = levelResult.map((row) => row.f1 / 100);
+    
+        // const [bets] = await connection.query('SELECT phone, SUM(money + fee) AS total_money FROM minutes_1 WHERE time > ? AND time <= ? GROUP BY phone', [startOfDay, endTime]);
+    
+        const [bets] = await connection.query(
+          `
+          SELECT phone, SUM(total_money) AS total_money
+          FROM (
+            SELECT phone, SUM(money + fee) AS total_money
+            FROM result_k3
+            WHERE time > ? AND time <= ?
+            GROUP BY phone
+            UNION ALL
+            SELECT phone, SUM(money + fee) AS total_money
+            FROM result_k3
+            WHERE time > ? AND time <= ?
+            GROUP BY phone
+          ) AS combined
+          GROUP BY phone
+          `,
+          [
+            startOfYesterdayTimestamp,
+            endOfYesterdayTimestamp,
+            startOfYesterdayTimestamp,
+            endOfYesterdayTimestamp,
+          ],
+        );
+        
+        const promises = bets.map((bet) =>
+          rosesPlus1(bet.phone, bet.total_money, levels, endOfYesterdayTimestamp),
+        );
+        const response = await Promise.all(promises);
+        return {
+          success: true,
+          message: "Commissions distributed successfully.",
+        };
+      } catch (error) {
+        console.error(error);
+        return { success: false, message: error.message };
+      }
+    };
+  
 const handlingK3 = async (typeid) => {
 
     let game = Number(typeid);
@@ -1131,5 +1257,6 @@ module.exports = {
     addK3,
     handlingK3,
     listOrderOld,
-    GetMyEmerdList
+    GetMyEmerdList,
+    distributeCommission
 }

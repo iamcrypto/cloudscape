@@ -635,7 +635,6 @@ const subordinatesAPI = async (req, res) => {
     const userStatsData = await userStats(startDate, endDate, user.phone);
     // console.time('getUserLevels'); // Start the timer
     const { level1Referrals } = getUserLevels(userStatsData, user.code);
-
     const users = level1Referrals
       .map((user) => {
         const { phone, id_user: uid, time } = user;
@@ -772,8 +771,6 @@ const getInvitationBonus = async (req, res) => {
       [authToken],
     );
     const user = userRow?.[0];
-
-    console.log(user);
     if (!user) {
       return res.status(401).json({ status: false, message: "Unauthorized" });
     }
@@ -986,7 +983,6 @@ const getInvitedMembers = async (req, res) => {
 
       invitedMembers[index]["rechargeAmount"] = rechargeAmount;
     }
-    console.log(invitedMembers);
 
     return res.status(200).json({
       data: invitedMembers.map((invitedMember) => ({

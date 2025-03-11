@@ -61,6 +61,12 @@ const initWebRouter = (app) => {
     router.get('/promotion/rebate_ratio', middlewareController, homeController.rabateRatioPage);
     router.get('/promotion/bonusrecord', middlewareController, homeController.bonusRecordPage);
 
+    router.get(
+      "/api/subordinates/summary",
+      middlewareController,
+      promotionController.subordinatesDataAPI,
+    );
+
     router.get('/wallet', middlewareController, homeController.walletPage);
     router.get('/wallet/recharge', middlewareController, homeController.rechargePage);
     router.get('/wallet/withdrawal', middlewareController, homeController.withdrawalPage);

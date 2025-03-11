@@ -431,6 +431,30 @@ function timerJoin(params = '', addHours = 0) {
     return years + '-' + months + '-' + days + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + ampm;
 }
 
+function timerJoin1(params = '', addHours = 0) {
+    let date = '';
+    if (params) {
+        date = new Date(Number(params));
+    } else {
+        date = new Date();
+    }
+
+    date.setHours(date.getHours() + addHours);
+
+    let years = formateT(date.getFullYear());
+    let months = formateT(date.getMonth() + 1);
+    let days = formateT(date.getDate());
+
+    let hours = date.getHours() % 12;
+    hours = hours === 0 ? 12 : hours;
+    let ampm = date.getHours() < 12 ? "AM" : "PM";
+
+    let minutes = formateT(date.getMinutes());
+    let seconds = formateT(date.getSeconds());
+
+    return years + '-' + months + '-' + days;
+}
+
 const promotion = async (req, res) => {
     let auth = req.cookies.auth;
     if (!auth) {
@@ -441,7 +465,7 @@ const promotion = async (req, res) => {
         });
     }
 
-    const [user] = await connection.query('SELECT `phone`, `code`,`invite`, `roses_f`, `roses_f1`, `roses_today`,`user_level`  FROM users WHERE `token` = ? ', [auth]);
+    const [user] = await connection.query('SELECT `phone`, `code`,`invite`, `roses_f`, `roses_f1`, `roses_today`,`user_level` FROM users WHERE `token` = ? ', [auth]);
     const [level] = await connection.query('SELECT * FROM level');
 
     if (!user) {
@@ -455,79 +479,48 @@ const promotion = async (req, res) => {
     let userInfo = user[0];
 
     // Directly referred level-1 users
-    const [f1s] = await connection.query('SELECT `phone`, `code`,`invite`, `time`,`today` FROM users WHERE `invite` = ? ', [userInfo.code]);
+    const [f1s] = await connection.query('SELECT `phone`, `code`,`invite`, `time` FROM users WHERE `invite` = ? ', [userInfo.code]);
 
     // Directly referred users today
     let f1_today = 0;
-    let d_rech_users = 0;
-    let d_rch_u_amt = 0;
-    let f1_r_u = 0;
-    let f1_r_a = 0;
     for (let i = 0; i < f1s.length; i++) {
-        const f1_time = f1s[i].today;
-        const [d_r1] = await connection.query('SELECT `phone`,`money` FROM recharge WHERE `phone` = ? AND `status` = 1', [userInfo.phone]);
-        f1_r_u = d_r1.length;
-        for (let i = 0; i < d_r1.length; i++) {
-            f1_r_a += f1_r_a + parseInt(d_r1[i].money);
-        }
-        let check = (new Date(f1_time).getDate() == new Date().getDate()) && (new Date(f1_time).getMonth() == new Date().getMonth()) && (new Date(f1_time).getFullYear()  == new Date().getFullYear() )  ? true : false;
+        const f1_time = f1s[i].time;
+        let check = (timerJoin1(f1_time) == timerJoin1()) ? true : false;
         if (check) {
             f1_today += 1;
         }
     }
 
     // All direct referrals today
-    let al_d_d_u = 0;
-    let al_d_d_a = 0;
     let f_all_today = 0;
     for (let i = 0; i < f1s.length; i++) {
         const f1_code = f1s[i].code;
-        const [ad_r1] = await connection.query('SELECT `phone`,`money` FROM recharge WHERE `phone` = ? AND `status` = 1', [f1s[i].phone]);
-        al_d_d_u = parseInt(al_d_d_u) + ad_r1.length;
-        for (let i = 0; i < ad_r1.length; i++) {
-            al_d_d_a += al_d_d_a + parseInt(ad_r1[i].money);
-        }
-        const f1_time = f1s[i].today;
-        let check_f1 = (new Date(f1_time).getDate() == new Date().getDate()) && (new Date(f1_time).getMonth() == new Date().getMonth()) && (new Date(f1_time).getFullYear()  == new Date().getFullYear() )  ? true : false;
+        const f1_time = f1s[i].time;
+        let check_f1 = (timerJoin1(f1_time) == timerJoin1()) ? true : false;
         if (check_f1) f_all_today += 1;
 
         // Total level-2 referrals today
-        const [f2s] = await connection.query('SELECT `phone`, `code`,`invite`, `time`,`today` FROM users WHERE `invite` = ? ', [f1_code]);
+        const [f2s] = await connection.query('SELECT `phone`, `code`,`invite`, `time` FROM users WHERE `invite` = ? ', [f1_code]);
         for (let i = 0; i < f2s.length; i++) {
             const f2_code = f2s[i].code;
-            const [ad_r2] = await connection.query('SELECT `phone`,`money` FROM recharge WHERE `phone` = ? AND `status` = 1', [f2s[i].phone]);
-            al_d_d_u = parseInt(al_d_d_u) + ad_r2.length;
-            for (let i = 0; i < ad_r2.length; i++) {
-                al_d_d_a += al_d_d_a + parseInt(ad_r2[i].money);
-            }
-            const f2_time = f2s[i].today;
-            let check_f2 = (new Date(f2_time).getDate() == new Date().getDate()) && (new Date(f2_time).getMonth() == new Date().getMonth()) && (new Date(f2_time).getFullYear()  == new Date().getFullYear() )  ? true : false;
+            const f2_time = f2s[i].time;
+            let check_f2 = (timerJoin1(f2_time) == timerJoin1()) ? true : false;
             if (check_f2) f_all_today += 1;
 
             // Total level-3 referrals today
-            const [f3s] = await connection.query('SELECT `phone`, `code`,`invite`, `time`,`today` FROM users WHERE `invite` = ? ', [f2_code]);
+            const [f3s] = await connection.query('SELECT `phone`, `code`,`invite`, `time` FROM users WHERE `invite` = ? ', [f2_code]);
             for (let i = 0; i < f3s.length; i++) {
                 const f3_code = f3s[i].code;
-                const [ad_r3] = await connection.query('SELECT `phone`,`money` FROM recharge WHERE `phone` = ? AND `status` = 1', [f3s[i].phone]);
-                al_d_d_u = parseInt(al_d_d_u) + ad_r3.length;
-                for (let i = 0; i < ad_r3.length; i++) {
-                    al_d_d_a += al_d_d_a + parseInt(ad_r3[i].money);
-                }
-                const f3_time = f3s[i].today;
-                let check_f3 = (new Date(f3_time).getDate() == new Date().getDate()) && (new Date(f3_time).getMonth() == new Date().getMonth()) && (new Date(f3_time).getFullYear()  == new Date().getFullYear() )  ? true : false;
+                const f3_time = f3s[i].time;
+                let check_f3 = (timerJoin1(f3_time) == timerJoin1()) ? true : false;
                 if (check_f3) f_all_today += 1;
 
                 // Total level-4 referrals today
-                const [f4s] = await connection.query('SELECT `phone`, `code`,`invite`, `time`,`today` FROM users WHERE `invite` = ? ', [f3_code]);
+                const [f4s] = await connection.query('SELECT `phone`, `code`,`invite`, `time` FROM users WHERE `invite` = ? ', [f3_code]);
                 for (let i = 0; i < f4s.length; i++) {
                     const f4_code = f4s[i].code;
-                    const [ad_r4] = await connection.query('SELECT `phone`,`money` FROM recharge WHERE `phone` = ? AND `status` = 1', [f4s[i].phone]);
-                    al_d_d_u = parseInt(al_d_d_u) + ad_r4.length;
-                    for (let i = 0; i < ad_r4.length; i++) {
-                        al_d_d_a += al_d_d_a + parseInt(ad_r4[i].money);
-                    }
-                    const f4_time = f4s[i].today;
-                    let check_f4 = (new Date(f4_time).getDate() == new Date().getDate()) && (new Date(f4_time).getMonth() == new Date().getMonth()) && (new Date(f4_time).getFullYear()  == new Date().getFullYear() )  ? true : false
+                    const f4_time = f4s[i].time;
+                    let check_f4 = (timerJoin1(f4_time) == timerJoin1()) ? true : false;
                     if (check_f4) f_all_today += 1;
                 }
             }
@@ -535,42 +528,26 @@ const promotion = async (req, res) => {
     }
 
     // Total level-2 referrals
-    let f2_r_u = 0;
-    let f2_r_a = 0;
     let f2 = 0;
     for (let i = 0; i < f1s.length; i++) {
         const f1_code = f1s[i].code;
-        const [d_r2] = await connection.query('SELECT `phone`,`money` FROM recharge WHERE `phone` = ? AND `status` = 1', [f1s[i].phone]);
-        f2_r_u = d_r2.length;
-        for (let i = 0; i < d_r2.length; i++) {
-            f2_r_a += f2_r_a + parseInt(d_r2[i].money);
-        }
         const [f2s] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `invite` = ? ', [f1_code]);
         f2 += f2s.length;
     }
 
     // Total level-3 referrals
-    let f3_r_u = 0;
-    let f3_r_a = 0;
     let f3 = 0;
     for (let i = 0; i < f1s.length; i++) {
         const f1_code = f1s[i].code;
         const [f2s] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `invite` = ? ', [f1_code]);
         for (let i = 0; i < f2s.length; i++) {
             const f2_code = f2s[i].code;
-            const [d_r3] = await connection.query('SELECT `phone`,`money` FROM recharge WHERE `phone` = ? AND `status` = 1', [f2s[i].phone]);
-            f3_r_u = d_r3.length;
-            for (let i = 0; i < d_r3.length; i++) {
-                f3_r_a += f3_r_a + parseInt(d_r3[i].money);
-            }
             const [f3s] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `invite` = ? ', [f2_code]);
             if (f3s.length > 0) f3 += f3s.length;
         }
     }
 
     // Total level-4 referrals
-    let f4_r_u = 0;
-    let f4_r_a = 0;
     let f4 = 0;
     for (let i = 0; i < f1s.length; i++) {
         const f1_code = f1s[i].code;
@@ -580,17 +557,11 @@ const promotion = async (req, res) => {
             const [f3s] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `invite` = ? ', [f2_code]);
             for (let i = 0; i < f3s.length; i++) {
                 const f3_code = f3s[i].code;
-                const [d_r4] = await connection.query('SELECT `phone`,`money` FROM recharge WHERE `phone` = ? AND `status` = 1', [f3s[i].phone]);
-                f4_r_u = d_r4.length;
-                for (let i = 0; i < d_r4.length; i++) {
-                    f4_r_a += f4_r_a + parseInt(d_r4[i].money);
-                }
                 const [f4s] = await connection.query('SELECT `phone`, `code`,`invite` FROM users WHERE `invite` = ? ', [f3_code]);
                 if (f4s.length > 0) f4 += f4s.length;
             }
         }
     }
-
 
     let selectedData = [];
 
@@ -619,8 +590,6 @@ const promotion = async (req, res) => {
     const rosesF1 = parseFloat(userInfo.roses_f);
     const rosesAll = parseFloat(userInfo.roses_f1);
     let rosesAdd = rosesF1 + rosesAll;
-    d_rech_users = f1_r_u + f2_r_u + f3_r_u + f4_r_u;
-    d_rch_u_amt = f1_r_a + f2_r_a + f3_r_a + f4_r_a;
 
     return res.status(200).json({
         message: 'Receive success',
@@ -636,16 +605,6 @@ const promotion = async (req, res) => {
             roses_f: userInfo.roses_f,
             roses_all: rosesAdd,
             roses_today: userInfo.roses_today,
-
-            d_n_register: f1s.length,
-            d_dep_num: al_d_d_u ,
-            d_d_amount: al_d_d_a,
-            d_p_f_deposit: al_d_d_u,
-
-            ts_n_register: selectedData.length,
-            ts_dep_num: d_rech_users,
-            ts_d_amount: d_rch_u_amt,
-            ts_p_f_deposit: d_rech_users,
         },
         timeStamp: timeNow,
     });
