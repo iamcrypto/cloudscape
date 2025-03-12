@@ -1071,6 +1071,7 @@ function showListOrder2(list_orders, x) {
                     }</span>
                     `;
     }
+
     return (htmls += `
                     <div data-v-a9660e98="" issuenumber="${
                       list_orders.stage
@@ -1264,7 +1265,7 @@ function showListOrder2(list_orders, x) {
         :list_orders.status == 1 && list_orders.bet == 'd'
         ? list_orders.money * 2
         :list_orders.status == 1 && list_orders.bet == 'x'
-        ? list_orders.money * 1.5
+        ? list_orders.money * 2
         :list_orders.status == 1 && list_orders.result ==5 && list_orders.bet == 'x'
         ? list_orders.money * 1.5
         :list_orders.status == 1 && list_orders.bet == 'l'

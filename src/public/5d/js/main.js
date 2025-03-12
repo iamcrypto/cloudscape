@@ -408,7 +408,7 @@ function callListOrder() {
                     myModal_result.innerHTML = "LOSS :" + firstGame.money;
                 } else {
                     myModalheader.innerHTML = "congratulations";
-                    myModal_result.innerHTML = "WIN :" + list_orders[0].get;
+                    myModal_result.innerHTML = "WIN :" + firstGame.get;
                 }
                 myModal_result_Period.innerHTML = "Period :5D "+$('html').attr('data-dpr')+"min "  + firstGame.stage;
                 var count1=0;
