@@ -4552,6 +4552,27 @@ function timerJoin1(params = '') {
                             {
                                 if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "WinGo")
                                 {
+                                    var color = "";
+                                    var join = element.bet;
+                                    if (join == "l") {
+                                       color = "big";
+                                     } else if (join == "n") {
+                                       color = "small";
+                                     } else if (join == "t") {
+                                       color = "violet";
+                                     } else if (join == "d") {
+                                       color = "red";
+                                     } else if (join == "x") {
+                                       color = "green";
+                                     } else if (join == "0") {
+                                       color = "red-violet";
+                                     } else if (join == "5") {
+                                       color = "green-violet";
+                                     } else if (Number(join) % 2 == 0) {
+                                       color = "red";
+                                     } else if (Number(join) % 2 != 0) {
+                                       color = "green";
+                                     }
                                     var win_loss = (element.status == "1") ? "WON" : "LOSS";
                                     var win_Min = (element.game.match(/\d+/) == null) ? "1" : element.game.match(/\d+/);
                                     var col_txt = '';
@@ -4609,7 +4630,7 @@ function timerJoin1(params = '') {
                                     <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                                     <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                                     <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                                    <p data-v-1d8fbc24="">`+element.amount+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                                    <p data-v-1d8fbc24="">`+color+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                                     <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                                     <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(total_amount).toFixed(2)+`</span></li></ul>
                                     </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
@@ -4792,6 +4813,37 @@ function timerJoin1(params = '') {
                                 }
                                  else if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "Trx Wingo")
                                  {
+                                    var join = element.bet;
+                                    var selected = "";
+                                    var color = "";
+                                    if (join == "l") {
+                                       color = "l-big";
+                                       selected = "Big";
+                                    } else if (join == "n") {
+                                       color = "l-small";
+                                       selected = "Small";
+                                    } else if (join == "t") {
+                                       color = "l-violet";
+                                       selected = "Violet";
+                                    } else if (join == "d") {
+                                       color = "l-red";
+                                       selected = "Red";
+                                    } else if (join == "x") {
+                                       color = "l-green";
+                                       selected = "Green";
+                                    } else if (join == "0") {
+                                       color = "l-0";
+                                       selected = "0";
+                                    } else if (join == "5") {
+                                       color = "l-5";
+                                       selected = "5";
+                                    } else if (Number(join) % 2 == 0) {
+                                       color = "l-red";
+                                       selected = Number(join);
+                                    } else if (Number(join) % 2 != 0) {
+                                       color = "l-green";
+                                       selected = Number(join);
+                                    }
                                     var win_loss = (element.status == "1") ? "WON" : "LOSS";
                                    var win_Min = (element.game.match(/\d+/) == null) ? "1" : element.game.match(/\d+/);
                                    var col_txt = '';
@@ -4850,7 +4902,7 @@ function timerJoin1(params = '') {
                                    <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                                    <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                                    <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                                   <p data-v-1d8fbc24="">`+element.amount+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                                   <p data-v-1d8fbc24="">`+selected+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                                    <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                                    <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(total_amount).toFixed(2)+`</span></li></ul>
                                    </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
@@ -4893,6 +4945,27 @@ function timerJoin1(params = '') {
                     {
                          if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "WinGo")
                          {
+                              var color = "";
+                              var join = element.bet;
+                              if (join == "l") {
+                                 color = "big";
+                               } else if (join == "n") {
+                                 color = "small";
+                               } else if (join == "t") {
+                                 color = "violet";
+                               } else if (join == "d") {
+                                 color = "red";
+                               } else if (join == "x") {
+                                 color = "green";
+                               } else if (join == "0") {
+                                 color = "red-violet";
+                               } else if (join == "5") {
+                                 color = "green-violet";
+                               } else if (Number(join) % 2 == 0) {
+                                 color = "red";
+                               } else if (Number(join) % 2 != 0) {
+                                 color = "green";
+                               }
                              var win_loss = (element.status == "1") ? "WON" : "LOSS";
                              var win_Min = (element.game.match(/\d+/) == null) ? "1" : element.game.match(/\d+/);
                              var col_txt = '';
@@ -4950,7 +5023,7 @@ function timerJoin1(params = '') {
                              <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                              <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                              <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                             <p data-v-1d8fbc24="">`+element.amount+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                             <p data-v-1d8fbc24="">`+color+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                              <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                              <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(total_amount).toFixed(2)+`</span></li></ul>
                              </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
@@ -5133,7 +5206,38 @@ function timerJoin1(params = '') {
                          }
                          else if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "Trx Wingo")
                          {
-                           var win_loss = (element.status == "1") ? "WON" : "LOSS";
+                           var join = element.bet;
+                           var selected = "";
+                           var color = "";
+                           if (join == "l") {
+                              color = "l-big";
+                              selected = "Big";
+                           } else if (join == "n") {
+                              color = "l-small";
+                              selected = "Small";
+                           } else if (join == "t") {
+                              color = "l-violet";
+                              selected = "Violet";
+                           } else if (join == "d") {
+                              color = "l-red";
+                              selected = "Red";
+                           } else if (join == "x") {
+                              color = "l-green";
+                              selected = "Green";
+                           } else if (join == "0") {
+                              color = "l-0";
+                              selected = "0";
+                           } else if (join == "5") {
+                              color = "l-5";
+                              selected = "5";
+                           } else if (Number(join) % 2 == 0) {
+                              color = "l-red";
+                              selected = Number(join);
+                           } else if (Number(join) % 2 != 0) {
+                              color = "l-green";
+                              selected = Number(join);
+                           }
+                                   var win_loss = (element.status == "1") ? "WON" : "LOSS";
                                    var win_Min = (element.game.match(/\d+/) == null) ? "1" : element.game.match(/\d+/);
                                    var col_txt = '';
                                    var col_val = '';
@@ -5191,7 +5295,7 @@ function timerJoin1(params = '') {
                                    <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                                    <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                                    <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                                   <p data-v-1d8fbc24="">`+element.amount+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                                   <p data-v-1d8fbc24="">`+selected+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                                    <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                                    <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(total_amount).toFixed(2)+`</span></li></ul>
                                    </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
@@ -5283,7 +5387,38 @@ function timerJoin1(params = '') {
                         {
                             if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "Trx Wingo")
                            {
-                              var win_loss = (element.status == "1") ? "WON" : "LOSS";
+                              var join = element.bet;
+                                    var selected = "";
+                                    var color = "";
+                                    if (join == "l") {
+                                       color = "l-big";
+                                       selected = "Big";
+                                    } else if (join == "n") {
+                                       color = "l-small";
+                                       selected = "Small";
+                                    } else if (join == "t") {
+                                       color = "l-violet";
+                                       selected = "Violet";
+                                    } else if (join == "d") {
+                                       color = "l-red";
+                                       selected = "Red";
+                                    } else if (join == "x") {
+                                       color = "l-green";
+                                       selected = "Green";
+                                    } else if (join == "0") {
+                                       color = "l-0";
+                                       selected = "0";
+                                    } else if (join == "5") {
+                                       color = "l-5";
+                                       selected = "5";
+                                    } else if (Number(join) % 2 == 0) {
+                                       color = "l-red";
+                                       selected = Number(join);
+                                    } else if (Number(join) % 2 != 0) {
+                                       color = "l-green";
+                                       selected = Number(join);
+                                    }
+                                   var win_loss = (element.status == "1") ? "WON" : "LOSS";
                                    var win_Min = (element.game.match(/\d+/) == null) ? "1" : element.game.match(/\d+/);
                                    var col_txt = '';
                                    var col_val = '';
@@ -5341,7 +5476,7 @@ function timerJoin1(params = '') {
                                    <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                                    <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                                    <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                                   <p data-v-1d8fbc24="">`+element.amount+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                                   <p data-v-1d8fbc24="">`+selected+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                                    <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                                    <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(total_amount).toFixed(2)+`</span></li></ul>
                                    </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
@@ -5363,6 +5498,27 @@ function timerJoin1(params = '') {
                            }
                                else if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "WinGo")
                                {
+                                 var color = "";
+                                 var join = element.bet;
+                                 if (join == "l") {
+      color = "big";
+    } else if (join == "n") {
+      color = "small";
+    } else if (join == "t") {
+      color = "violet";
+    } else if (join == "d") {
+      color = "red";
+    } else if (join == "x") {
+      color = "green";
+    } else if (join == "0") {
+      color = "red-violet";
+    } else if (join == "5") {
+      color = "green-violet";
+    } else if (Number(join) % 2 == 0) {
+      color = "red";
+    } else if (Number(join) % 2 != 0) {
+      color = "green";
+    }
                                    var win_loss = (element.status == "1") ? "WON" : "LOSS";
                                    var win_Min = (element.game.match(/\d+/) == null) ? "1" : element.game.match(/\d+/);
                                    var col_txt = '';
@@ -5420,7 +5576,7 @@ function timerJoin1(params = '') {
                                    <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                                    <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                                    <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                                   <p data-v-1d8fbc24="">`+element.amount+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                                   <p data-v-1d8fbc24="">`+color+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                                    <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                                    <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(total_amount).toFixed(2)+`</span></li></ul>
                                    </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
