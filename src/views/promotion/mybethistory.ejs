@@ -4493,6 +4493,11 @@
          <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
          <script src="https://momentjs.com/downloads/moment.js"></script>
       <script>
+
+         function isNumber(params) {
+    let pattern = /^[0-9]*\d$/;
+    return pattern.test(params);
+}
          let swiper = new Swiper(".swiper", {
             slidesPerView: 3.5,
             clickable: true,
@@ -4653,6 +4658,34 @@ function timerJoin1(params = '') {
 
                                 else if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "5D")
                                 {
+                                 var join_bet = '';
+                                 if(element.join_bet == 'total')
+                                 {
+                                    join_bet = "SUM";
+                                 }
+                                 else
+                                 {
+                                    join_bet = element.join_bet.toUpperCase();
+                                 }
+                                    var join = '';
+                                    var arr2 = element.bet.split('');
+                                    for (var i = 0; i < arr2.length; i++) {
+                                       var check = isNumber(element.bet);
+                                       if (check) {
+                                       join += `
+                                          <div data-v-42f27458="">
+                                       <span data-v-42f27458="" style="color: white;">
+                                       <span data-v-42f27458="" class="li circle-black" style="color: white;">${arr2[i]}</span>  
+                                       </span>
+                                    </div>`;
+                                 } else {
+                                    join += `
+                                       <div data-v-42f27458="">
+                                       <span data-v-42f27458="" style="color: white;">${(arr2[i] == 'c') ? "Even" : (arr2[i] == 'l') ? 'Odd' : (arr2[i] == 'b') ? 'Big' : 'Small'}</span>
+                                       </div>
+                                    `;
+                                 }
+                                 }
                                     var win_loss = (element.status == "1") ? "WON" : "LOSS";
                                     var win_Min = element.game;
                                     var col_txt = '';
@@ -4711,7 +4744,7 @@ function timerJoin1(params = '') {
                                     <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                                     <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                                     <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                                    <p data-v-1d8fbc24="">`+selval+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                                    <p data-v-1d8fbc24="" style="width: 100%;text-align: right;" >`+join_bet + "  "+join+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                                     <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                                     <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(element.money).toFixed(2)+`</span></li></ul>
                                     </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
@@ -4733,6 +4766,34 @@ function timerJoin1(params = '') {
                                 }
                                 else if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "K3")
                                 {
+                                 var join_bet = '';
+                                 if(element.join_bet == 'total')
+                                 {
+                                    join_bet = "SUM";
+                                 }
+                                 else
+                                 {
+                                    join_bet = element.join_bet.toUpperCase();
+                                 }
+                                 var join = '';
+                                 var arr2 = element.bet.replace(/[$@%]/g, '').split(',');
+                                 for (let i = 0; i < arr2.length; i++) {
+                                    let check = isNumber(arr2[i].replace("y",""));
+                                    if (check) {
+                                    join += `
+                                    <div data-v-42f27458="" class="my_bet_choose">
+                                       <span data-v-42f27458="" style="color: white;">
+                                       <span data-v-42f27458="" class="li circle-black" style="color: white;">${arr2[i].replace("y","")}</span>  
+                                       </span>
+                                    </div>`;
+                                    } else {
+                                    join += `
+                                       <div data-v-42f27458="" class="my_bet_choose">
+                                       <span data-v-42f27458="" style="color: white;">${(arr2[i] == 'c') ? "Even" : (arr2[i] == 'l') ? 'Odd' : (arr2[i] == 'b') ? 'Big' : 'Small'}</span>
+                                    </div>
+                                    `;
+                                 }
+                                 }
                                     var win_loss = (element.status == "1") ? "WON" : "LOSS";
                                     var win_Min = element.game;
                                     var col_txt = '';
@@ -4791,7 +4852,7 @@ function timerJoin1(params = '') {
                                     <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                                     <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                                     <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                                    <p data-v-1d8fbc24="">`+selval+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                                    <p data-v-1d8fbc24="" style="width: 100%;text-align: right;">`+join_bet + "  "+join+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                                     <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                                     <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(element.money).toFixed(2)+`</span></li></ul>
                                     </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
@@ -5046,6 +5107,34 @@ function timerJoin1(params = '') {
 
                          else if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "5D")
                          {
+                           var join_bet = '';
+                           if(element.join_bet == 'total')
+                           {
+                              join_bet = "SUM";
+                           }
+                           else
+                           {
+                              join_bet = element.join_bet.toUpperCase();
+                           }
+                           var join = '';
+                                    var arr2 = element.bet.split('');
+                                    for (var i = 0; i < arr2.length; i++) {
+                                       var check = isNumber(element.bet);
+                                       if (check) {
+                                       join += `
+                                          <div data-v-42f27458="">
+                                       <span data-v-42f27458="" style="color: white;">
+                                       <span data-v-42f27458="" class="li circle-black" style="color: white;">${arr2[i]}</span>  
+                                       </span>
+                                    </div>`;
+                                 } else {
+                                    join += `
+                                       <div data-v-42f27458="">
+                                       <span data-v-42f27458="" style="color: white;">${(arr2[i] == 'c') ? "Even" : (arr2[i] == 'l') ? 'Odd' : (arr2[i] == 'b') ? 'Big' : 'Small'}</span>
+                                       </div>
+                                    `;
+                                 }
+                                 }
                              var win_loss = (element.status == "1") ? "WON" : "LOSS";
                              var win_Min = element.game;
                              var col_txt = '';
@@ -5104,7 +5193,7 @@ function timerJoin1(params = '') {
                              <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                              <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                              <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                             <p data-v-1d8fbc24="">`+selval+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                             <p data-v-1d8fbc24="" style="width: 100%;text-align: right;" >`+join_bet + "  "+join+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                              <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                              <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(element.money).toFixed(2)+`</span></li></ul>
                              </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
@@ -5126,6 +5215,34 @@ function timerJoin1(params = '') {
                          }
                          else if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "K3")
                          {
+                           var join_bet = '';
+                                 if(element.join_bet == 'total')
+                                 {
+                                    join_bet = "SUM";
+                                 }
+                                 else
+                                 {
+                                    join_bet = element.join_bet.toUpperCase();
+                                 }
+                                 var join = '';
+                                 var arr2 = element.bet.replace(/[$@%]/g, '').split(',');
+                                 for (let i = 0; i < arr2.length; i++) {
+                                    let check = isNumber(arr2[i].replace("y",""));
+                                    if (check) {
+                                    join += `
+                                    <div data-v-42f27458="" class="my_bet_choose">
+                                       <span data-v-42f27458="" style="color: white;">
+                                       <span data-v-42f27458="" class="li circle-black" style="color: white;">${arr2[i].replace("y","")}</span>  
+                                       </span>
+                                    </div>`;
+                                    } else {
+                                    join += `
+                                       <div data-v-42f27458="" class="my_bet_choose">
+                                       <span data-v-42f27458="" style="color: white;">${(arr2[i] == 'c') ? "Even" : (arr2[i] == 'l') ? 'Odd' : (arr2[i] == 'b') ? 'Big' : 'Small'}</span>
+                                    </div>
+                                    `;
+                                 }
+                                 }
                              var win_loss = (element.status == "1") ? "WON" : "LOSS";
                              var win_Min = element.game;
                              var col_txt = '';
@@ -5184,7 +5301,7 @@ function timerJoin1(params = '') {
                              <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                              <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                              <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                             <p data-v-1d8fbc24="">`+selval+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                             <p data-v-1d8fbc24="" style="width: 100%;text-align: right;">`+join_bet + "  "+join+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                              <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                              <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(element.money).toFixed(2)+`</span></li></ul>
                              </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
@@ -5598,6 +5715,34 @@ function timerJoin1(params = '') {
                                }
                                else if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "5D")
                                {
+                                 var join_bet = '';
+                                 if(element.join_bet == 'total')
+                                 {
+                                    join_bet = "SUM";
+                                 }
+                                 else
+                                 {
+                                    join_bet = element.join_bet.toUpperCase();
+                                 }
+                                 var join = '';
+                                    var arr2 = element.bet.split('');
+                                    for (var i = 0; i < arr2.length; i++) {
+                                       var check = isNumber(element.bet);
+                                       if (check) {
+                                       join += `
+                                          <div data-v-42f27458="">
+                                       <span data-v-42f27458="" style="color: white;">
+                                       <span data-v-42f27458="" class="li circle-black" style="color: white;">${arr2[i]}</span>  
+                                       </span>
+                                    </div>`;
+                                 } else {
+                                    join += `
+                                       <div data-v-42f27458="">
+                                       <span data-v-42f27458="" style="color: white;">${(arr2[i] == 'c') ? "Even" : (arr2[i] == 'l') ? 'Odd' : (arr2[i] == 'b') ? 'Big' : 'Small'}</span>
+                                       </div>
+                                    `;
+                                 }
+                                 }
                                  var win_loss = (element.status == "1") ? "WON" : "LOSS";
                                  var win_Min = element.game;
                                  var col_txt = '';
@@ -5656,7 +5801,7 @@ function timerJoin1(params = '') {
                                  <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                                  <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                                  <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                                 <p data-v-1d8fbc24="">`+selval+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                                 <p data-v-1d8fbc24="" style="width: 100%;text-align: right;">`+join_bet + "  "+join+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                                  <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                                  <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(element.money).toFixed(2)+`</span></li></ul>
                                  </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
@@ -5678,6 +5823,34 @@ function timerJoin1(params = '') {
                                }
                                else if($("#game_selector_btn .ar-searchbar__selector-default").text().trim() == "K3")
                                {
+                                 var join_bet = '';
+                                 if(element.join_bet == 'total')
+                                 {
+                                    join_bet = "SUM";
+                                 }
+                                 else
+                                 {
+                                    join_bet = element.join_bet.toUpperCase();
+                                 }
+                                 var join = '';
+                                 var arr2 = element.bet.replace(/[$@%]/g, '').split(',');
+                                 for (let i = 0; i < arr2.length; i++) {
+                                    let check = isNumber(arr2[i].replace("y",""));
+                                    if (check) {
+                                    join += `
+                                    <div data-v-42f27458="" class="my_bet_choose">
+                                       <span data-v-42f27458="" style="color: white;">
+                                       <span data-v-42f27458="" class="li circle-black" style="color: white;">${arr2[i].replace("y","")}</span>  
+                                       </span>
+                                    </div>`;
+                                    } else {
+                                    join += `
+                                       <div data-v-42f27458="" class="my_bet_choose">
+                                       <span data-v-42f27458="" style="color: white;">${(arr2[i] == 'c') ? "Even" : (arr2[i] == 'l') ? 'Odd' : (arr2[i] == 'b') ? 'Big' : 'Small'}</span>
+                                    </div>
+                                    `;
+                                 }
+                                 }
                                  var win_loss = (element.status == "1") ? "WON" : "LOSS";
                                  var win_Min = element.game;
                                  var col_txt = '';
@@ -5736,7 +5909,7 @@ function timerJoin1(params = '') {
                                  <span data-v-1d8fbc24="">`+element.id_product+`</span></li><li data-v-1d8fbc24="">
                                  <span data-v-1d8fbc24=""><svg data-v-1d8fbc24="" class="svg-icon icon-round">
                                  <use xlink:href="#icon-round"></use></svg><h2 data-v-1d8fbc24="">Select</h2></span>
-                                 <p data-v-1d8fbc24="">`+selval+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
+                                 <p data-v-1d8fbc24="" style="width: 100%;text-align: right;">`+join_bet + "  "+join+`</p></li><li data-v-1d8fbc24=""><span data-v-1d8fbc24="">
                                  <svg data-v-1d8fbc24="" class="svg-icon icon-round"><use xlink:href="#icon-round"></use></svg>
                                  <h2 data-v-1d8fbc24="">Total bet</h2></span><span data-v-1d8fbc24="">₹`+parseFloat(element.money).toFixed(2)+`</span></li></ul>
                                  </div></div><img data-v-1d8fbc24="" src="/assets/png/moonBar-f80ac733.png" />
