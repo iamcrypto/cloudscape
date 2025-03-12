@@ -1025,24 +1025,34 @@ $.ajax({
       i++;
       let join = list_orders.bet;
       let color = "";
+      let selected = "";
       if (join == "l") {
         color = "big";
+        selected = "Big";
       } else if (join == "n") {
         color = "small";
+        selected = "Small";
       } else if (join == "t") {
+        selected = "Violet";
         color = "violet";
       } else if (join == "d") {
         color = "red";
+        selected = "Red";
       } else if (join == "x") {
         color = "green";
+        selected = "Green";
       } else if (join == "0") {
         color = "red-violet";
+        selected = "0";
       } else if (join == "5") {
         color = "green-violet";
+        selected = "5";
       } else if (Number(join) % 2 == 0) {
         color = "red";
+        selected = Number(join);
       } else if (Number(join) % 2 != 0) {
         color = "green";
+        selected = Number(join);
       }
       if ((!isNumber(join) && join == "l") || join == "n") {
         checkJoin = `
@@ -1207,9 +1217,9 @@ $.ajax({
                                       </div>
                                   </div>
                                   <div data-v-a9660e98="" class="li c-row c-row-between c-row-middle ">
-                                      <div data-v-a9660e98="">Choose</div>
+                                      <div data-v-a9660e98="">Select</div>
                                       <div data-v-a9660e98="">
-                                          <div data-v-a9660e98="">${color}</div>
+                                          <div data-v-a9660e98="">${selected}</div>
                                       </div>
                                   </div>
                                   <div data-v-a9660e98="" class="li c-row c-row-between c-row-middle">
