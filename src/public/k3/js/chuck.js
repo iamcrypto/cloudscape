@@ -18,7 +18,7 @@ socket.on("data-server-k3", function (msg) {
             socket_call = "called";
             let check = $('#number_result').attr('data-select');
             callAjaxMeJoin();
-            console.log(check);
+           // console.log(check);
             if (check == 'all') {
                 reload_money();
                 callListOrder();
@@ -261,6 +261,7 @@ function GetMyEmerdList(list_orders) {
 }
 
 function callListOrder() {
+
     $.ajax({
         type: "POST",
         url: "/api/webapi/k3/GetNoaverageEmerdList",

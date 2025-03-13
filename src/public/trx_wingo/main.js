@@ -646,8 +646,8 @@ function initGameLogics({
     let money = parseInt(
       $(".Betting__Popup-body-money-main").attr("data-current-money"),
     );
-    console.log($("#van-field-1-input").val());
-    console.log(money);
+    // console.log($("#van-field-1-input").val());
+    // console.log(money);
     let total = value * money;
     $("#popup_total_bet_money").text(total + ".00");
   }
@@ -663,7 +663,7 @@ function initGameLogics({
     $(".popup-join > div").addClass(`Betting__Popup-${cssValueNumber}`);
 
     let activeXData = $(".Betting__C-multiple-r.active").attr("data-x");
-    console.log(activeXData);
+    //console.log(activeXData);
     $("#van-field-1-input").val(activeXData);
     $("div.Betting__Popup-body-x-btn").removeClass("bgcolor");
     $(`div.Betting__Popup-body-x-btn[data-x="${activeXData}"]`).addClass(
@@ -1356,9 +1356,9 @@ const STATUS_MAP = {
 
 socket.on("data-server-trx-wingo", async function (msg) {
   try {
-    console.log(GAME_NAME);
-    console.log(msg.data[0].game);
-    console.log(msg);
+    // console.log(GAME_NAME);
+    // console.log(msg.data[0].game);
+    // console.log(msg);
 
     GAME_TYPE_ID = getGameType();
 
@@ -1399,20 +1399,28 @@ socket.on("data-server-trx-wingo", async function (msg) {
     const lastGame = gameListData?.[0];
     const lastGameHash = lastGame?.hash;
 
-
+    console.log("lastGame");
+    console.log(lastGame);
+    console.log("firstGame");
     console.log(firstGame);
+    console.log("lastGame.period");
+    console.log(lastGame.period);
+    console.log("firstGame.period");
+    console.log(firstGame.stage);
               
               if (firstGame && firstGame.stage === lastGame.period) {
-                var modal = document.getElementById("myModal");
+                var modal = document.getElementById("trx_myModal");
                 modal.style.display = "block";
                 var myModalheader = document.getElementById("myModal_header");
                 var myModal_result = document.getElementById("myModal_result");
                 var lottery_result = document.getElementById("lottery_result");
                 var myModal_result_Period = document.getElementById("myModal_result_Period");
                 if (firstGame.get == 0) {
+                  console.log("1");
                     myModalheader.innerHTML = "Try Again";
                     myModal_result.innerHTML = "LOSS :" + firstGame.money;
                 } else {
+                  console.log("2");
                     myModalheader.innerHTML = "congratulations";
                     myModal_result.innerHTML = "WIN :" + firstGame.get;
                 }
@@ -1451,13 +1459,13 @@ socket.on("data-server-trx-wingo", async function (msg) {
     const winGames = lastGameBets?.filter((game) => game.get > 0);
     const winGamesMoney = winGames?.reduce((acc, game) => acc + game.get, 0);
 
-    console.log("lastGame", lastGame);
-    console.log("lastGameHash", lastGameHash);
-    console.log("lastGameBets", lastGameBets);
-    console.log("lostGames", lostGames);
-    console.log("lostGamesMoney", lostGamesMoney);
-    console.log("winGames", winGames);
-    console.log("winGamesMoney", winGamesMoney);
+    // console.log("lastGame", lastGame);
+    // console.log("lastGameHash", lastGameHash);
+    // console.log("lastGameBets", lastGameBets);
+    // console.log("lostGames", lostGames);
+    // console.log("lostGamesMoney", lostGamesMoney);
+    // console.log("winGames", winGames);
+    // console.log("winGamesMoney", winGamesMoney);
 
     if (lastGameBets.length > 0) {
       if (winGamesMoney > 0) {
