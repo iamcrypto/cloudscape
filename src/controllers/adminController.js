@@ -11,6 +11,10 @@ const adminPage = async (req, res) => {
     return res.render("manage/index.ejs");
 }
 
+const adminmainpage = async (req, res) => {
+    return res.render("manage/dashboard.ejs");
+}
+
 const adminPage3 = async (req, res) => {
     return res.render("manage/a-index-bet/index3.ejs");
 }
@@ -214,8 +218,8 @@ const listMember = async (req, res) => {
             status: false
         });
     }
-    const [users] = await connection.query(`SELECT * FROM users WHERE veri = 1 AND level != 2  0ORDER BY id DESC LIMIT ${pageno}, ${limit} `);
-    const [total_users] = await connection.query(`SELECT * FROM users WHERE veri = 1 AND level != 2 `);
+    const [users] = await connection.query(`SELECT * FROM users WHERE veri = 1 AND level != 2 ORDER BY id DESC LIMIT ${pageno}, ${limit}; `);
+    const [total_users] = await connection.query(`SELECT * FROM users WHERE veri = 1 AND level != 2; `);
     return res.status(200).json({
         message: 'Success',
         status: true,
@@ -2145,6 +2149,7 @@ module.exports = {
     listRedenvelope,
     listBet,
     adminPage5d,
+    adminmainpage,
     listOrderOld,
     listOrderOldK3,
     editResult,

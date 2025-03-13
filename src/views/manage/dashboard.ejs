@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recharge</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+  <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <style>
+    a {
+        color: #007bff;
+        text-decoration: none;
+        background-color: transparent;
+    }
+    .pull-left {
+        float: left;
+        color:white;
+    }
+    .title
+    {
+        background-color: #3362ff;
+        color: white;
+        padding: 20px;
+        margin: 10px;
+        width: 100%;
+    }
+  </style>
+</head>
+
+<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+    <%- include('nav') %>
+    <div class="content-wrapper">
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1 class="m-0">Dashboard</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section class="content">
+            <div class="container-fluid">
+              <div class="row info-box">
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Today User Join</p>
+                              <h4 class="text-amount" style="text-align:left">
+                               
+                              8					</h4>
+                          </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Today's Recharge</p>
+                              <h4 class="text-amount" style="text-align:left">
+                               
+                              31,400					</h4>
+                          </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Today's Withdrawal</p>
+                              <h4 class="text-amount" style="text-align:left">
+                               
+                              0					</h4>
+                          </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">User Balance</p>
+                              <h4 class="text-amount" style="text-align:left">
+                               
+                              124,226,660,913.83					</h4>
+                              <a href="manage_user.php">
+                                <span class="pull-left" style="color: white;">See in Detail</span>
+                            </a>
+                          </div>                    
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Total Users</p>
+                              <h4 class="text-amount" style="text-align:left">
+                               
+                              130					</h4>
+                              <a href="manage_user.php">
+                                <span class="pull-left" style="color: white;">See in Detail</span>
+                            </a>
+                          </div>                    
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Pending Recharge</p>
+                              <h4 class="text-amount" style="text-align:left">
+					1,324,661</h4>
+                              <a href="manage_user.php">
+                                <span class="pull-left" style="color: white;">See in Detail</span>
+                            </a>
+                          </div>                    
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Success Recharge</p>
+                              <h4 class="text-amount" style="text-align:left">
+                                2,751,182</h4>
+                              <a href="manage_user.php">
+                                <span class="pull-left" style="color: white;">See in Detail</span>
+                            </a>
+                          </div>                    
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Total Withdrawal</p>
+                              <h4 class="text-amount" style="text-align:left">
+					475,535</h4>
+                              <a href="manage_user.php">
+                                <span class="pull-left" style="color: white;">See in Detail</span>
+                            </a>
+                          </div>                    
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Withdrawal Requests</p>
+                              <h4 class="text-amount" style="text-align:left">
+                                165,343</h4>
+                              <a href="manage_user.php">
+                                <span class="pull-left" style="color: white;">See in Detail</span>
+                            </a>
+                          </div>                    
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Today's total bet</p>
+                              <h4 class="text-amount" style="text-align:left">
+                                123,300.00</h4>
+                              <a href="manage_user.php">
+                                <span class="pull-left" style="color: white;">See in Detail</span>
+                            </a>
+                          </div>                    
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Today's total win</p>
+                              <h4 class="text-amount" style="text-align:left">
+                                979,902.00</h4>
+                              <a href="manage_user.php">
+                                <span class="pull-left" style="color: white;">See in Detail</span>
+                            </a>
+                          </div>                    
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-4">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Today's profit</p>
+                              <h4 class="text-amount" style="text-align:left">
+					-856602</h4>
+                              <a href="manage_user.php">
+                                <span class="pull-left" style="color: white;">See in Detail</span>
+                            </a>
+                          </div>                    
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        </section> 
+    </div>
+  </div>
+  <script src="/plugins/jquery/jquery.min.js"></script>
+  <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/dist/js/adminlte.min.js"></script>
+  <script src="/js/admin/admin.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+</body>
+
+</html>
