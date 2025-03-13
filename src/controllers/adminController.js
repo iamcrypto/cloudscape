@@ -214,8 +214,8 @@ const listMember = async (req, res) => {
             status: false
         });
     }
-    const [users] = await connection.query(`SELECT * FROM users WHERE veri = 1 ORDER BY id DESC LIMIT ${pageno}, ${limit} `);
-    const [total_users] = await connection.query(`SELECT * FROM users WHERE veri = 1 `);
+    const [users] = await connection.query(`SELECT * FROM users WHERE veri = 1 AND level != 2  0ORDER BY id DESC LIMIT ${pageno}, ${limit} `);
+    const [total_users] = await connection.query(`SELECT * FROM users WHERE veri = 1 AND level != 2 `);
     return res.status(200).json({
         message: 'Success',
         status: true,
