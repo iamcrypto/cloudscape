@@ -2046,7 +2046,7 @@ const xpgain_value = async (req, res) => {
     {
         trx_xp[0].total = 0;
     }
-    let level = user[0].user_level;
+    let level = user[0].level;
 
     xp_gain_val = parseInt(wingo_xp[0].total) + parseInt(k3_xp[0].total) + parseInt(d5_xp[0].total) + parseInt(trx_xp[0].total);
 
