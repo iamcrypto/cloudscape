@@ -218,8 +218,8 @@ const listMember = async (req, res) => {
             status: false
         });
     }
-    const [users] = await connection.query(`SELECT * FROM users WHERE veri = 1 AND level != 2 ORDER BY id DESC LIMIT ${pageno}, ${limit}; `);
-    const [total_users] = await connection.query(`SELECT * FROM users WHERE veri = 1 AND level != 2; `);
+    const [users] = await connection.query(`SELECT * FROM users WHERE veri = 1  ORDER BY id DESC LIMIT ${pageno}, ${limit}; `);
+    const [total_users] = await connection.query(`SELECT * FROM users WHERE veri = 1 ; `);
     return res.status(200).json({
         message: 'Success',
         status: true,
@@ -2126,11 +2126,11 @@ const getdashboardInfo = async (req, res) => {
     const [users_join_today] = await connection.query("SELECT COUNT(*) AS `count` FROM users WHERE  `time` >= ?;", [today]);
     totaltodayUsers = users_join_today[0].count || 0;
 
-    const [users_recharge_today] = await connection.query("SELECT COUNT(*) AS `count` FROM recharge WHERE  `time` >= ? AND `status` = ?;", [today, 1]);
-    totaltodayRecharge = users_recharge_today[0].count || 0;
+    const [users_recharge_today] = await connection.query("SELECT SUM(money) AS `sum` FROM recharge WHERE  `time` >= ? AND `status` = ?;", [today, 1]);
+    totaltodayRecharge = users_recharge_today[0].sum || 0;
 
-    const [users_withdraw_today] = await connection.query("SELECT COUNT(*) AS `count` FROM withdraw WHERE  `time` >= ? AND `status` = ?;", [today, 1]);
-    totaltodayWithdrawal = users_withdraw_today[0].count || 0;
+    const [users_withdraw_today] = await connection.query("SELECT SUM(money) AS `sum` FROM withdraw WHERE  `time` >= ? AND `status` = ?;", [today, 1]);
+    totaltodayWithdrawal = users_withdraw_today[0].sum || 0;
 
     const [users_total] = await connection.query("SELECT COUNT(*) AS `count` FROM users;", []);
     totalUsers = users_total[0].count || 0;

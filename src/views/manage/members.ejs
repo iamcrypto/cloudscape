@@ -163,9 +163,9 @@
             <!--<a class="btn btn-danger btn-sm delete-btn" href="#">
               <i class="fas fa-trash"></i> Banner
             </a>-->
-
-            <a class="btn btn-secondary btn-sm colloborator-btn" label_id="${data.phone}" href="#">
-              <i class="fas fa-folder"></i> Make Colloborator</a>
+            ${(parseInt(data.level)  == 0) ? ` <a class="btn btn-secondary btn-sm colloborator-btn" label_id="${data.phone}" href="#">
+              <i class="fas fa-folder"></i> Make Colloborator</a>` : ''}
+           
           </td>
         </tr>`;
         $("tbody").html(html);
