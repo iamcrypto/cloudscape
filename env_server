@@ -1,15 +1,46 @@
+PORT=80
+
 BLOCK_CHAIN_LINK=https://blockexplorer.minepi.com/testnet/
 
 SANDBOX_MODE=false
 
+accountBank=vp6262
+secret_key=ap6v9njn
+JWT_ACCESS_TOKEN=shas$isbwDBWDN2543#jcws
+
+PAYMENT_INFO=WINGO PAYMENT
+
+APP_BASE_URL=http://13.233.115.139
+APP_NAME=TIRANGA
+
+MINIMUM_MONEY=100
+
+DATABASE_HOST=database-1.c1o64g8g6qdg.ap-south-1.rds.amazonaws.com
+DATABASE_USER=cloudyscape
+DATABASE_PASSWORD='Ajax24x7#365'
+DATABASE_NAME=cloudscape_db
+DATABASE_PORT=3306
+
+Firebase_Apikey="AIzaSyDRtK5Z_TAgMUhDIBAV2X_psj4n5D09iqw"
+Firebase_AuthDomain="live-chess-dede7.firebaseapp.com"
+Firebase_Dburl="https://live-chess-dede7-default-rtdb.asia-southeast1.firebasedatabase.app"
+Firebase_ProjId="live-chess-dede7"
+Firebase_StorageBucket="live-chess-dede7.firebasestorage.app"
+Firebase_MessageSenId="1002758569165"
+Firebase_AppId="1:1002758569165:web:5af6a95b24f5de03913d84"
+Firebase_MeasurementId="G-ZSNFPJ63B8"
+
 WHATSAPP_LOCAL_KEY=a921f2246c3e3b0c818281754e2bd65f
 WHATSAPP_INTERNATIONAL_KEY=3826080cae77012b113e94525b7e5e70
 
+SESSION_SECRET=dfr324567u6uhbfgfgh8iijmn
+SESSION_NAME=My_Session
 
-MONGODB_HOST_NAME="mongodb+srv://infoswap90:lKoTz617iLRzRJYx@cluster0.6qj8k.mongodb.net/"
-MONGODB_DATABASE_NAME=demoapp
-MONGODB_USERNAME=infoswap90
-MONGODB_PASSWORD=lKoTz617iLRzRJYx
+NODE_ENV = 'production'
+
+BLOCK_CHAIN_LINK=https://blockexplorer.minepi.com/testnet/
+
+SANDBOX_MODE=false
 
 TRON_API_KEY=46eec301-f686-428d-a660-35e655c1f600
 TRX_WINGO_GAME_TIME_SS=51
