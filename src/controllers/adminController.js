@@ -2,7 +2,7 @@ import connection from "../config/connectDB";
 import jwt from 'jsonwebtoken'
 import md5 from "md5";
 import "dotenv/config";
-
+import moment from "moment";
 
 
 let timeNow = Date.now();
@@ -2081,6 +2081,95 @@ const gettranfermode = async (req, res) => {
     })
 };
 
+const getdashboardInfo = async (req, res) => {
+    let auth = req.cookies.auth;
+    let totaltodayUsers = 0;
+    let totaltodayRecharge = 0;
+    let totaltodayWithdrawal = 0;
+    let usersBalanace = 0;
+    let totalUsers = 0;
+    let peningRecharge = 0; 
+    let sucessRecharge = 0; 
+    let totalwithdrawal = 0; 
+    let withdrawalRequest = 0; 
+    let totalBet = 0;
+    let total_w = 0;
+    let total_k3 = 0;
+    let total_5d = 0;
+    let total_trx = 0;
+    let totalWinning = 0;
+    let win_total_w = 0;
+    let win_total_k3 = 0;
+    let win_total_5d = 0;
+    let win_total_trx = 0;
+    const today = moment().startOf("day").valueOf();
+    const [today_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE  `time` >= ?;", [today]);
+    const [today_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE  `time` >= ?;", [today]);
+    const [today_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE  `time` >= ?;", [today]);
+    const [today_trx_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE  `time` >= ?;", [today]);
+    total_w = today_minutes_1[0].sum || 0;
+    total_k3 = today_k3_bet_money[0].sum || 0;
+    total_5d = today_d5_bet_money[0].sum || 0;
+    total_trx = today_trx_bet_money[0].sum || 0;
+    totalBet += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
+
+    const [win_today_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE  `time` >= ?;", [today]);
+    const [win_today_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE  `time` >= ?;", [today]);
+    const [win_today_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE  `time` >= ?;", [today]);
+    const [win_today_trx_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE  `time` >= ?;", [today]);
+    win_total_w = win_today_minutes_1[0].sum || 0;
+    win_total_k3 = win_today_k3_bet_money[0].sum || 0;
+    win_total_5d = win_today_d5_bet_money[0].sum || 0;
+    win_total_trx = win_today_trx_bet_money[0].sum || 0;
+    totalWinning += parseInt(win_total_w) + parseInt(win_total_k3) + parseInt(win_total_5d) + parseInt(win_total_trx);
+
+    const [users_join_today] = await connection.query("SELECT COUNT(*) AS `count` FROM users WHERE  `time` >= ?;", [today]);
+    totaltodayUsers = users_join_today[0].count || 0;
+
+    const [users_recharge_today] = await connection.query("SELECT COUNT(*) AS `count` FROM recharge WHERE  `time` >= ? AND `status` = ?;", [today, 1]);
+    totaltodayRecharge = users_recharge_today[0].count || 0;
+
+    const [users_withdraw_today] = await connection.query("SELECT COUNT(*) AS `count` FROM withdraw WHERE  `time` >= ? AND `status` = ?;", [today, 1]);
+    totaltodayWithdrawal = users_withdraw_today[0].count || 0;
+
+    const [users_total] = await connection.query("SELECT COUNT(*) AS `count` FROM users;", []);
+    totalUsers = users_total[0].count || 0;
+
+    const [users_balance] = await connection.query("SELECT SUM(money) AS `sum` FROM users;", []);
+    usersBalanace = users_balance[0].sum || 0;
+
+    const [list_pending_recharge] = await connection.query("SELECT COUNT(*) AS `count` FROM recharge WHERE  `status` = ?;", [0]);
+    peningRecharge = list_pending_recharge[0].count || 0;
+
+    const [list_success_recharge] = await connection.query("SELECT COUNT(*) AS `count` FROM recharge WHERE  `status` = ?;", [1]);
+    sucessRecharge = list_success_recharge[0].count || 0;
+
+    const [list_pending_withdraw] = await connection.query("SELECT COUNT(*) AS `count` FROM withdraw WHERE  `status` = ?;", [0]);
+    withdrawalRequest = list_pending_withdraw[0].count || 0;
+
+    const [list_success_withdraw] = await connection.query("SELECT COUNT(*) AS `count` FROM withdraw WHERE  `status` = ?;", [1]);
+    totalwithdrawal = list_success_withdraw[0].count || 0;
+
+    return res.status(200).json({
+        message: 'Success',
+        status: true,
+        data: {
+            a_usersJoin:totaltodayUsers,
+            a_TodaysRecharge:totaltodayRecharge,
+            a_TodaysWithdrawal:totaltodayWithdrawal,
+            a_UserBalance:usersBalanace,
+            a_TotalUsers:totalUsers - 1,
+            a_PendingRecharge:peningRecharge,
+            a_SuccessRecharge:sucessRecharge,
+            a_TotalWithdrawal:totalwithdrawal,
+            a_WithdrawalRequests:withdrawalRequest,
+            a_TodaysTotalBets:totalBet,
+            a_TodaysTotalWin:totalWinning,
+            a_TodaysProfit:totalBet -totalWinning
+        },
+    })
+}
+
 const makecolloborator = async (req, res) => {
     let auth = req.cookies.auth;
     let u_phone = req.body.u_phone;
@@ -2160,4 +2249,5 @@ module.exports = {
     getSalary,
     gettranfermode,
     makecolloborator,
+    getdashboardInfo
 }

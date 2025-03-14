@@ -350,6 +350,8 @@ const initWebRouter = (app) => {
     router.post('/admin/member/redenvelope/:phone', adminController.middlewareAdminController, adminController.listRedenvelope);
     router.post('/admin/member/bet/:phone', adminController.middlewareAdminController, adminController.listBet);
 
+    router.post('/admin/manager/getdashboardInfo', adminController.middlewareAdminController,  adminController.getdashboardInfo); 
+
 
     router.get('/admin/manager/recharge', adminController.middlewareAdminController, adminController.rechargePage); // get info account
     router.get('/admin/manager/withdraw', adminController.middlewareAdminController, adminController.withdraw); // get info account
