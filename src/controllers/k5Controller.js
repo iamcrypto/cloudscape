@@ -405,7 +405,7 @@ const add5D = async(game) => {
         }
         const sql = `INSERT INTO d5 SET period = ?, result = ?, game = ?, status = ?, time = ?`;
         await connection.execute(sql, [NewGamePeriod, 0, game, 0, timeNow]);
-
+        //console.log("insert");
         if (game == 1) join = 'k5d';
         if (game == 3) join = 'k5d3';
         if (game == 5) join = 'k5d5';

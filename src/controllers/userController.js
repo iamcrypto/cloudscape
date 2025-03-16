@@ -838,15 +838,6 @@ const recharge = async (req, res) => {
             redirect_url: `https://247cashwin.cloud/wallet/verify/upi`,
             udf1: 'TIRANGA',
         };
-
-
-
-
-
-
-
-
-
         try {
             const apiResponse = await axios.post('https://api.ekqr.in/api/create_order', apiData);
 
