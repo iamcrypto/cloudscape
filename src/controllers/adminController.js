@@ -2113,10 +2113,10 @@ const getdashboardInfo = async (req, res) => {
     total_trx = today_trx_bet_money[0].sum || 0;
     totalBet += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
 
-    const [win_today_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE  `time` >= ?;", [today]);
-    const [win_today_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE  `time` >= ?;", [today]);
-    const [win_today_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE  `time` >= ?;", [today]);
-    const [win_today_trx_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE  `time` >= ?;", [today]);
+    const [win_today_minutes_1] = await connection.query("SELECT SUM(get) AS `sum` FROM minutes_1 WHERE  `time` >= ?;", [today]);
+    const [win_today_k3_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM result_k3 WHERE  `time` >= ?;", [today]);
+    const [win_today_d5_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM result_5d WHERE  `time` >= ?;", [today]);
+    const [win_today_trx_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM trx_wingo_bets WHERE  `time` >= ?;", [today]);
     win_total_w = win_today_minutes_1[0].sum || 0;
     win_total_k3 = win_today_k3_bet_money[0].sum || 0;
     win_total_5d = win_today_d5_bet_money[0].sum || 0;
@@ -2175,7 +2175,7 @@ const makecolloborator = async (req, res) => {
     let u_phone = req.body.u_phone;
     console.log(u_phone);
     const [rows] = await connection.query('SELECT transfer_mode FROM users WHERE `token` = ? ', [(auth)]);
-    await connection.query('UPDATE users SET level = 2 , invite = "2cOCs36373" WHERE phone = ?', [u_phone]);
+    await connection.query('UPDATE users SET level = 2  WHERE phone = ?', [u_phone]);
     await connection.query('UPDATE point_list SET level = 2  WHERE phone = ?', [u_phone]);
 
     return res.status(200).json({

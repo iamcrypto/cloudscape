@@ -232,6 +232,7 @@ const rosesPlus1 = async (phone, money, levels = [], timeNow = "") => {
           "SELECT phone, money, code, invite FROM users WHERE code = ?",
           [userReferrer],
         );
+
         const referrerInfo = referrerRows[0];
   
         if (referrerInfo) {
@@ -284,6 +285,8 @@ const distributeCommission = async () => {
         yesterdayTime();
       const [levelResult] = await connection.query("SELECT f1 FROM level");
       const levels = levelResult.map((row) => row.f1 / 100);
+      //console.log(levelResult);
+      //console.log(levels);
   
       // const [bets] = await connection.query('SELECT phone, SUM(money + fee) AS total_money FROM minutes_1 WHERE time > ? AND time <= ? GROUP BY phone', [startOfDay, endTime]);
   

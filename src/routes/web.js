@@ -234,6 +234,7 @@ const initWebRouter = (app) => {
     router.post('/api/webapi/addBank', middlewareController, userController.addBank); // register
     router.post('/api/webapi/otp', middlewareController, userController.verifyCode); // register
     router.post('/api/webapi/use/redenvelope', middlewareController, userController.useRedenvelope); // register
+    router.post('/api/webapi/get/mybets', middlewareController, userController.getmybets); 
 
     // wallet
     router.post('/api/webapi/recharge', middlewareController, userController.recharge);

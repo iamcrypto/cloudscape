@@ -2063,6 +2063,191 @@ const getlang_datacall = async (req, res) => {
     });
 }
 
+
+const getmybets = async (req, res) => {
+    let auth = req.cookies.auth;
+    let type = req.body.data_type;
+    if (!auth) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        })
+    }
+    const [user] = await connection.query('SELECT `phone` FROM users WHERE `token` = ? ', [auth]);
+    let phone = user[0].phone;
+    if (!user) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    };
+
+    var wing_betting_list = '';
+    var k3_betting_list = '';
+    var d5_betting_list = '';
+    var trx_betting_list = '';
+    var total_wingo_bet = 0;
+    var total_k3_bet = 0;
+    var total_trx_bet = 0;
+    var total_d5_bet = 0;
+    var total_wingo_win_amt = 0;
+    var total_k3_win_amt = 0;
+    var total_d5_win_amt = 0;
+    var total_trx_win_amt = 0;
+    var total_bet_amt = 0;
+    var total_win_loss = 0 ;
+    var total_win_amt = 0;
+    var win_loss_label = "";
+
+    if( type == 1)
+    {
+        const time = moment().startOf("day").valueOf();
+        [wing_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM minutes_1 WHERE `phone` = ? AND status NOT IN ( 0 ) AND `time` >= ? GROUP BY `stage` DESC;', [phone, time]);
+        [k3_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM result_k3 WHERE `phone` = ? AND status NOT IN ( 0 ) AND `time` >= ? GROUP BY `stage` DESC;', [phone, time]);
+        [d5_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM result_5d WHERE `phone` = ? AND status NOT IN ( 0 ) AND `time` >= ? GROUP BY `stage` DESC;', [phone, time]);
+        [trx_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM trx_wingo_bets WHERE `phone` = ? AND status NOT IN ( 0 ) AND `time` >= ? GROUP BY `stage` DESC;', [phone, time]);
+        [[total_wingo_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM minutes_1 WHERE `phone` = ? AND `time`>= ?  ORDER BY `id` DESC', [phone, time]);
+        [[total_k3_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM result_k3 WHERE `phone` = ? AND `time` >= ?  ORDER BY `id` DESC', [phone, time]);
+        [[total_d5_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM result_5d WHERE `phone` = ? AND `time` >= ?  ORDER BY `id` DESC', [phone, time]);
+        [[total_trx_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE `phone` = ? AND `time` >= ?  ORDER BY `id` DESC', [phone, time]);
+        [[total_wingo_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM minutes_1 WHERE `phone` = ? AND `time` >= ? AND `status` = 1  ORDER BY `id` DESC', [phone, time]);
+        [[total_k3_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM result_k3 WHERE `phone` = ? AND `time` >= ? AND `status` = 1  ORDER BY `id` DESC', [phone, time]);
+        [[total_d5_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM result_5d WHERE `phone` = ? AND `time` >= ? AND `status` = 1  ORDER BY `id` DESC', [phone, time]);
+        [[total_trx_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM trx_wingo_bets WHERE `phone` = ? AND `time` >= ? AND `status` = 1  ORDER BY `id` DESC', [phone, time]);
+        var tt_wingo_bets = total_wingo_bet.sum || 0 ;
+        var tt_k3_bets = total_k3_bet.sum || 0 ;
+        var tt_d5_bets = total_d5_bet.sum || 0 ;
+        var tt_trx_bets = total_trx_bet.sum || 0 ;
+        var ttw_wingo_bets = total_wingo_win_amt.sum || 0 ;
+        var ttw_k3_bets = total_k3_win_amt.sum || 0 ;
+        var ttw_d5_bets = total_d5_win_amt.sum || 0 ;
+        var ttw_trx_bets = total_trx_win_amt.sum || 0 ; 
+        total_bet_amt +=  parseInt(tt_wingo_bets) + parseInt(tt_k3_bets) + parseInt(tt_d5_bets) + parseInt(tt_trx_bets);
+        total_win_amt +=  parseInt(ttw_wingo_bets) + parseInt(ttw_k3_bets) + parseInt(ttw_d5_bets) + parseInt(ttw_trx_bets);
+        total_win_loss = parseInt(total_win_amt) - parseInt(total_bet_amt);
+        if(total_win_loss < 0)
+        {
+            win_loss_label = "LOSS";
+        }
+        else{
+            win_loss_label = "WIN"; 
+        }
+    }
+    else if(type == 2)
+    {
+        const time = moment().subtract(1, "days").valueOf();
+        [wing_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM minutes_1 WHERE `phone` = ? AND status NOT IN ( 0 ) AND `time` >= ? GROUP BY `stage` DESC;', [phone, time]);
+        [k3_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM result_k3 WHERE `phone` = ? AND status NOT IN ( 0 ) AND `time` >= ? GROUP BY `stage` DESC;', [phone, time]);
+        [d5_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM result_5d WHERE `phone` = ? AND status NOT IN ( 0 ) AND `time` >= ? GROUP BY `stage` DESC;', [phone, time]);
+        [trx_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM trx_wingo_bets WHERE `phone` = ? AND status NOT IN ( 0 ) AND `time` >= ? GROUP BY `stage` DESC;', [phone, time]);
+        [[total_wingo_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM minutes_1 WHERE `phone` = ? AND `time`>= ?  ORDER BY `id` DESC', [phone, time]);
+        [[total_k3_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM result_k3 WHERE `phone` = ? AND `time` >= ?  ORDER BY `id` DESC', [phone, time]);
+        [[total_d5_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM result_5d WHERE `phone` = ? AND `time` >= ?  ORDER BY `id` DESC', [phone, time]);
+        [[total_trx_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE `phone` = ? AND `time` >= ?  ORDER BY `id` DESC', [phone, time]);
+        [[total_wingo_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM minutes_1 WHERE `phone` = ? AND `time` >= ? AND `status` = 1  ORDER BY `id` DESC', [phone, time]);
+        [[total_k3_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM result_k3 WHERE `phone` = ? AND `time` >= ? AND `status` = 1  ORDER BY `id` DESC', [phone, time]);
+        [[total_d5_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM result_5d WHERE `phone` = ? AND `time` >= ? AND `status` = 1  ORDER BY `id` DESC', [phone, time]);
+        [[total_trx_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM trx_wingo_bets WHERE `phone` = ? AND `time` >= ? AND `status` = 1  ORDER BY `id` DESC', [phone, time]);
+        var tt_wingo_bets = total_wingo_bet.sum || 0 ;
+        var tt_k3_bets = total_k3_bet.sum || 0 ;
+        var tt_d5_bets = total_d5_bet.sum || 0 ;
+        var tt_trx_bets = total_trx_bet.sum || 0 ;
+        var ttw_wingo_bets = total_wingo_win_amt.sum || 0 ;
+        var ttw_k3_bets = total_k3_win_amt.sum || 0 ;
+        var ttw_d5_bets = total_d5_win_amt.sum || 0 ;
+        var ttw_trx_bets = total_trx_win_amt.sum || 0 ; 
+        total_bet_amt +=  parseInt(tt_wingo_bets) + parseInt(tt_k3_bets) + parseInt(tt_d5_bets) + parseInt(tt_trx_bets);
+        total_win_amt +=  parseInt(ttw_wingo_bets) + parseInt(ttw_k3_bets) + parseInt(ttw_d5_bets) + parseInt(ttw_trx_bets);
+        total_win_loss = parseInt(total_win_amt) - parseInt(total_bet_amt);
+        if(total_win_loss < 0)
+        {
+            win_loss_label = "LOSS";
+        }
+        else{
+            win_loss_label = "WIN"; 
+        }
+    }
+    else if(type == 3)
+    {
+        [wing_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM minutes_1 WHERE `phone` = ? AND status NOT IN ( 0 ) AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1) GROUP BY `stage` DESC;', [phone]);
+        [k3_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM result_k3 WHERE `phone` = ? AND status NOT IN ( 0 ) AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1) GROUP BY `stage` DESC;', [phone]);
+        [d5_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM result_5d WHERE `phone` = ? AND status NOT IN ( 0 ) AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1) GROUP BY `stage` DESC;', [phone]);
+        [trx_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM trx_wingo_bets WHERE `phone` = ? AND status NOT IN ( 0 ) AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1) GROUP BY `stage` DESC;', [phone]);
+        [[total_wingo_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM minutes_1 WHERE `phone` = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1)  ORDER BY `id` DESC', [phone]);
+        [[total_k3_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM result_k3 WHERE `phone` = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1)  ORDER BY `id` DESC', [phone]);
+        [[total_d5_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM result_5d WHERE `phone` = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1)  ORDER BY `id` DESC', [phone]);
+        [[total_trx_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE `phone` = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1)  ORDER BY `id` DESC', [phone]);
+        [[total_wingo_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM minutes_1 WHERE `phone` = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        [[total_k3_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM result_k3 WHERE `phone` = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        [[total_d5_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM result_5d WHERE `phone` = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        [[total_trx_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM trx_wingo_bets WHERE `phone` = ? AND YEARWEEK(`today`, 1) = YEARWEEK(CURDATE(), 1) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        var tt_wingo_bets = total_wingo_bet.sum || 0 ;
+        var tt_k3_bets = total_k3_bet.sum || 0 ;
+        var tt_d5_bets = total_d5_bet.sum || 0 ;
+        var tt_trx_bets = total_trx_bet.sum || 0 ;
+        var ttw_wingo_bets = total_wingo_win_amt.sum || 0 ;
+        var ttw_k3_bets = total_k3_win_amt.sum || 0 ;
+        var ttw_d5_bets = total_d5_win_amt.sum || 0 ;
+        var ttw_trx_bets = total_trx_win_amt.sum || 0 ; 
+        total_bet_amt +=  parseInt(tt_wingo_bets) + parseInt(tt_k3_bets) + parseInt(tt_d5_bets) + parseInt(tt_trx_bets);
+        total_win_amt +=  parseInt(ttw_wingo_bets) + parseInt(ttw_k3_bets) + parseInt(ttw_d5_bets) + parseInt(ttw_trx_bets);
+        total_win_loss = parseInt(total_win_amt) - parseInt(total_bet_amt);
+        if(total_win_loss < 0)
+        {
+            win_loss_label = "LOSS";
+        }
+        else{
+            win_loss_label = "WIN"; 
+        }
+    }
+    else if(type == 4)
+    {
+        [wing_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM minutes_1 WHERE `phone` = ? AND status NOT IN ( 0 ) AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) GROUP BY `stage` DESC;', [phone]);
+        [k3_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM result_k3 WHERE `phone` = ? AND status NOT IN ( 0 ) AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) GROUP BY `stage` DESC;', [phone]);
+        [d5_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM result_5d WHERE `phone` = ? AND status NOT IN ( 0 ) AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) GROUP BY `stage` DESC;', [phone]);
+        [trx_betting_list] = await connection.query('SELECT sum(money) as sum , count(*) as count , sum(CASE WHEN status = "1" THEN get ELSE NULL END) AS win_amt FROM trx_wingo_bets WHERE `phone` = ? AND status NOT IN ( 0 ) AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) GROUP BY `stage` DESC;', [phone]);
+        [[total_wingo_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM minutes_1 WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE())  ORDER BY `id` DESC', [phone]);
+        [[total_k3_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM result_k3 WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE())  ORDER BY `id` DESC', [phone]);
+        [[total_d5_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM result_5d WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE())  ORDER BY `id` DESC', [phone]);
+        [[total_trx_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE())  ORDER BY `id` DESC', [phone]);
+        [[total_wingo_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM minutes_1 WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        [[total_k3_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM result_k3 WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        [[total_d5_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM result_5d WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        [[total_trx_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM trx_wingo_bets WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        var tt_wingo_bets = total_wingo_bet.sum || 0 ;
+        var tt_k3_bets = total_k3_bet.sum || 0 ;
+        var tt_d5_bets = total_d5_bet.sum || 0 ;
+        var tt_trx_bets = total_trx_bet.sum || 0 ;
+        var ttw_wingo_bets = total_wingo_win_amt.sum || 0 ;
+        var ttw_k3_bets = total_k3_win_amt.sum || 0 ;
+        var ttw_d5_bets = total_d5_win_amt.sum || 0 ;
+        var ttw_trx_bets = total_trx_win_amt.sum || 0 ; 
+        total_bet_amt +=  parseInt(tt_wingo_bets) + parseInt(tt_k3_bets) + parseInt(tt_d5_bets) + parseInt(tt_trx_bets);
+        total_win_amt +=  parseInt(ttw_wingo_bets) + parseInt(ttw_k3_bets) + parseInt(ttw_d5_bets) + parseInt(ttw_trx_bets);
+        total_win_loss = parseInt(total_win_amt) - parseInt(total_bet_amt);
+        if(total_win_loss < 0)
+        {
+            win_loss_label = "LOSS";
+        }
+        else{
+            win_loss_label = "WIN"; 
+        }
+    }
+    return res.status(200).json({
+        message: 'Successful',//Register Sucess
+        status: true,
+        wingo_betting: wing_betting_list,
+        k3_betting: k3_betting_list,
+        trx_betting: trx_betting_list,
+        d5_betting: d5_betting_list,
+        total_bet: total_bet_amt,
+        winning_amount:total_win_loss,
+        win_loss_label:win_loss_label,
+        no_of_bets:wing_betting_list.length + k3_betting_list.length + d5_betting_list.length + trx_betting_list.length
+    });
+}
 module.exports = {
     getlang_datacall,
     userInfo,
@@ -2094,5 +2279,6 @@ module.exports = {
     getnotificationCount,
     getnotifications,
     updatenotifications,
-    xpgain_value    
+    xpgain_value,
+    getmybets,
 }
