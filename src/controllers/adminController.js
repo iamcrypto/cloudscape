@@ -265,6 +265,40 @@ function formateT2(params) {
     return result;
 }
 
+
+
+function timerJoin1(params = '', addHours = 0) {
+    let date = '';
+    if (params) {
+        date = new Date(Number(params));
+    } else {
+        date = new Date();
+    }
+
+    date.setHours(date.getHours() + addHours);
+
+    let years = formateT(date.getFullYear());
+    let months = formateT(date.getMonth() + 1);
+    let days = formateT(date.getDate());
+
+    var currentdate = new Date();
+    var cur_month = formateT(currentdate.getMonth() + 1);
+    var cur_day =formateT(currentdate.getDate());
+    var cur_year = formateT(currentdate.getFullYear());
+
+    var result = "";
+    if(cur_month==months && days >= cur_day)
+    {
+        result = "match";
+    }
+    else
+    {
+        result = "no";
+    }    
+    return result;
+}
+
+
 function timerJoin2(params = '', addHours = 0) {
     let date = '';
     if (params) {
@@ -2091,7 +2125,7 @@ const getdashboardInfo = async (req, res) => {
     let peningRecharge = 0; 
     let sucessRecharge = 0; 
     let totalwithdrawal = 0; 
-    let withdrawalRequest = 0; 
+    let withdrawalRequest = 0;
     let totalBet = 0;
     let total_w = 0;
     let total_k3 = 0;
@@ -2150,6 +2184,43 @@ const getdashboardInfo = async (req, res) => {
     const [list_success_withdraw] = await connection.query("SELECT COUNT(*) AS `count` FROM withdraw WHERE  `status` = ?;", [1]);
     totalwithdrawal = list_success_withdraw[0].count || 0;
 
+    let monthkyturnover = 0;
+    const [list_month_turn_over] = await connection.query("SELECT SUM(daily_turn_over) AS `sum` FROM turn_over WHERE MONTH(`date_time`) = MONTH(CURRENT_DATE()) AND YEAR(`date_time`) = YEAR(CURRENT_DATE()) ORDER BY `id` DESC;");
+    monthkyturnover = list_month_turn_over[0].sum || 0;
+    let monthrechagebonus = 0;
+    const [list_month_recharge] = await connection.query("SELECT SUM(`money`) AS `sum` FROM recharge WHERE `status`=1 AND MONTH(STR_TO_DATE(`today`, '%Y-%d-%m %h:%i:%s %p')) = MONTH(CURRENT_DATE()) AND YEAR(STR_TO_DATE(`today`, '%Y-%d-%m %h:%i:%s %p')) = YEAR(CURRENT_DATE()) ORDER BY `id` DESC;");
+    const monthrecharge = list_month_recharge[0].sum || 0;
+    monthrechagebonus = parseInt((monthrecharge/100) * 5);
+
+    let monthstakingamount = 0;
+    const [list_month_stakes] = await connection.query("SELECT SUM(`amount`) AS `sum` FROM claimed_rewards WHERE `reward_id`=136 AND MONTH(`to_date`) = MONTH(CURRENT_DATE()) AND YEAR(`to_date`) = YEAR(CURRENT_DATE()) ORDER BY `id` DESC;");
+    monthstakingamount = list_month_stakes[0].sum || 0;
+
+    let monthstakingcount = 0;
+    const [list_month_stakes_c] = await connection.query("SELECT COUNT(*) AS `count` FROM claimed_rewards WHERE `reward_id`=136 AND MONTH(`to_date`) = MONTH(CURRENT_DATE()) AND YEAR(`to_date`) = YEAR(CURRENT_DATE()) ORDER BY `id` DESC;");
+    monthstakingcount = list_month_stakes_c[0].count || 0;
+
+    let active_stakes_count = 0;
+    const [list_active_stakes] = await connection.query("SELECT COUNT(*) AS `count` FROM claimed_rewards WHERE `reward_id`=136 AND `status`= 2 ORDER BY `id` DESC;");
+    active_stakes_count = list_active_stakes[0].count || 0;
+
+    let active_stakes_amt = 0;
+    const [list_active_stakes_amt] = await connection.query("SELECT SUM(`amount`) AS `sum` FROM claimed_rewards WHERE `reward_id`=136 AND `status`= 2 ORDER BY `id` DESC;");
+    active_stakes_amt = list_active_stakes_amt[0].sum || 0;
+
+    let giftcodevalue = 0;
+    const [list_redenvelopes_used] = await connection.query("SELECT * FROM redenvelopes_used;");
+    for (let i = 0; i < list_redenvelopes_used.length; i++) {
+        const re_dev_used_time = list_redenvelopes_used[i].time;
+        let check = timerJoin1(re_dev_used_time);
+        if(check == "match")
+        {
+            giftcodevalue +=  parseInt(list_redenvelopes_used[i].money);
+        }
+    }
+
+    const colloboratordata =  await getcolloboratorData();
+
     return res.status(200).json({
         message: 'Success',
         status: true,
@@ -2165,15 +2236,77 @@ const getdashboardInfo = async (req, res) => {
             a_WithdrawalRequests:withdrawalRequest,
             a_TodaysTotalBets:totalBet,
             a_TodaysTotalWin:totalWinning,
-            a_TodaysProfit:totalBet -totalWinning
+            a_TodaysProfit:totalBet -totalWinning,
+            a_month_colloborator:colloboratordata.result_val,
+            a_month_turnover:monthkyturnover,
+            a_month_gift_redeem:giftcodevalue,
+            a_month_recharge_bonus:monthrechagebonus,
+            a_month_staking_amt: parseFloat(monthstakingamount).toFixed(2),
+            a_month_staking_rewards:monthstakingcount,
+            a_active_stakes:active_stakes_count,
+            a_roi_active_stakes:parseFloat(active_stakes_amt).toFixed(2)
         },
     })
+}
+
+const getcolloboratorData = async () => {
+
+    let result = 0;
+    const [rows] = await connection.query('SELECT * FROM users WHERE `level` = 2');
+    for (let i = 0; i < rows.length; i++) {
+        const phone = rows[i].phone;
+        let user_salary = 0;
+        const [list_user_sal_amt] = await connection.query("SELECT SUM(`amount`) AS `sum` FROM salary WHERE Month(STR_TO_DATE(`time`, '%m/%d/%Y, %h:%i:%s %p')) = MONTH(CURRENT_DATE()) AND YEAR(STR_TO_DATE(`time`, '%m/%d/%Y, %h:%i:%s %p')) = YEAR(CURRENT_DATE()) AND `phone` = ? ORDER BY `id` DESC;", [phone]);
+        user_salary = list_user_sal_amt[0].sum || 0;
+        let giftcodevalue = 0;
+        const [list_redenvelopes_used] = await connection.query("SELECT * FROM redenvelopes_used where `phone_used` = ?;", [phone]);
+        for (let i = 0; i < list_redenvelopes_used.length; i++) {
+            const re_dev_used_time = list_redenvelopes_used[i].time;
+            let check = timerJoin1(re_dev_used_time);
+            if(check == "match"){
+                giftcodevalue +=  parseInt(list_redenvelopes_used[i].money);
+            }
+        }
+        var total_wingo_bet = 0;
+        var total_k3_bet = 0;
+        var total_trx_bet = 0;
+        var total_d5_bet = 0;
+        var total_wingo_win_amt = 0;
+        var total_k3_win_amt = 0;
+        var total_d5_win_amt = 0;
+        var total_trx_win_amt = 0;
+        var total_bet_amt = 0;
+        var total_win_loss = 0 ;
+        var total_win_amt = 0;
+        [[total_wingo_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM minutes_1 WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE())  ORDER BY `id` DESC', [phone]);
+        [[total_k3_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM result_k3 WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE())  ORDER BY `id` DESC', [phone]);
+        [[total_d5_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM result_5d WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE())  ORDER BY `id` DESC', [phone]);
+        [[total_trx_bet]] = await connection.query('SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE())  ORDER BY `id` DESC', [phone]);
+        [[total_wingo_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM minutes_1 WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        [[total_k3_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM result_k3 WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        [[total_d5_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM result_5d WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        [[total_trx_win_amt]] = await connection.query('SELECT SUM(get) AS `sum` FROM trx_wingo_bets WHERE `phone` = ? AND MONTH(`today`) = MONTH(CURRENT_DATE()) AND YEAR(`today`) = YEAR(CURRENT_DATE()) AND `status` = 1  ORDER BY `id` DESC', [phone]);
+        var tt_wingo_bets = total_wingo_bet.sum || 0 ;
+        var tt_k3_bets = total_k3_bet.sum || 0 ;
+        var tt_d5_bets = total_d5_bet.sum || 0 ;
+        var tt_trx_bets = total_trx_bet.sum || 0 ;
+        var ttw_wingo_bets = total_wingo_win_amt.sum || 0 ;
+        var ttw_k3_bets = total_k3_win_amt.sum || 0 ;
+        var ttw_d5_bets = total_d5_win_amt.sum || 0 ;
+        var ttw_trx_bets = total_trx_win_amt.sum || 0 ; 
+        total_bet_amt +=  parseInt(tt_wingo_bets) + parseInt(tt_k3_bets) + parseInt(tt_d5_bets) + parseInt(tt_trx_bets);
+        total_win_amt +=  parseInt(ttw_wingo_bets) + parseInt(ttw_k3_bets) + parseInt(ttw_d5_bets) + parseInt(ttw_trx_bets);
+        total_win_loss = parseInt(total_win_amt) - parseInt(total_bet_amt);
+        result = parseInt(user_salary) + parseInt(giftcodevalue) + parseInt(total_win_loss);       
+    }
+    return {
+        result_val: result,
+    }
 }
 
 const makecolloborator = async (req, res) => {
     let auth = req.cookies.auth;
     let u_phone = req.body.u_phone;
-    console.log(u_phone);
     const [rows] = await connection.query('SELECT transfer_mode FROM users WHERE `token` = ? ', [(auth)]);
     await connection.query('UPDATE users SET level = 2  WHERE phone = ?', [u_phone]);
     await connection.query('UPDATE point_list SET level = 2  WHERE phone = ?', [u_phone]);

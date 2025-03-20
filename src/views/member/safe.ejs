@@ -1538,9 +1538,14 @@
                 var stack_from_date = moment(data.from_date).format('DD-MM-YYYY');
                 var stack_to_date = moment(data.to_date).format('DD-MM-YYYY');
                 var diffDate = ( new Date(data.to_date) -  new Date(data.from_date)) / (1000 * 60 * 60 * 24);
-                remaining_days = Math.round(diffDate);
+                remaining_days = Math.round(diffDate) + " days";
                 var comp_diffDate = ( new Date() -  new Date(data.from_date)) / (1000 * 60 * 60 * 24);
                 complete_days = Math.round(comp_diffDate);
+                if(data.status == 1)
+                {
+                    remaining_days = "completed";
+                    complete_days = 100;
+                }
                 html += `<div class="space-y-4">
    <div class="class_active rounded-lg border bg-background p-4 transition-all hover:shadow-md">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
@@ -1559,7 +1564,7 @@
                </svg>
                Progress
             </span>
-            <span class="class_perce font-medium">`+remaining_days+` days</span>
+            <span class="class_perce font-medium">`+remaining_days+`</span>
          </div>
          <progress min="0" max="100" value="`+complete_days+`" class="stack_progress" style="width:100%;margin-top: 5%;" ></progress>
          <div class="h-2 bg-secondary rounded-full overflow-hidden">
