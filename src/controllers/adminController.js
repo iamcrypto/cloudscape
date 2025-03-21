@@ -2197,8 +2197,8 @@ const getdashboardInfo = async (req, res) => {
     monthstakingamount = list_month_stakes[0].sum || 0;
 
     let monthstakingcount = 0;
-    const [list_month_stakes_c] = await connection.query("SELECT COUNT(*) AS `count` FROM claimed_rewards WHERE `reward_id`=136 AND MONTH(`to_date`) = MONTH(CURRENT_DATE()) AND YEAR(`to_date`) = YEAR(CURRENT_DATE()) ORDER BY `id` DESC;");
-    monthstakingcount = list_month_stakes_c[0].count || 0;
+    const [list_month_stakes_c] = await connection.query("SELECT SUM(`stake_amnt`) AS `sum` FROM claimed_rewards WHERE `reward_id`=136 AND MONTH(`to_date`) = MONTH(CURRENT_DATE()) AND YEAR(`to_date`) = YEAR(CURRENT_DATE()) ORDER BY `id` DESC;");
+    monthstakingcount = list_month_stakes_c[0].sum || 0;
 
     let active_stakes_count = 0;
     const [list_active_stakes] = await connection.query("SELECT COUNT(*) AS `count` FROM claimed_rewards WHERE `reward_id`=136 AND `status`= 2 ORDER BY `id` DESC;");
@@ -2221,6 +2221,8 @@ const getdashboardInfo = async (req, res) => {
 
     const colloboratordata =  await getcolloboratorData();
 
+    let stakeROI = parseFloat(monthstakingamount).toFixed(2) - parseFloat(monthstakingcount).toFixed(2);
+
     return res.status(200).json({
         message: 'Success',
         status: true,
@@ -2242,7 +2244,7 @@ const getdashboardInfo = async (req, res) => {
             a_month_gift_redeem:giftcodevalue,
             a_month_recharge_bonus:monthrechagebonus,
             a_month_staking_amt: parseFloat(monthstakingamount).toFixed(2),
-            a_month_staking_rewards:monthstakingcount,
+            a_month_staking_rewards:stakeROI,
             a_active_stakes:active_stakes_count,
             a_roi_active_stakes:parseFloat(active_stakes_amt).toFixed(2)
         },
