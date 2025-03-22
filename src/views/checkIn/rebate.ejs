@@ -14324,7 +14324,9 @@ textarea {
            dataType: "json",
            success: function (response) {
           if (response.status === true) {
-            initDailyRebateBonus()
+            initDailyRebateBonus();
+            initDailyRebateRecord();
+            $("#btn_rebate_claim").removeClass("status2");
              $(".van-toast__text").text(response.message)
              $("#successTost").fadeIn(220)
           } else {

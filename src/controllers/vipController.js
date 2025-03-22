@@ -167,7 +167,7 @@ const releaseRebateCommission = async () => {
       const dailyRebateRewordId = 1;
       const today = moment().subtract(1, "days").valueOf();
       //const today = moment().startOf("day").valueOf();
-      const [commissions] = await connection.query('SELECT SUM(`money`) as `sum` FROM commissions WHERE phone = ? AND `time` >= ?', [user.phone, today]);
+      const [commissions] = await connection.query('SELECT SUM(`money`) as `sum` FROM commissions WHERE phone = ? AND `time` >= ? AND `level` <= 6;', [user.phone, today]);
       let comm_amt = 0;
       comm_amt = commissions[0].sum || 0;
     
