@@ -82,10 +82,12 @@ const cronJobGame1p = (io) => {
         //test_5d_join();
         //test_trx_join();
 
-       // await winGoController.distributeCommission();
+       //await winGoController.distributeCommission();
         // await k3Controller.distributeCommission(),
         // await k5Controller.distributeCommission(),
         // await trxWingoController.distributeCommission()
+
+       // await vipController.releaseRebateCommission()
 
     });
 
@@ -164,7 +166,8 @@ const cronJobGame1p = (io) => {
         await winGoController.distributeCommission(),
         await k3Controller.distributeCommission(),
         await k5Controller.distributeCommission(),
-        await trxWingoController.distributeCommission()
+        await trxWingoController.distributeCommission(),
+        await vipController.releaseRebateCommission()
       }
     );
 }

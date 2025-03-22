@@ -148,6 +148,100 @@ const insertRewordClaim = async ({
 // ------------------------------------------------------------------------------
 
 // controllers -----------------------------------------------------------------
+
+const DailyRebateBonusList = [
+  {
+    id: 1,
+    rebetAmount: 50,
+    bonusAmount: 0,
+  },
+]
+
+const releaseRebateCommission = async () => {
+  try {
+    const [users] = await connection.query(
+      "SELECT `vip_level`, `phone`, `money`,`id` FROM `users`",
+    );
+
+    for (let user of users) {
+      const dailyRebateRewordId = 1;
+      const today = moment().subtract(1, "days").valueOf();
+      //const today = moment().startOf("day").valueOf();
+      const [commissions] = await connection.query('SELECT SUM(`money`) as `sum` FROM commissions WHERE phone = ? AND `time` >= ?', [user.phone, today]);
+      let comm_amt = 0;
+      comm_amt = commissions[0].sum || 0;
+    
+      const todayRebateAmount = comm_amt;
+  
+  
+      const [claimedBettingRow] = await connection.execute(
+        "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? AND `time` >= ?",
+        [REWARD_TYPES_MAP.REBATE_BONUS, user.phone, today],
+      );
+  
+      const dailyRebateRewordList = DailyRebateBonusList.map((item) => {
+        return {
+          id: item.id,
+          bettingAmount: todayRebateAmount,
+          requiredBettingAmount: item.rebetAmount,
+          bonusAmount: todayRebateAmount,
+          isFinished: todayRebateAmount >= item.rebetAmount,
+          isClaimed: claimedBettingRow.some(
+            (claimedReward) => claimedReward.reward_id === item.id,
+          ),
+        };
+      });
+  
+      const claimableBonusData = dailyRebateRewordList.filter(
+        (item) =>
+          item.isFinished && item.bettingAmount >= item.requiredBettingAmount,
+      );
+      if (claimableBonusData.length === 0) {
+        console.log("You does not meet the requirements to claim this reward!");
+      }
+      else{
+        const claimedBonusData = claimableBonusData?.find(
+          (item) => item.id === parseInt(dailyRebateRewordId),
+        );
+        const [bonusList] = await connection.query(
+          "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? AND `time` >= ? AND `reward_id` = ?",
+          [
+            REWARD_TYPES_MAP.REBATE_BONUS,
+            user.phone,
+            today,
+            claimedBonusData?.id,
+          ],
+        );
+        if (bonusList.length > 0) {
+          console.log("Bonus already claimed");
+        }
+        else{
+        const time = moment().valueOf();
+    
+        await connection.execute(
+          "UPDATE `users` SET `money` = `money` + ?, `total_money` = `total_money` + ? WHERE `phone` = ?",
+          [claimedBonusData.bonusAmount, claimedBonusData.bonusAmount, user.phone],
+        );
+    
+        await connection.execute(
+          "INSERT INTO `claimed_rewards` (`reward_id`, `type`, `phone`, `amount`, `status`, `time`) VALUES (?, ?, ?, ?, ?, ?)",
+          [
+            claimedBonusData.id,
+            REWARD_TYPES_MAP.REBATE_BONUS,
+            user.phone,
+            claimedBonusData.bonusAmount,
+            REWARD_STATUS_TYPES_MAP.SUCCESS,
+            time,
+          ],
+        );
+        console.log("Successfully claimed daily betting bonus");
+      }
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 const releaseVIPLevel = async () => {
   try {
     // let lastMonth1st2amUnix = moment().subtract(1, "months").startOf("month").add(2, "hours").unix();
@@ -300,5 +394,6 @@ module.exports  = {
   releaseVIPLevel,
   getMyVIPLevelInfo,
   getVIPHistory,
+  releaseRebateCommission,
 };
 

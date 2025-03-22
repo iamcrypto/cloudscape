@@ -221,6 +221,7 @@ const rosesPlus1 = async (phone, money, levels = [], timeNow = "") => {
       if (!userInfo) {
         return;
       }
+      let timeNow1 = Date.now();
   
       let userReferrer = userInfo.invite;
       let commissionsToInsert = [];
@@ -243,7 +244,7 @@ const rosesPlus1 = async (phone, money, levels = [], timeNow = "") => {
             userInfo.phone,
             levelCommission,
             i + 1,
-            timeNow,
+            timeNow1,
           ]);
           usersToUpdate.push([levelCommission, referrerInfo.phone]);
           userReferrer = referrerInfo.invite;

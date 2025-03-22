@@ -127,6 +127,24 @@ const initWebRouter = (app) => {
     );
 
     router.post(
+      "/api/activity/daily_rebate_bonus/record",
+      middlewareController,
+      promotionController.dailyRebateRewordRecord,
+    );
+
+    router.post(
+      "/api/activity/daily_rebate_bonus",
+      middlewareController,
+      promotionController.getDailyRebateReword,
+    );
+
+    router.post(
+      "/api/activity/daily_rebate_bonus/claim",
+      middlewareController,
+      promotionController.claimDailyRebateReword,
+    );
+
+    router.post(
       "/api/activity/stake_details/claim",
       middlewareController,
       promotionController.addonstake,

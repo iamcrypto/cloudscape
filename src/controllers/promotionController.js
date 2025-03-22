@@ -375,12 +375,11 @@ const subordinatesDataAPI = async (req, res) => {
 
     const commissions = await getCommissionStatsByTime(startOfWeek, user.phone);
 
-    // console.time("getUserLevels"); // Start the timer
     const userStatsData = await userStats(
       startOfYesterdayTimestamp,
       endOfYesterdayTimestamp,
     );
-    // console.timeEnd("getUserLevels");
+
     const { usersByLevels = [], level1Referrals = [] } = getUserLevels(
       userStatsData,
       user.code,
@@ -509,18 +508,14 @@ const subordinatesDataByTimeAPI = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
-    // const levelFilter = "";
-
-    // console.log("===================", req.query.startDate, searchFromUid, levelFilter);
 
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const userStatsData = await userStats(startDate, endDate, user.phone);
-    // console.time('getUserLevels'); // Start the timer
+
     const { usersByLevels = [] } = getUserLevels(userStatsData, user.code);
-    // console.timeEnd('getUserLevels'); //
-    // const filteredUsers = usersByLevels.filter(user => user.time >= startDate && user.id_user.includes(searchFromUid) && (levelFilter !== "All" ? user.user_level === +levelFilter : true));
+
     const filteredUsers = usersByLevels.filter(
       (user) =>
         user.id_user.includes(searchFromUid) &&
@@ -633,7 +628,6 @@ const subordinatesAPI = async (req, res) => {
     }
 
     const userStatsData = await userStats(startDate, endDate, user.phone);
-    // console.time('getUserLevels'); // Start the timer
     const { level1Referrals } = getUserLevels(userStatsData, user.code);
     const users = level1Referrals
       .map((user) => {
@@ -1011,6 +1005,14 @@ const WeekBettingBonusList = [
   },
 ]
 
+
+const DailyRebateBonusList = [
+  {
+    id: 1,
+    rebetAmount: 50,
+    bonusAmount: 0,
+  },
+]
 const DailyBettingBonusList = [
   {
     id: 1,
@@ -1093,22 +1095,8 @@ const getDailyRechargeReword = async (req, res) => {
       [REWARD_TYPES_MAP.DAILY_RECHARGE_BONUS, user.phone, today],
     );
 
-    console.log("claimedRewardsRow", [
-      REWARD_TYPES_MAP.DAILY_RECHARGE_BONUS,
-      user.phone,
-      today,
-    ]);
-    console.log("claimedRewardsRow", claimedRewardsRow);
 
     const dailyRechargeRewordList = DailyRechargeBonusList.map((item) => {
-      console.log("item", todayRechargeAmount);
-      console.log("item", item.rechargeAmount);
-      console.log(
-        "item",
-        claimedRewardsRow.some(
-          (claimedReward) => claimedReward.reward_id === item.id,
-        ),
-      );
       return {
         id: item.id,
         rechargeAmount: Math.min(todayRechargeAmount, item.rechargeAmount),
@@ -1258,7 +1246,6 @@ const dailyRechargeRewordRecord = async (req, res) => {
         time: moment.unix(claimedReward.time).format("YYYY-MM-DD HH:mm:ss"),
       };
     });
-    console.log(user);
     return res.status(200).json({
       data: claimedRewardsData,
       status: true,
@@ -1742,7 +1729,7 @@ const getAttendanceBonusRecord = async (req, res) => {
 
 const getDailyBettingeReword = async (req, res) => {
   try {
-    const authToken = req.cookies.auth;;
+    const authToken = req.cookies.auth;
     const [userRow] = await connection.execute(
       "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
       [authToken],
@@ -1778,7 +1765,8 @@ const getDailyBettingeReword = async (req, res) => {
         total_trx += parseFloat(data.money);
     });
     total2 += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
-	
+
+    console.log(total2);
     const todayBettingAmount = total2;
 
     const [claimedBettingRow] = await connection.execute(
@@ -1786,22 +1774,7 @@ const getDailyBettingeReword = async (req, res) => {
       [REWARD_TYPES_MAP.DAILY_BETTING_BONUS, user.phone, today],
     );
 
-    console.log("claimedBettingRow", [
-      REWARD_TYPES_MAP.DAILY_BETTING_BONUS,
-      user.phone,
-      today,
-    ]);
-    console.log("claimedRewardsRow", claimedBettingRow);
-
     const dailyBetingRewordList = DailyBettingBonusList.map((item) => {
-      console.log("item", todayBettingAmount);
-      console.log("item", item.bettingAmount);
-      console.log(
-        "item",
-        claimedBettingRow.some(
-          (claimedReward) => claimedReward.reward_id === item.id,
-        ),
-      );
       return {
         id: item.id,
         bettingAmount: Math.min(todayBettingAmount, item.bettingAmount),
@@ -1824,6 +1797,64 @@ const getDailyBettingeReword = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+const getDailyRebateReword = async (req, res) => {
+  try {
+    const authToken = req.cookies.auth;;
+    const [userRow] = await connection.execute(
+      "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
+      [authToken],
+    );
+    const user = userRow?.[0];
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const today = moment().startOf("day").valueOf();
+    const [commissions] = await connection.query('SELECT SUM(`money`) as `sum` FROM commissions WHERE phone = ? AND `time` >= ?', [user.phone, today]);
+	  let comm_amt = 0;
+    comm_amt = commissions[0].sum || 0;
+	
+    const todayRebateAmount = comm_amt;
+
+    const [week_commissions] = await connection.query('SELECT SUM(`money`) as `sum` FROM commissions WHERE phone = ?;', [user.phone]);
+	  let w_comm_amt = 0;
+    w_comm_amt = week_commissions[0].sum || 0;
+	
+    const week_RebateAmount = w_comm_amt;
+
+    const [claimedBettingRow] = await connection.execute(
+      "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? AND `time` >= ?",
+      [REWARD_TYPES_MAP.REBATE_BONUS, user.phone, today],
+    );
+
+
+    const dailyRebateRewordList = DailyRebateBonusList.map((item) => {
+      return {
+        id: item.id,
+        bettingAmount: Math.min(todayRebateAmount, item.rebetAmount),
+        requiredBettingAmount: item.rebetAmount,
+        bonusAmount: todayRebateAmount,
+        weeklyBetAmount:week_RebateAmount,
+        isFinished: todayRebateAmount >= item.rebetAmount,
+        isClaimed: claimedBettingRow.some(
+          (claimedReward) => claimedReward.reward_id === item.id,
+        ),
+      };
+    });
+
+    return res.status(200).json({
+      data: dailyRebateRewordList,
+      status: true,
+      message: "Successfully fetched daily recharge bonus data",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 
 const claimDailyBettingReword = async (req, res) => {
   try {
@@ -1942,6 +1973,104 @@ const claimDailyBettingReword = async (req, res) => {
   }
 };
 
+const claimDailyRebateReword = async (req, res) => {
+  try {
+    const authToken = req.cookies.auth;;
+    const dailyRebateRewordId = req.body.claim_id;
+    const [userRow] = await connection.execute(
+      "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
+      [authToken],
+    );
+    const user = userRow?.[0];
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const today = moment().startOf("day").valueOf();
+    const [commissions] = await connection.query('SELECT SUM(`money`) as `sum` FROM commissions WHERE phone = ? AND `time` >= ?', [user.phone, today]);
+	  let comm_amt = 0;
+    comm_amt = commissions[0].sum || 0;
+	
+    const todayRebateAmount = comm_amt;
+
+
+    const [claimedBettingRow] = await connection.execute(
+      "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? AND `time` >= ?",
+      [REWARD_TYPES_MAP.REBATE_BONUS, user.phone, today],
+    );
+
+    const dailyRebateRewordList = DailyRebateBonusList.map((item) => {
+      return {
+        id: item.id,
+        bettingAmount: todayRebateAmount,
+        requiredBettingAmount: item.rebetAmount,
+        bonusAmount: todayRebateAmount,
+        isFinished: todayRebateAmount >= item.rebetAmount,
+        isClaimed: claimedBettingRow.some(
+          (claimedReward) => claimedReward.reward_id === item.id,
+        ),
+      };
+    });
+
+    const claimableBonusData = dailyRebateRewordList.filter(
+      (item) =>
+        item.isFinished && item.bettingAmount >= item.requiredBettingAmount,
+    );
+    if (claimableBonusData.length === 0) {
+      return res.status(200).json({
+        status: false,
+        message: "You does not meet the requirements to claim this reward!",
+      });
+    }
+    const claimedBonusData = claimableBonusData?.find(
+      (item) => item.id === parseInt(dailyRebateRewordId),
+    );
+    const [bonusList] = await connection.query(
+      "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? AND `time` >= ? AND `reward_id` = ?",
+      [
+        REWARD_TYPES_MAP.REBATE_BONUS,
+        user.phone,
+        today,
+        claimedBonusData.id,
+      ],
+    );
+    if (bonusList.length > 0) {
+      return res.status(200).json({
+        status: false,
+        message: "Bonus already claimed",
+      });
+    }
+    const time = moment().valueOf();
+
+    await connection.execute(
+      "UPDATE `users` SET `money` = `money` + ?, `total_money` = `total_money` + ? WHERE `phone` = ?",
+      [claimedBonusData.bonusAmount, claimedBonusData.bonusAmount, user.phone],
+    );
+
+    await connection.execute(
+      "INSERT INTO `claimed_rewards` (`reward_id`, `type`, `phone`, `amount`, `status`, `time`) VALUES (?, ?, ?, ?, ?, ?)",
+      [
+        claimedBonusData.id,
+        REWARD_TYPES_MAP.REBATE_BONUS,
+        user.phone,
+        claimedBonusData.bonusAmount,
+        REWARD_STATUS_TYPES_MAP.SUCCESS,
+        time,
+      ],
+    );
+
+    return res.status(200).json({
+      status: true,
+      message: "Successfully claimed daily betting bonus",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
 const dailyBetttingRewordRecord = async (req, res) => {
   try {
     const authToken = req.cookies.auth;;
@@ -1972,7 +2101,6 @@ const dailyBetttingRewordRecord = async (req, res) => {
         time: moment.unix(claimedReward.time).format("YYYY-MM-DD HH:mm:ss"),
       };
     });
-    console.log(user);
     return res.status(200).json({
       data: claimedRewardsData,
       status: true,
@@ -1984,6 +2112,48 @@ const dailyBetttingRewordRecord = async (req, res) => {
   }
 };
 
+const dailyRebateRewordRecord = async (req, res) => {
+  try {
+    const authToken = req.cookies.auth;;
+    const [userRow] = await connection.execute(
+      "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
+      [authToken],
+    );
+    const user = userRow?.[0];
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const [claimedRewardsRow] = await connection.execute(
+      "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ?",
+      [REWARD_TYPES_MAP.REBATE_BONUS, user.phone],
+    );
+    const claimedRewardsData = claimedRewardsRow.map((claimedReward) => {
+      const currentDailyBetttingReword = DailyRebateBonusList.find(
+        (item) => item?.id === claimedReward?.reward_id,
+      );
+      return {
+        id: claimedReward.reward_id,
+        requireBettingAmount: currentDailyBetttingReword?.rebetAmount || 0,
+        amount: claimedReward.amount,
+        status: claimedReward.status,
+        time: moment.unix(claimedReward.time).format("YYYY-MM-DD HH:mm:ss"),
+      };
+    });
+    return res.status(200).json({
+      data: claimedRewardsData,
+      status: true,
+      message: "Successfully fetched daily recharge bonus record",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+
+
 const getweeklyBettingeReword = async (req, res) => {
   try {
     const authToken = req.cookies.auth;;
@@ -1991,17 +2161,13 @@ const getweeklyBettingeReword = async (req, res) => {
       "SELECT `phone` FROM `users` WHERE `token` = ? AND `veri` = 1",
       [authToken],
     );
-    console.log("1");
     const user = userRow?.[0];
-    console.log("2");
 
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    console.log("3");
     const today = moment().startOf("day").valueOf();
-    console.log("4");
 
     const [claimedBettingRow] = await connection.execute(
       "SELECT * FROM `claimed_rewards` WHERE `type` = ? AND `phone` = ? ",
@@ -2040,24 +2206,9 @@ const getweeklyBettingeReword = async (req, res) => {
     }
     total2 += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
     const weekBettingAmount = total2;
-    console.log("claimedBettingRow", [
-      REWARD_TYPES_MAP.WEEKLY_BETTING_BONUS,
-      user.phone,
-      today,
-    ]);
-    console.log("claimedRewardsRow", claimedBettingRow);
 
     const weekBetingRewordList = WeekBettingBonusList.map((item) => {
-      console.log("item", weekBettingAmount);
-      console.log("item", item.bettingAmount);
-      console.log(
-        "item",
-        claimedBettingRow.some(
-          (claimedReward) => claimedReward.reward_id === item.id,
-        ),
-      );
-      console.log(weekBettingAmount);
-      console.log(item.bettingAmount);
+
       return {
         id: item.id,
         bettingAmount: Math.min(weekBettingAmount, item.bettingAmount),
@@ -2069,7 +2220,6 @@ const getweeklyBettingeReword = async (req, res) => {
         ),
       };
     });
-    console.log(weekBetingRewordList);
     return res.status(200).json({
       data: weekBetingRewordList,
       status: true,
@@ -2166,16 +2316,6 @@ const claimWeeklyBettingReword = async (req, res) => {
     const weekBettingAmount = total2;
 
     const weekBetingRewordList = WeekBettingBonusList.map((item) => {
-      console.log("item", weekBettingAmount);
-      console.log("item", item.bettingAmount);
-      console.log(
-        "item",
-        claimedBettingRow.some(
-          (claimedReward) => claimedReward.reward_id === item.id,
-        ),
-      );
-      console.log(weekBettingAmount);
-      console.log(item.bettingAmount);
       return {
         id: item.id,
         bettingAmount: Math.min(weekBettingAmount, item.bettingAmount),
@@ -2275,7 +2415,6 @@ const weeklyBetttingRewordRecord = async (req, res) => {
         time: moment.unix(claimedReward.time).format("YYYY-MM-DD HH:mm:ss"),
       };
     });
-    console.log(user);
     return res.status(200).json({
       data: claimedRewardsData,
       status: true,
@@ -2427,6 +2566,9 @@ const promotionController = {
   weeklyBetttingRewordRecord,
   addonstake,
   getstakedetails,
+  claimDailyRebateReword,
+  dailyRebateRewordRecord,
+  getDailyRebateReword,
 };
 
 export default promotionController;
