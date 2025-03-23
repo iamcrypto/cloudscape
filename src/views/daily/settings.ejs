@@ -45,13 +45,42 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div style="padding: 10px 20px;margin-bottom: 200px;">
+                                <div class="form-group">
+                                <!-- <div class="text-center">
+                                     <label for="quantity">Change Deposit Information</label>
+                                 </div>
+                                 <label for="quantity" style="color: #3498db;">BANKING</label>
+                                 <input type="text" class="form-control" placeholder="Rate"
+                                     id="edit-banking-name_bank" value=""><br>
+                                 <input type="text" class="form-control" placeholder="Enter Account Name"
+                                     id="edit-banking-name" value=""><br>
+                                 <input type="text" class="form-control" placeholder="Enter Account Number"
+                                     id="edit-banking-info" value=""><br>
+                                 <button type="submit" class="btn btn-primary edit-banking"
+                                     style="width: 100%;margin-bottom: 20px;">Submit</button>  -->
+                                 <!---------------------------------------------------------------->
+                                 <div class="text-center">
+                                     <label for="quantity">Manual Settings</label>
+                                 </div>
 
+                                 <label for="edit-momo-name_bank" style="color: #3498db;">Rate</label>
+                                 <input type="text" class="form-control" placeholder="Rate"
+                                     id="edit-momo-name_bank" value=""><br>
+                                 <input type="text" class="form-control" placeholder="Wallet Owner Name"
+                                     id="edit-momo-name" value=""><br>
+                                 <input type="text" class="form-control" placeholder="UPI ID" id="edit-momo-info"
+                                     value=""><br>
+                                 <input type="text" class="form-control" placeholder="USDT Wallet Address"
+                                     id="edit-momo-qr" value=""><br>
+                                 <button type="submit" class="btn btn-primary edit-momo"
+                                     style="width: 100%;">Submit</button>
+                             </div>
                                 <div class="form-group">
                                     <div class="text-center">
                                         <label for="telegram">Telegram (Set up for members to use to contact you)</label>
                                     </div>
                                     <label for="telegram" style="color: #3498db;">Link Telegram</label>
-                                    <input type="text" class="form-control" id="telegram" placeholder="Enter Telegram Link" value=""><br>
+                                    <input type="text" id="telegram_url" class="form-control" id="telegram" placeholder="Enter Telegram Link" value=""><br>
                                     <button type="submit" class="btn btn-primary telegram" style="width: 100%;">Edit</button>
                                 </div>
 
@@ -66,7 +95,83 @@
     <script src="/dist/js/adminlte.min.js"></script>
     <script src="/js/admin/admin.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"
+    integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
     <script>
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/manager/settings/get",
+            data: "data",
+            dataType: "json",
+            success: function (response) {
+                let bank = response.datas[0];
+                let momo = response.momo;
+                $('#edit-momo-name_bank').val(momo.bank_name);
+                $('#edit-momo-name').val(momo.username);
+                $('#edit-momo-info').val(momo.upi_id);
+                $('#edit-momo-qr').val(momo.usdt_wallet_address);
+
+                $('#edit-banking-name_bank').val(bank.name_bank);
+                $('#edit-banking-name').val(bank.name_user);
+                $('#edit-banking-info').val(bank.stk);
+                // $('#edit-momo-qr').val(momo.qr_code_image);
+
+                $('#telegram').val(response.settings[0].telegram);
+                $('#cskh').val(response.settings[0].cskh);
+                $('#myapp_web').val(response.settings[0].app);
+            }
+        });
+
+        const alertMessage = (text) => {
+            const msg = document.createElement('div');
+            msg.setAttribute('data-v-1dcba851', '');
+            msg.className = 'msg';
+
+            const msgContent = document.createElement('div');
+            msgContent.setAttribute('data-v-1dcba851', '');
+            msgContent.className = 'msg-content v-enter-active v-enter-to';
+            msgContent.style = '';
+            msgContent.textContent = text;
+
+            msg.appendChild(msgContent);
+            document.body.appendChild(msg);
+
+            setTimeout(() => {
+                msgContent.classList.remove('v-enter-active', 'v-enter-to');
+                msgContent.classList.add('v-leave-active', 'v-leave-to');
+
+                setTimeout(() => {
+                    document.body.removeChild(msg);
+                }, 100);
+            }, 1000);
+        }
+
+        $('.edit-momo').click(async (e) => {
+            try {
+                e.preventDefault();
+                const bank_name = $('#edit-momo-name_bank').val();
+                const username = $('#edit-momo-name').val();
+                const upi_id = $('#edit-momo-info').val();
+                const usdt_wallet_address = $('#edit-momo-qr').val();
+
+                const response = await axios.post("/admin/manager/settings/bank", {
+                    bank_name,
+                    username,
+                    upi_id,
+                    usdt_wallet_address,
+                    typer: 'momo'
+                })
+                console.log(response);
+                if (response?.data?.status === true) {
+                    alertMessage(response?.data?.message)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        });
         $.ajax({
             type: "POST",
             url: "/manager/settings/list",
@@ -75,12 +180,12 @@
             },
             dataType: "json",
             success: function (response) {
-                $('input').val(response.telegram2);
+                $('#telegram_url').val(response.telegram2);
             }
         });
         $('.telegram').click(function (e) { 
             e.preventDefault();
-            let value = $('input').val().trim();
+            let value = $('#telegram_url').val().trim();
             if (value) {
                 $.ajax({
                     type: "POST",

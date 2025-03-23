@@ -603,9 +603,9 @@ const settingGet = async (req, res) => {
                 timeStamp: timeNow,
             });
         }
-
-        const [bank_recharge] = await connection.query("SELECT * FROM bank_recharge");
-        const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo'");
+        const [rows] = await connection.execute('SELECT * FROM `users` WHERE `token` = ? AND veri = 1', [auth]);
+        const [bank_recharge] = await connection.query("SELECT * FROM bank_recharge where `phone` = ?", [rows[0].phone]);
+        const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo' AND `phone` = ?", [rows[0].phone]);
         const [settings] = await connection.query('SELECT * FROM admin ');
 
         let bank_recharge_momo_data
@@ -839,7 +839,7 @@ const settingBank = async (req, res) => {
         }
 
         if (typer == 'momo') {
-            const [bank_recharge] = await connection.query(`SELECT * FROM bank_recharge WHERE type = 'momo'`);
+            const [bank_recharge] = await connection.query(`SELECT * FROM bank_recharge WHERE type = 'momo' AND phone = ?;`, [rows[0].phone]);
 
             const deleteRechargeQueries = bank_recharge.map(recharge => {
                 return deleteBankRechargeById(recharge.id)
@@ -2312,6 +2312,12 @@ const makecolloborator = async (req, res) => {
     const [rows] = await connection.query('SELECT transfer_mode FROM users WHERE `token` = ? ', [(auth)]);
     await connection.query('UPDATE users SET level = 2  WHERE phone = ?', [u_phone]);
     await connection.query('UPDATE point_list SET level = 2  WHERE phone = ?', [u_phone]);
+    const [bank_recharge] = await connection.query("SELECT * FROM bank_recharge where `phone` = ?", [u_phone]);
+    if(bank_recharge.length == 0)
+    {
+        let sql_bank_rech = "INSERT INTO bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ? , type = ? , time = ? , transfer_mode = ? , phone = ? , colloborator_action = ?";
+        await connection.query(sql_bank_rech, ['','','','','','','manual',u_phone,'off']);
+    }
 
     return res.status(200).json({
         message: 'Success',

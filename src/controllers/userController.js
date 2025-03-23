@@ -1466,7 +1466,7 @@ const recharge2 = async (req, res) => {
         });
     };
     const [recharge] = await connection.query('SELECT * FROM recharge WHERE phone = ? AND status = ? ', [userInfo.phone, 0]);
-    const [bank_recharge] = await connection.query('SELECT * FROM bank_recharge');
+    const [bank_recharge] = await connection.query('SELECT * FROM bank_recharge AND `phone` = ?", [rows[0].phone]);');
     if (recharge.length != 0) {
         return res.status(200).json({
             message: 'Received successfully',

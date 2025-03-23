@@ -22,9 +22,12 @@ const PaymentMethodsMap = {
 }
 
 const initiateManualUPIPayment = async (req, res) => {
-    const query = req.query
 
-    const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo'");
+    const query = req.query
+    const auth = req.cookies.auth;
+    const [rows] = await connection.execute('SELECT `token`,`level`, `status` FROM `users` WHERE `token` = ? AND veri = 1', [auth]);
+
+    const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo' AND phone = ?", [rows[0].phone]);
 
     let bank_recharge_momo_data
     if (bank_recharge_momo.length) {
@@ -46,8 +49,10 @@ const initiateManualUPIPayment = async (req, res) => {
 
 const initiateManualUSDTPayment = async (req, res) => {
     const query = req.query
+    const auth = req.cookies.auth;
+    const [rows] = await connection.execute('SELECT `token`,`level`, `status` FROM `users` WHERE `token` = ? AND veri = 1', [auth]);
 
-    const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo'");
+    const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo' AND `phone` = ?", [rows[0].phone]);
 
     let bank_recharge_momo_data
     if (bank_recharge_momo.length) {
@@ -404,7 +409,7 @@ const initiatePiPayment = async (req, res) => {
         const user = await getUserDataByAuthToken(auth)
         const query = req.query
 
-        const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo'");
+        const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo' AND `phone` = ?", [rows[0].phone]);
     
         let bank_recharge_momo_data
         if (bank_recharge_momo.length) {

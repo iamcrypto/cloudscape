@@ -3,7 +3,7 @@ import winGoController from "./winGoController";
 import k5Controller from "./k5Controller";
 import k3Controller from "./k3Controller";
 import vipController from "./vipController.js";
-import paymentController1 from "./paymentController1.js";
+import paymentController1 from "./paymentController.js";
 import trxWingoController, {
     TRX_WINGO_GAME_TYPE_MAP,
   } from "./trxWingoController.js";
