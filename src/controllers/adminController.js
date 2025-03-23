@@ -227,6 +227,17 @@ const listMember = async (req, res) => {
         page_total: Math.ceil(total_users.length / limit)
     });
 }
+const getCollotoogle = async (req, res) => {
+    let coll_phone = req.body.coll_phone;
+    const [collo_sett] = await connection.query(`SELECT * FROM bank_recharge WHERE phone = ?`, [coll_phone]);
+    return res.status(200).json({
+        message: 'Success',
+        status: true,
+        datas: collo_sett[0].colloborator_action,
+        collo_upi: collo_sett[0].stk,
+    });
+
+}
 
 const listCTV = async (req, res) => {
     let { pageno, pageto } = req.body;
@@ -677,7 +688,7 @@ const rechargeDuyet = async (req, res) => {
         return res.status(200).json({
             message: 'Successful application confirmation',
             status: true,
-            datas: recharge,
+            datas: [],
         });
     }
     if (type == 'delete') {
@@ -686,7 +697,7 @@ const rechargeDuyet = async (req, res) => {
         return res.status(200).json({
             message: 'Cancellation successful',
             status: true,
-            datas: recharge,
+            datas: [],
         });
     }
 }
@@ -813,8 +824,6 @@ const handlWithdraw = async (req, res) => {
 
 const settingBank = async (req, res) => {
     try {
-
-
         let auth = req.cookies.auth;
         let name_bank = req.body.name_bank;
         let name = req.body.name;
@@ -829,8 +838,9 @@ const settingBank = async (req, res) => {
                 timeStamp: timeNow,
             });
         }
+        const [users] = await connection.query('SELECT * FROM users WHERE token = ?', [auth]);
         if (typer == 'bank') {
-            await connection.query(`UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ? WHERE type = 'bank'`, [name_bank, name, info]);
+            await connection.query(`UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ? WHERE type = 'bank' AND phone = ?`, [name_bank, name, info, users[0].phone]);
             return res.status(200).json({
                 message: 'Successful change',
                 status: true,
@@ -839,8 +849,15 @@ const settingBank = async (req, res) => {
         }
 
         if (typer == 'momo') {
-            const [bank_recharge] = await connection.query(`SELECT * FROM bank_recharge WHERE type = 'momo' AND phone = ?;`, [rows[0].phone]);
-
+            const [bank_recharge] = await connection.query(`SELECT * FROM bank_recharge WHERE phone = ?;`, [users[0].phone]);
+            var transfer_mode = '';
+            if(bank_recharge.length != 0)
+            {
+                transfer_mode = bank_recharge[0].transfer_mode;
+            }
+            else{
+                transfer_mode = "manual";
+            }
             const deleteRechargeQueries = bank_recharge.map(recharge => {
                 return deleteBankRechargeById(recharge.id)
             });
@@ -853,9 +870,10 @@ const settingBank = async (req, res) => {
             const username = req.body.username
             const upiId = req.body.upi_id
             const usdtWalletAddress = req.body.usdt_wallet_address
+            let timeNow = Date.now();
 
-            await connection.query("INSERT INTO bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ?, type = 'momo'", [
-                bankName, username, upiId, usdtWalletAddress
+            await connection.query("INSERT INTO bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ?, transfer_mode = ?,phone=?, colloborator_action = ?, time = ?, type = 'momo'", [
+                bankName, username, upiId, usdtWalletAddress,transfer_mode,users[0].phone, "off", timeNow
             ])
 
             return res.status(200).json({
@@ -874,7 +892,7 @@ const settingBank = async (req, res) => {
 }
 
 const deleteBankRechargeById = async (id) => {
-    const [recharge] = await connection.query("DELETE FROM bank_recharge WHERE type = 'momo' AND id = ?", [id]);
+    const [recharge] = await connection.query("DELETE FROM bank_recharge WHERE id = ?", [id]);
 
     return recharge
 }
@@ -884,7 +902,7 @@ const tranfermode = async (req, res) => {
     let tran_mode = req.body.mode_tran;
     const [rows] = await connection.query('SELECT * FROM users WHERE `token` = ? ', [auth]);
     let user = rows[0];
-    await connection.execute("UPDATE users SET transfer_mode = ?  WHERE `level` = ? ", [tran_mode,1] );
+    await connection.execute("UPDATE bank_recharge SET transfer_mode = ?  WHERE `phone` = ? ", [tran_mode,user.phone] );
     return res.status(200).json({
         message: 'Submitted successfully',
         status: true,
@@ -932,6 +950,30 @@ const banned = async (req, res) => {
         status: true,
     });
 }
+
+const on_off_colloborator = async (req, res) => {
+    let auth = req.cookies.auth;
+    let id = req.body.id;
+    let type = req.body.type;
+    if (!auth || !id) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+    if (type == 'on') {
+        await connection.query(`UPDATE bank_recharge SET colloborator_action = 'on' WHERE phone = ?`, [id]);
+    }
+    if (type == 'off') {
+        await connection.query(`UPDATE bank_recharge SET colloborator_action = 'off' WHERE phone = ?`, [id]);
+    }
+    return res.status(200).json({
+        message: 'Successful change',
+        status: true,
+    });
+}
+
 
 
 const createBonus = async (req, res) => {
@@ -2096,7 +2138,8 @@ const getSalary = async (req, res) => {
 
 const gettranfermode = async (req, res) => {
     let auth = req.cookies.auth;
-    const [rows] = await connection.query('SELECT transfer_mode FROM users WHERE `token` = ? ', [auth]);
+    const [user] = await connection.execute('SELECT `phone` FROM `users` WHERE `token` = ?', [auth]);
+    const [rows] = await connection.query('SELECT transfer_mode FROM bank_recharge WHERE `phone` = ? ', [user[0].phone]);
 
     if (!rows) {
         return res.status(200).json({
@@ -2309,28 +2352,31 @@ const getcolloboratorData = async () => {
 const makecolloborator = async (req, res) => {
     let auth = req.cookies.auth;
     let u_phone = req.body.u_phone;
-    const [rows] = await connection.query('SELECT transfer_mode FROM users WHERE `token` = ? ', [(auth)]);
     await connection.query('UPDATE users SET level = 2  WHERE phone = ?', [u_phone]);
     await connection.query('UPDATE point_list SET level = 2  WHERE phone = ?', [u_phone]);
     const [bank_recharge] = await connection.query("SELECT * FROM bank_recharge where `phone` = ?", [u_phone]);
-    if(bank_recharge.length == 0)
-    {
-        let sql_bank_rech = "INSERT INTO bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ? , type = ? , time = ? , transfer_mode = ? , phone = ? , colloborator_action = ?";
-        await connection.query(sql_bank_rech, ['','','','','','','manual',u_phone,'off']);
-    }
+    const deleteRechargeQueries = bank_recharge.map(recharge => {
+        return deleteBankRechargeById(recharge.id)
+    });
+
+    await Promise.all(deleteRechargeQueries)
+    
+    let sql_bank_rech = "INSERT INTO bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ? , type = ? , time = ? , transfer_mode = ? , phone = ? , colloborator_action = ?";
+    await connection.query(sql_bank_rech, ['','','','','','','manual',u_phone,'off']);
 
     return res.status(200).json({
         message: 'Success',
         status: true,
         data: {
 
-        },
-        rows: rows
+        }
     })
 };
 
 
 module.exports = {
+    on_off_colloborator,
+    getCollotoogle,
     adminChatPage,
     adminPage,
     adminPage3,

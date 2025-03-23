@@ -55,6 +55,7 @@
                     <th class="text-center">#</th>
                     <th class="text-center">Account</th>
                     <th class="text-center">Level</th>
+                    <th class="text-center">UPI Address</th>
                     <th class="text-center">Balance</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Action</th>
@@ -101,6 +102,14 @@
     const Render = (datas) => {
       let html = '';
       datas.map((data) => {
+      $.ajax({
+        type: "POST",
+        url: "/api/webapi/admin/get_collo_pay",
+        data: {
+          coll_phone: data.phone,
+        },
+        dataType: "json",
+        success: function (response) {
         html += `
         <tr class="text-center" style="">
           <td>${data.id_user}</td>
@@ -110,8 +119,11 @@
           <td>
             <b>${(data.level == 1) ? 'ADMIN' : (data.level == 2) ? 'CTV' : 'USER'}</b>
           </td>
-          <td>
+           <td>
             <b>${data.money}</b>
+          </td>
+          <td>
+            <b>${response.collo_upi}</b>
           </td>
           <td class="project-state">
             ${(data.status == 1) ? '<span class="badge badge-success">Online</span>' : '<span class="badge badge-warning">Banned</span>'}
@@ -126,43 +138,53 @@
             <a class="btn btn-primary btn-sm confirm-btn" href="/admin/manager/ctv/profile/${data.phone}">
               <i class="fas fa-folder"></i> Profile
             </a>
-            ${(data.status == 1) ? `<a class="btn btn-info btn-sm btn-danger" id="${data.id}" href="#">
+            ${(data.status == 1) ? `<a class="btn_danger btn btn-info btn-sm btn-danger" id="${data.id}">
               <i class="fas fa-pencil-alt"></i> lock Up
             </a>` : ''}
-            ${(data.status == 2) ? `<a class="btn btn-info btn-sm btn-info1" id="${data.id}" href="#">
+            ${(data.status == 2) ? `<a class="btn_info btn btn-info btn-sm btn-info1" id="${data.id}">
               <i class="fas fa-pencil-alt"></i> Open
             </a>` : ''}
             <!--<a class="btn btn-danger btn-sm delete-btn" href="#">
               <i class="fas fa-trash"></i> 删除
             </a>-->
+
+             ${(response.datas == 'off') ? `<a class="btn btn-info btn-sm btn-warning" id="${data.phone}" href="#">
+              <i class="fas  fa-credit-card"></i> Enable Payment
+            </a>` : ''}
+            ${(response.datas == 'on') ? `<a class="btn btn-info btn-sm btn-primary" id="${data.phone}" href="#">
+              <i class="fas  fa-credit-card"></i> Disable Payment
+            </a>` : ''}
           </td>
         </tr>`;
         $("tbody").html(html);
+      }
+    });
       });
-      $('.btn-danger').click(function (e) { 
-        e.preventDefault();
-        let check = confirm("Are you sure you want to lock this account ?");
-        let id = $(this).attr('id');
-        if (check) {
-          $.ajax({
-            type: "POST",
-            url: "/api/webapi/admin/banned",
-            data: {
-              id: id,
-              type: 'close'
-            },
-            dataType: "json",
-            success: function (response) {
-              alert(response.message);
-              location.reload();
-            }
-          });
-        }
-      });
+    }
 
-      $('.btn-info1').click(function (e) { 
-        e.preventDefault();
-        let check = confirm("Are you sure you want to unlock this account ?");
+    $(document).on("click", '.btn_danger', function(e){
+      e.preventDefault();
+      let check = confirm("Are you sure you want to lock this account ?");
+      let id = $(this).attr('id');
+      if (check) {
+        $.ajax({
+          type: "POST",
+          url: "/api/webapi/admin/banned",
+          data: {
+            id: id,
+            type: 'close'
+          },
+          dataType: "json",
+          success: function (response) {
+            alert(response.message);
+            location.reload();
+          }
+        });
+      }
+    });
+    $(document).on("click", '.btn_info', function(e){
+      e.preventDefault();
+      let check = confirm("Are you sure you want to unlock this account ?");
         let id = $(this).attr('id');
         if (check) {
           $.ajax({
@@ -179,9 +201,47 @@
             }
           });
         }
-      });
-
-    }
+    });
+    $(document).on("click", '.btn-warning', function(e){
+      e.preventDefault();
+      let check = confirm("Are you sure you want to give payment access to this account ?");
+      let id = $(this).attr('id');
+      if (check) {
+        $.ajax({
+          type: "POST",
+          url: "/api/webapi/admin/on_off_collo",
+          data: {
+            id: id,
+            type: 'on'
+          },
+          dataType: "json",
+          success: function (response) {
+            alert(response.message);
+            location.reload();
+          }
+        });
+      }
+    });
+    $(document).on("click", '.btn-primary', function(e){
+      e.preventDefault();
+      let check = confirm("Are you sure you want to remove payment access to this account ?");
+      let id = $(this).attr('id');
+      if (check) {
+        $.ajax({
+          type: "POST",
+          url: "/api/webapi/admin/on_off_collo",
+          data: {
+            id: id,
+            type: 'off'
+          },
+          dataType: "json",
+          success: function (response) {
+            alert(response.message);
+            location.reload();
+          }
+        });
+      }
+    });
 
     $('#search').keypress(function(event){
       var keycode = (event.keyCode ? event.keyCode : event.which);

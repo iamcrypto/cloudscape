@@ -188,7 +188,7 @@
           }
         });
       });
-      $('.btn-danger').click(function (e) { 
+    $(document).on("click", '.btn-danger', function(e){
         e.preventDefault();
         let check = confirm("Are you sure you want to lock this account ?");
         let id = $(this).attr('id');
@@ -209,7 +209,7 @@
         }
       });
       
-      $('.btn-info1').click(function (e) { 
+    $(document).on("click", '.btn-info1', function(e){
         e.preventDefault();
         let check = confirm("Are you sure you want to unlock this account ?");
         let id = $(this).attr('id');

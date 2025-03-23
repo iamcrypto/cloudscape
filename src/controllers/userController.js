@@ -1355,7 +1355,8 @@ const transfer = async (req, res) => {
                 let trans_mode = '';
                 const [admin_user] = await connection.query('SELECT * FROM users WHERE level = ? ', [1]);
                 let adminInfo = admin_user[0];
-                trans_mode = adminInfo.transfer_mode; 
+                const [ad_rows] = await connection.query('SELECT transfer_mode FROM bank_recharge WHERE `phone` = ? ', [adminInfo.phone]);
+                trans_mode = ad_rows[0].transfer_mode; 
                 if(trans_mode == 'instant')
                 {
                     await connection.query('UPDATE users SET money = ? WHERE phone = ?', [money, sender_phone]);

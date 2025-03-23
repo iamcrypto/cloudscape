@@ -284,7 +284,8 @@ const initWebRouter = (app) => {
     router.get('/manager/gifts', dailyController.middlewareDailyController, dailyController.giftPage);
     router.get('/manager/support', dailyController.middlewareDailyController, dailyController.support);
     router.get('/manager/member/info/:phone', dailyController.middlewareDailyController, dailyController.pageInfo);
-
+    router.post('/manager/recharge_apprv', dailyController.middlewareDailyController, dailyController.collo_rechargeDuyet);
+    router.post('/manager/withdraw_apprv', dailyController.middlewareDailyController, dailyController.collo_handlWithdraw);
     router.post('/manager/member/info/:phone', dailyController.middlewareDailyController, dailyController.userInfo);
     router.post('/manager/member/listRecharge/:phone', dailyController.middlewareDailyController, dailyController.listRechargeMem);
     router.post('/manager/member/listWithdraw/:phone', dailyController.middlewareDailyController, dailyController.listWithdrawMem);
@@ -292,8 +293,11 @@ const initWebRouter = (app) => {
     router.post('/manager/member/bet/:phone', dailyController.middlewareDailyController, dailyController.listBet);
 
 
+
+    router.post('/manager/settings/get', dailyController.middlewareDailyController, dailyController.settingGet);
     router.post('/manager/settings/list', dailyController.middlewareDailyController, dailyController.settings);
     router.post('/manager/createBonus', dailyController.middlewareDailyController, dailyController.createBonus);
+    router.post('/manager/collo_bank', dailyController.middlewareDailyController, dailyController.settingCollo_Details);
     router.post('/manager/listRedenvelops', dailyController.middlewareDailyController, dailyController.listRedenvelops);
 
     router.post('/manager/listRecharge', dailyController.middlewareDailyController, dailyController.listRechargeP);
@@ -388,6 +392,7 @@ const initWebRouter = (app) => {
     router.post('/api/webapi/admin/CreatedSalary', adminController.middlewareAdminController, adminController.CreatedSalary); // get info account
     router.post('/api/webapi/admin/listMember', adminController.middlewareAdminController, adminController.listMember); // get info account
     router.post('/api/webapi/admin/listctv', adminController.middlewareAdminController, adminController.listCTV); // get info account
+    router.post('/api/webapi/admin/get_collo_pay', adminController.middlewareAdminController, adminController.getCollotoogle); 
     router.post('/api/webapi/admin/withdraw', adminController.middlewareAdminController, adminController.handlWithdraw); // get info account
     router.post('/api/webapi/admin/recharge', adminController.middlewareAdminController, adminController.recharge); // get info account
     router.post('/api/webapi/admin/tranfermode', adminController.middlewareAdminController, adminController.tranfermode); // store transfer mode
@@ -398,8 +403,7 @@ const initWebRouter = (app) => {
     router.post('/api/webapi/admin/statistical', adminController.middlewareAdminController, adminController.statistical2); // get info account
 
     router.post('/api/webapi/admin/banned', adminController.middlewareAdminController, adminController.banned); // get info account
-
-
+    router.post('/api/webapi/admin/on_off_collo', adminController.middlewareAdminController, adminController.on_off_colloborator); 
     router.post('/api/webapi/admin/totalJoin', adminController.middlewareAdminController, adminController.totalJoin); // get info account
     router.post('/api/webapi/admin/change', adminController.middlewareAdminController, adminController.changeAdmin); // get info account
     router.post('/api/webapi/admin/profileUser', adminController.middlewareAdminController, adminController.profileUser); // get info account

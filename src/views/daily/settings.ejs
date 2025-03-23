@@ -103,7 +103,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/admin/manager/settings/get",
+            url: "/manager/settings/get",
             data: "data",
             dataType: "json",
             success: function (response) {
@@ -126,6 +126,7 @@
         });
 
         const alertMessage = (text) => {
+            console.log("123");
             const msg = document.createElement('div');
             msg.setAttribute('data-v-1dcba851', '');
             msg.className = 'msg';
@@ -156,18 +157,23 @@
                 const username = $('#edit-momo-name').val();
                 const upi_id = $('#edit-momo-info').val();
                 const usdt_wallet_address = $('#edit-momo-qr').val();
-
-                const response = await axios.post("/admin/manager/settings/bank", {
-                    bank_name,
-                    username,
-                    upi_id,
-                    usdt_wallet_address,
-                    typer: 'momo'
-                })
-                console.log(response);
-                if (response?.data?.status === true) {
-                    alertMessage(response?.data?.message)
-                }
+                $.ajax({
+                    type: "POST",
+                    url: "/manager/collo_bank",
+                    data: {
+                        bank_name,
+                        username,
+                        upi_id,
+                        usdt_wallet_address,
+                        typer: 'momo'     
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        Swal.fire(
+                            response.message
+                    )
+                    }
+                });
             } catch (error) {
                 console.log(error)
             }

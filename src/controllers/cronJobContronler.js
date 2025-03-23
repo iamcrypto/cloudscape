@@ -13,13 +13,13 @@ import md5 from "md5";
 const cronJobGame1p = (io) => {
     cron.schedule('*/1 * * * *', async() => {
 
-        await trxWingoController.addTrxWingo(1);
-        await trxWingoController.handlingTrxWingo1P(1);
-        const [trxWingo] = await connection.execute(
-          `SELECT * FROM trx_wingo_game WHERE game = '${TRX_WINGO_GAME_TYPE_MAP.MIN_1}' ORDER BY id DESC LIMIT 2`,
-          [],
-        );
-        io.emit("data-server-trx-wingo", { data: trxWingo });
+        // await trxWingoController.addTrxWingo(1);
+        // await trxWingoController.handlingTrxWingo1P(1);
+        // const [trxWingo] = await connection.execute(
+        //   `SELECT * FROM trx_wingo_game WHERE game = '${TRX_WINGO_GAME_TYPE_MAP.MIN_1}' ORDER BY id DESC LIMIT 2`,
+        //   [],
+        // );
+        // io.emit("data-server-trx-wingo", { data: trxWingo });
 
         await winGoController.addWinGo(1);
         await winGoController.handlingWinGo1P(1);
@@ -41,18 +41,19 @@ const cronJobGame1p = (io) => {
         const data3 = k3; // Cầu mới chưa có kết quả
         io.emit('data-server-k3', { data: data3, 'game': '1' });
         io.emit('data-server-chatk3', { data: data3, 'game': '1' });
+        
 
     });
 
     cron.schedule('*/3 * * * *', async() => {
 
-        await trxWingoController.addTrxWingo(3);
-        await trxWingoController.handlingTrxWingo1P(3);
-        const [trxWingo] = await connection.execute(
-          `SELECT * FROM trx_wingo_game WHERE game = '${TRX_WINGO_GAME_TYPE_MAP.MIN_3}' ORDER BY id DESC LIMIT 2`,
-          [],
-        );
-        io.emit("data-server-trx-wingo", { data: trxWingo });
+        // await trxWingoController.addTrxWingo(3);
+        // await trxWingoController.handlingTrxWingo1P(3);
+        // const [trxWingo] = await connection.execute(
+        //   `SELECT * FROM trx_wingo_game WHERE game = '${TRX_WINGO_GAME_TYPE_MAP.MIN_3}' ORDER BY id DESC LIMIT 2`,
+        //   [],
+        // );
+        // io.emit("data-server-trx-wingo", { data: trxWingo });
 
 
         await winGoController.addWinGo(3);
@@ -93,13 +94,13 @@ const cronJobGame1p = (io) => {
 
     cron.schedule('*/5 * * * *', async() => {
 
-        await trxWingoController.addTrxWingo(5);
-        await trxWingoController.handlingTrxWingo1P(5);
-        const [trxWingo] = await connection.execute(
-          `SELECT * FROM trx_wingo_game WHERE game = '${TRX_WINGO_GAME_TYPE_MAP.MIN_5}' ORDER BY id DESC LIMIT 2`,
-          [],
-        );
-        io.emit("data-server-trx-wingo", { data: trxWingo });
+        // await trxWingoController.addTrxWingo(5);
+        // await trxWingoController.handlingTrxWingo1P(5);
+        // const [trxWingo] = await connection.execute(
+        //   `SELECT * FROM trx_wingo_game WHERE game = '${TRX_WINGO_GAME_TYPE_MAP.MIN_5}' ORDER BY id DESC LIMIT 2`,
+        //   [],
+        // );
+        // io.emit("data-server-trx-wingo", { data: trxWingo });
 
         await winGoController.addWinGo(5);
         await winGoController.handlingWinGo1P(5);
@@ -122,13 +123,13 @@ const cronJobGame1p = (io) => {
     
     cron.schedule('*/10 * * * *', async() => {
 
-        await trxWingoController.addTrxWingo(10);
-        await trxWingoController.handlingTrxWingo1P(10);
-        const [trxWingo] = await connection.execute(
-          `SELECT * FROM trx_wingo_game WHERE game = '${TRX_WINGO_GAME_TYPE_MAP.MIN_10}' ORDER BY id DESC LIMIT 2`,
-          [],
-        );
-        io.emit("data-server-trx-wingo", { data: trxWingo });
+        // await trxWingoController.addTrxWingo(10);
+        // await trxWingoController.handlingTrxWingo1P(10);
+        // const [trxWingo] = await connection.execute(
+        //   `SELECT * FROM trx_wingo_game WHERE game = '${TRX_WINGO_GAME_TYPE_MAP.MIN_10}' ORDER BY id DESC LIMIT 2`,
+        //   [],
+        // );
+        // io.emit("data-server-trx-wingo", { data: trxWingo });
         
         await winGoController.addWinGo(10);
         await winGoController.handlingWinGo1P(10);
@@ -267,6 +268,8 @@ const addUserAccountBalance = async ({ money, phone, invite }) => {
       console.log("SUCCESSFULLY ADD MONEY TO inviter")
   }
 }
+
+
 
 const test_register = async () => {
   var array = ['"7985567013"', '"2821663285"', '"9505220547"', '"2086308157"', '"6257880724"', '"2447685403"', '"2814466995"', '"6958661889"', '"4990170806"', '"6517315419"', '"2200837080"', '"6556669194"', '"4796075927"', '"2558295751"', '"4696454216"', '"6938617683"', '"1434220505"', '"8645903048"', '"4874912103"', '"4398308408"', '"6686663097"', '"6343399949"', '"4067951640"', '"7736431000"', '"9751580935"', '"6495059654"', '"3783299081"', '"7593581797"', '"3037943194"', '"9115632844"', '"4256392024"', '"1015677533"', '"8207505540"', '"1746617177"', '"5675713930"', '"9750572554"', '"9481184604"', '"3601160707"', '"2247242357"', '"2600235760"', '"6747339480"', '"7540199576"', '"7111702621"', '"9177668510"', '"6239355581"', '"2289416814"', '"7960464447"', '"3914817379"', '"5680561313"', '"3235793343"', '"3123113020"', '"1728094552"', '"4421676670"', '"2715806804"', '"4924129673"', '"2957780726"', '"6401239502"', '"7531863338"', '"4948971767"', '"2934514607"', '"1962199949"', '"4324372816"', '"5540347579"', '"3169331441"', '"8953465863"', '"5196200632"', '"3317922559"', '"5553189935"', '"2528420324"', '"6674529799"', '"2210306742"', '"1310037756"', '"4624037320"', '"1904249311"', '"7730015281"', '"4941476638"', '"3439704969"', '"1283821004"', '"5450434625"', '"4293598820"', '"8673947385"', '"1124416280"', '"5663808183"', '"3603614717"', '"8050314388"', '"1478646299"', '"1718069901"', '"1250206561"', '"7235142967"', '"8326618872"', '"6963523191"', '"3417534754"', '"7697087713"', '"7885424385"', '"7740498379"', '"1674934973"', '"4533384473"', '"7631422527"', '"7907340377"', '"8925410596"']

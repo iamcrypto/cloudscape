@@ -51,6 +51,272 @@ const support = async(req, res) => {
     return res.render("daily/support.ejs"); 
 }
 
+const deleteBankRechargeById = async (id) => {
+    const [recharge] = await connection.query("DELETE FROM bank_recharge WHERE id = ?", [id]);
+
+    return recharge
+}
+
+
+const settingCollo_Details = async (req, res) => {
+    try {
+        let auth = req.cookies.auth;
+        let name_bank = req.body.name_bank;
+        let name = req.body.name;
+        let info = req.body.info;
+        let qr = req.body.qr;
+        let typer = req.body.typer;
+
+        
+        if (!auth || !typer) {
+            return res.status(200).json({
+                message: 'Failed',
+                status: false,
+                timeStamp: timeNow,
+            });
+        }
+        const [users] = await connection.query('SELECT * FROM users WHERE token = ?', [auth]);
+        if (typer == 'bank') {
+            await connection.query(`UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ? WHERE type = 'bank' AND phone = ?`, [name_bank, name, info, users[0].phone]);
+            return res.status(200).json({
+                message: 'Successful change',
+                status: true,
+                datas: [],
+            });
+        }
+        if (typer == 'momo') {
+            const [bank_recharge] = await connection.query(`SELECT * FROM bank_recharge WHERE phone = ?;`, [users[0].phone]);
+            var transfer_mode = '';
+            if(bank_recharge.length != 0)
+            {
+                transfer_mode = bank_recharge[0].transfer_mode;
+            }
+            else{
+                transfer_mode = "manual";
+            }
+            const deleteRechargeQueries = bank_recharge.map(recharge => {
+                return deleteBankRechargeById(recharge.id)
+            });
+
+            await Promise.all(deleteRechargeQueries)
+
+            // await connection.query(`UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ? WHERE type = 'upi'`, [name_bank, name, info, qr]);
+
+            const bankName = req.body.bank_name
+            const username = req.body.username
+            const upiId = req.body.upi_id
+            const usdtWalletAddress = req.body.usdt_wallet_address
+            let timeNow = Date.now();
+
+            await connection.query("INSERT INTO bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ?, transfer_mode = ?,phone=?, colloborator_action = ?, time = ?, type = 'momo'", [
+                bankName, username, upiId, usdtWalletAddress,transfer_mode,users[0].phone, "off", timeNow
+            ])
+
+            return res.status(200).json({
+                message: 'Successfully changed',
+                status: true,
+                datas: [],
+            });
+        }
+    
+} catch (error) {
+    console.log(error)
+    return res.status(500).json({
+        message: 'Failed',
+        status: false,
+    });
+}
+}
+
+
+const settingGet = async (req, res) => {
+    try {
+        let auth = req.cookies.auth;
+        if (!auth) {
+            return res.status(200).json({
+                message: 'Failed',
+                status: false,
+                timeStamp: timeNow,
+            });
+        }
+        const [rows] = await connection.execute('SELECT * FROM `users` WHERE `token` = ? AND veri = 1', [auth]);
+        const [bank_recharge] = await connection.query("SELECT * FROM bank_recharge where `phone` = ?", [rows[0].phone]);
+        const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo' AND `phone` = ?", [rows[0].phone]);
+        const [settings] = await connection.query('SELECT * FROM admin ');
+
+        let bank_recharge_momo_data
+        if (bank_recharge_momo.length) {
+            bank_recharge_momo_data = bank_recharge_momo[0]
+        }
+        return res.status(200).json({
+            message: 'Success',
+            status: true,
+            settings: settings,
+            datas: bank_recharge,
+            momo: {
+                bank_name: bank_recharge_momo_data?.name_bank || "",
+                username: bank_recharge_momo_data?.name_user || "",
+                upi_id: bank_recharge_momo_data?.stk || "",
+                usdt_wallet_address: bank_recharge_momo_data?.qr_code_image || "",
+            }
+        });
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: 'Failed',
+            status: false,
+        });
+    }
+}
+
+const getUserDataByPhone = async (phone) => {
+    let [users] = await connection.query('SELECT `phone`, `code`,`name_user`,`invite` FROM users WHERE `phone` = ? ', [phone]);
+    const user = users?.[0]
+
+
+    if (user === undefined || user === null) {
+        throw Error("Unable to get user data!")
+    }
+
+    return {
+        phone: user.phone,
+        code: user.code,
+        username: user.name_user,
+        invite: user.invite,
+    }
+}
+
+
+const addUserAccountBalance = async ({ money, phone, invite }) => {
+    const user_money = money + (money / 100) * 5
+    const inviter_money = (money / 100) * 5
+
+    await connection.query('UPDATE users SET money = money + ?, total_money = total_money + ? WHERE `phone` = ?', [user_money, user_money, phone]);
+
+    const [inviter] = await connection.query('SELECT phone FROM users WHERE `code` = ?', [invite]);
+
+    if (inviter.length) {
+        console.log(inviter)
+        console.log(inviter_money, inviter_money, invite, inviter?.[0].phone)
+        await connection.query('UPDATE users SET money = money + ?, total_money = total_money + ? WHERE `code` = ? AND `phone` = ?', [inviter_money, inviter_money, invite, inviter?.[0].phone]);
+        console.log("SUCCESSFULLY ADD MONEY TO inviter")
+    }
+}
+
+
+const collo_rechargeDuyet = async (req, res) => {
+    let auth = req.cookies.auth;
+    let id = req.body.id;
+    let type = req.body.type;
+    if (!auth || !id || !type) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+    if (type == 'confirm') {
+        await connection.query(`UPDATE recharge SET status = 1 WHERE id = ?`, [id]);
+
+        const [info] = await connection.query(`SELECT * FROM recharge WHERE id = ?`, [id]);
+        const [receiinfo] = await connection.query(`SELECT * FROM users WHERE phone = ?`, [info?.[0]?.phone]);
+        if(info?.[0]?.type.trim() == 'wallet')
+        {
+            const [withdrainfo] = await connection.query(`SELECT * FROM withdraw WHERE id_order = ?`, [info?.[0]?.id_order]);
+            let withInfo = withdrainfo[0];
+            const [senderinfo] = await connection.query(`SELECT * FROM users WHERE phone = ?`, [withInfo.phone]);
+            await connection.query(`UPDATE withdraw SET status = 1 WHERE id_order = ?`, [info?.[0]?.id_order]);
+            await connection.query('UPDATE users SET money = money + ? WHERE phone = ?', [info?.[0]?.money, info?.[0]?.phone]);
+            await connection.query(`UPDATE users SET money = money - ? WHERE phone = ?`, [info?.[0]?.money, withInfo.phone]);
+            let sql_noti = 'INSERT INTO notification SET recipient = ?, description = ?, isread = ?, noti_type = ?'; 
+            await connection.query(sql_noti, [receiinfo?.[0]?.id, "Congrates! you received an reward of "+info?.[0]?.money+" from your friend " + senderinfo?.[0]?.code +".", '0', "Recharge"]);
+            let sql_noti1 = "INSERT INTO notification SET recipient = ?, description = ?, isread = ?, noti_type = ?";
+            let withdrdesc = "Amount of "+ info?.[0]?.money+ " have been transferred successfully.";
+            await connection.query(sql_noti1, [senderinfo?.[0]?.id, withdrdesc , "0", "Withdraw"]);
+        }
+        else{
+            
+            const user = await getUserDataByPhone(info?.[0]?.phone)
+            addUserAccountBalance({
+                money: info[0].money,
+                phone: user.phone,
+                invite: user.invite
+            });
+            let sql_noti = 'INSERT INTO notification SET recipient = ?, description = ?, isread = ?, noti_type = ?';
+            await connection.query(sql_noti, [receiinfo?.[0]?.id, "Recharge of Amount "+info?.[0]?.money+" is Successfull. ", '0', "Recharge"]);
+        }
+        return res.status(200).json({
+            message: 'Successful application confirmation',
+            status: true,
+            datas: [],
+        });
+    }
+    if (type == 'delete') {
+        await connection.query(`UPDATE recharge SET status = 2 WHERE id = ?`, [id]);
+
+        return res.status(200).json({
+            message: 'Cancellation successful',
+            status: true,
+            datas: [],
+        });
+    }
+}
+
+const collo_handlWithdraw = async (req, res) => {
+    console.log("fired");
+    let auth = req.cookies.auth;
+    let id = req.body.id;
+    let type = req.body.type;
+    if (!auth || !id || !type) {
+        return res.status(200).json({
+            message: 'Failed',
+            status: false,
+            timeStamp: timeNow,
+        });
+    }
+    if (type == 'confirm') {
+        await connection.query(`UPDATE withdraw SET status = 1 WHERE id = ?`, [id]);
+        const [winfo] = await connection.query(`SELECT * FROM withdraw WHERE id = ?`, [id]);
+        let withInfo = winfo[0];
+        const [senderinfo] = await connection.query(`SELECT * FROM users WHERE phone = ?`, [withInfo.phone]);
+        if(withInfo.with_type.trim() == 'transfer')
+        {
+            await connection.query(`UPDATE withdraw SET status = 1 WHERE id = ?`, [id]);
+            const [recharge] = await connection.query(`SELECT * FROM recharge WHERE id_order = ?`, [withInfo.id_order]);
+            let rechInfo = recharge[0];
+            const [receiinfo] = await connection.query(`SELECT * FROM users WHERE phone = ?`, [rechInfo.phone]);
+            await connection.query(`UPDATE recharge SET status = 1 WHERE id_order = ?`, [withInfo.id_order]);
+            await connection.query('UPDATE users SET money =  money - ? WHERE phone = ?', [withInfo.money, withInfo.phone]);
+            await connection.query(`UPDATE users SET money = money + ? WHERE phone = ?`, [withInfo.money, rechInfo.phone]);
+            let sql_noti = 'INSERT INTO notification SET recipient = ?, description = ?, isread = ?, noti_type = ?';
+            await connection.query(sql_noti, [receiinfo?.[0]?.id, "Congrates! you received an reward of "+rechInfo.money+" from your friend " + senderinfo?.[0]?.code +".", '0', "Recharge"]);
+            let sql_noti1 = 'INSERT INTO notification SET recipient = ?, description = ?, isread = ?, noti_type = ?';
+            await connection.query(sql_noti1, [senderinfo?.[0]?.id, "Amount of "+withInfo.money+ " have been transferred successfully.", '0', "Withdraw"]);
+        }
+        else
+        {
+            let sql_noti = 'INSERT INTO notification SET recipient = ?, description = ?, isread = ?, noti_type = ?';
+            await connection.query(sql_noti, [senderinfo?.[0]?.id, "Your withdraw of amoount "+withInfo.money+" approved my admin.", '0', "Withdraw"]);
+        }
+        return res.status(200).json({
+            message: 'Successful application confirmation',
+            status: true,
+            datas: [],
+        });
+    }
+    if (type == 'delete') {
+        await connection.query(`UPDATE withdraw SET status = 2 WHERE id = ?`, [id]);
+        const [info] = await connection.query(`SELECT * FROM withdraw WHERE id = ?`, [id]);
+        await connection.query('UPDATE users SET money = money + ? WHERE phone = ? ', [info[0].money, info[0].phone]);
+        return res.status(200).json({
+            message: 'Cancel successfully',
+            status: true,
+            datas: [],
+        });
+    }
+}
+
+
 const settings = async(req, res) => {
     let auth = req.cookies.auth;
     let type = req.body.type;
@@ -892,6 +1158,7 @@ const listMember = async(req, res) => {
 const listRechargeP = async(req, res) => {
     let auth = req.cookies.auth;
     const [user] = await connection.query('SELECT * FROM users WHERE token = ? ', [auth]);
+    const [bank_user] = await connection.query('SELECT * FROM bank_recharge WHERE phone = ? ', [user[0].phone]);
 
     if (user.length == 0) {
         return res.status(200).json({
@@ -911,17 +1178,20 @@ const listRechargeP = async(req, res) => {
             list_recharge_news.push(recharge_today[i]);
         }
     }
+    
     return res.status(200).json({
         message: 'Failed',
         status: true, 
         list_recharge_news: list_recharge_news,
         timeStamp: timeNow,
+        pay_status: bank_user[0].colloborator_action
     });
 }
 
 const listWithdrawP = async(req, res) => {
     let auth = req.cookies.auth;
     const [user] = await connection.query('SELECT * FROM users WHERE token = ? ', [auth]);
+    const [bank_user] = await connection.query('SELECT * FROM bank_recharge WHERE phone = ? ', [user[0].phone]);
 
     if (user.length == 0) {
         return res.status(200).json({
@@ -946,6 +1216,7 @@ const listWithdrawP = async(req, res) => {
         status: true, 
         list_withdraw_news: list_withdraw_news,
         timeStamp: timeNow,
+        pay_status: bank_user[0].colloborator_action
     });
 }
 
@@ -1274,6 +1545,9 @@ const buffMoney = async(req, res) => {
 }
   
 module.exports = {
+    collo_handlWithdraw,
+    collo_rechargeDuyet,
+    settingCollo_Details,
     buffMoney,
     dailyPage,
     middlewareDailyController,
@@ -1298,5 +1572,7 @@ module.exports = {
     listRechargeMem,
     listWithdrawMem,
     listRedenvelope,
-    listBet
+    listBet,
+    settingCollo_Details,
+    settingGet
 }

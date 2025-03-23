@@ -63,6 +63,7 @@
                     <th class="text-center">Amount</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Time</th>
+                    <th class="text-center">Accept/Reject</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -125,9 +126,21 @@
     }
 </script>
   <script>
-    const Render = (datas) => {
+    const Render = (datas, coll_status) => {
       let html = '';
       datas.map((data) => {
+        var statusTXt = '';
+        if(data.status == 1)
+        {
+          statusTXt = '<span class="badge badge-success">Success</span>';
+        }
+        else if(data.status == 2)
+        {
+          statusTXt = '<span class="badge badge-danger">Closed</span>';
+        }
+        else{
+          statusTXt = '<span class="badge badge-warning">Open</span>';
+        }
         html += `
         <tr class="text-center" style="">
           <td>${data.id_order}</td>
@@ -141,11 +154,15 @@
             <b>${data.money}</b>
           </td>
           <td class="project-state">
-            ${(data.status == 1) ? '<span class="badge badge-success">Success</span>' : '<span class="badge badge-warning">Closed</span>'}
+            `+statusTXt+`
           </td>
           <td>
             <b>${timerJoin(data.time)}</b>
           </td>
+          <td class="project-actions text-center" style="min-width: 160px;">
+            ${(coll_status == "on" && data.status == 0) ? '<a class="btn btn-success btn-sm confirm-btn" data='+data.id+'><i class="fa fa-check-circle"></i></a>': ""} 
+            ${(coll_status == "on" && data.status == 0) ? '<a class="btn btn-danger btn-sm delete-btn"  data='+data.id+'><i class="fas fa-times-circle"></i></a>': ""} 
+            </td>
         </tr>`;
         $("tbody").html(html);
       });
@@ -160,9 +177,57 @@
       dataType: "json",
       success: function (response) {
         $('#text-page').text('*/*');
-        if (response.status === true) return Render(response.list_withdraw_news);
+        if (response.status === true) return Render(response.list_withdraw_news, response.pay_status);
       },
     });
+
+    $(document).on("click", '.btn-success', function(e){
+      e.preventDefault();
+      let id = $(this).attr('data');
+      $.ajax({
+        type: "POST",
+        url: "/manager/withdraw_apprv",
+        data: {
+          id: id,
+          type: 'confirm'
+        },
+        dataType: "json",
+        success: function (response) {
+          Swal.fire(
+            'Good job!',
+            'Withdrawal Accepted Successfully!',
+            'success'
+          )
+          setTimeout(() => {
+            location.reload();
+          }, 100);
+        }
+      });
+    });
+    $(document).on("click", '.btn-danger', function(e){
+      e.preventDefault();
+      let id = $(this).attr('data');
+      $.ajax({
+        type: "POST",
+        url: "/manager/withdraw_apprv",
+        data: {
+          id: id,
+          type: 'delete'
+        },
+        dataType: "json",
+        success: function (response) {
+          setTimeout(() => {
+            location.reload();
+          }, 100);
+          Swal.fire(
+            'Good job!',
+            'Withdrawal Rejected Successfully!',
+            'success'
+          )
+        }
+      });
+    });
+
   </script>
 </body>
 

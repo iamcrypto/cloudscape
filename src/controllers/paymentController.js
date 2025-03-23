@@ -25,9 +25,9 @@ const initiateManualUPIPayment = async (req, res) => {
 
     const query = req.query
     const auth = req.cookies.auth;
-    const [rows] = await connection.execute('SELECT `token`,`level`, `status` FROM `users` WHERE `token` = ? AND veri = 1', [auth]);
+    const [rows] = await connection.execute('SELECT * FROM `users` WHERE `token` = ? AND veri = 1', [auth]);
 
-    const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo' AND phone = ?", [rows[0].phone]);
+    const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE phone = ?", [rows[0].phone]);
 
     let bank_recharge_momo_data
     if (bank_recharge_momo.length) {
@@ -40,12 +40,91 @@ const initiateManualUPIPayment = async (req, res) => {
         upi_id: bank_recharge_momo_data?.stk || "",
         usdt_wallet_address: bank_recharge_momo_data?.qr_code_image || "",
     }
-
+    const user_admin_invitor = await get_user_invitor(rows[0].phone);
+    const [bank_recharge] = await connection.query("SELECT * FROM bank_recharge WHERE phone = ?", [user_admin_invitor]);
+    var upi_address = '';
+    if(bank_recharge[0].colloborator_action == "off")
+    {
+        const [f_admin] = await connection.query('SELECT *  FROM users WHERE `level` = 1 ');
+        var invite_phone = f_admin[0].phone;
+        const [bank_recharge12] = await connection.query("SELECT * FROM bank_recharge WHERE phone = ?", [invite_phone]);
+        upi_address = bank_recharge12[0].stk;
+    }
+    else{
+        upi_address = bank_recharge[0].stk;
+    }
     return res.render("wallet/manual_payment.ejs", {
         Amount: query?.am,
         UpiId: momo.upi_id,
+        dynamic_upi_Addr:upi_address,
     });
 }
+
+const get_user_invitor = async (phone_num) => {
+    let phone = phone_num;
+    let invite_phone = "";
+    let invite_role = "";
+    const [f1s] = await connection.query('SELECT * FROM users WHERE `phone` = ? ', [phone]);
+    if(phone != "8895203112"){
+    const [f1s_inv] = await connection.query('SELECT * FROM users WHERE `code` = ? ', [f1s[0].invite]);
+      if(parseInt(f1s_inv[0].level) != 2 && parseInt(f1s_inv[0].level) != 1)
+      { 
+        const [f2s_inv] = await connection.query('SELECT * FROM users WHERE `code` = ? ', [f1s_inv[0].invite]);
+        if(parseInt(f2s_inv[0].level) != 2 && parseInt(f2s_inv[0].level) != 1)
+        { 
+          const [f3s_inv] = await connection.query('SELECT * FROM users WHERE `code` = ? ', [f2s_inv[0].invite]);
+          if(parseInt(f3s_inv[0].level) != 2 && parseInt(f3s_inv[0].level) != 1)
+          {
+            const [f4s_inv] = await connection.query('SELECT * FROM users WHERE `code` = ? ', [f3s_inv[0].invite]);
+            if(parseInt(f4s_inv[0].level) != 2 && parseInt(f4s_inv[0].level) != 1)
+            {
+              const [f5s_inv] = await connection.query('SELECT * FROM users WHERE `code` = ? ', [f4s_inv[0].invite]);
+              if(parseInt(f5s_inv[0].level) != 2 && parseInt(f5s_inv[0].level) != 1)
+              {
+                const [f6s_inv] = await connection.query('SELECT * FROM users WHERE `code` = ? ', [f5s_inv[0].invite]);
+                if(parseInt(f6s_inv[0].level) != 2 && parseInt(f6s_inv[0].level) != 1)
+                {
+                  const [f_admin] = await connection.query('SELECT *  FROM users WHERE `level` = 1 ');
+                  invite_role = 'admin';
+                  invite_phone = f_admin[0].phone;
+                }
+                else{
+                  invite_role = f6s_inv[0].level == 2 ? "colloborator" : "admin";
+                  invite_phone = f6s_inv[0].phone ;
+                }
+              }
+              else{
+                invite_role = f5s_inv[0].level == 2 ? "colloborator" : "admin";
+                invite_phone = f5s_inv[0].phone ;
+              }
+            }
+            else{
+              invite_role = f4s_inv[0].level == 2 ? "colloborator" : "admin";
+              invite_phone = f4s_inv[0].phone ;
+            }
+          }
+          else{
+            invite_role = f3s_inv[0].level == 2 ? "colloborator" : "admin";
+            invite_phone = f3s_inv[0].phone ;
+          }
+        }
+        else{
+          invite_role = f2s_inv[0].level == 2 ? "colloborator" : "admin";
+          invite_phone = f2s_inv[0].phone ;
+        }
+      }
+      else{
+        invite_role = f1s_inv[0].level == 2 ? "colloborator" : "admin";
+        invite_phone = f1s_inv[0].phone ;
+      }
+    }
+    else{
+      invite_role = "admin";
+      invite_phone =  username;
+    }
+    return invite_phone;
+  }
+  
 
 const initiateManualUSDTPayment = async (req, res) => {
     const query = req.query
