@@ -2055,7 +2055,6 @@ const xpgain_value = async (req, res) => {
 
 const getlang_datacall = async (req, res) => {
     let lang_code = req.cookies.lang;
-    console.log(lang_code);
     var lang_data = getlang_data(lang_code);
     return res.status(200).json({
         message: 'Successful',//Register Sucess

@@ -269,18 +269,18 @@
                         <i class="fa-light fa-angle-left fa-fade fa-xl center" style="color: #FFF"></i>
                     </div>
                 </div>
-                <div data-v-106b99c8="" class="navbar-title">Game Rules</div>
+                <div data-v-106b99c8="" class="navbar-title" data-lang="playRules">Game Rules</div>
                 <div data-v-106b99c8="" class="navbar-right"></div>
             </div>
 
             <div data-v-c1e312a2="" class="dailySignInRules__container-hero">
                 <div data-v-c1e312a2="" class="dailySignInRules__container-hero__wrapper">
                    <div data-v-c1e312a2="" class="dailySignInRules__container-hero__wrapper-titlebox">
-                      <div data-v-c1e312a2="" class="dailySignInRules__container-hero__wrapper-title">Continuous attendance
+                      <div data-v-c1e312a2="" class="dailySignInRules__container-hero__wrapper-title" data-lang="continuousCheckedIn">Continuous attendance
                       </div>
-                      <div data-v-c1e312a2="" class="dailySignInRules__container-hero__wrapper-title">Accumulated amount
+                      <div data-v-c1e312a2="" class="dailySignInRules__container-hero__wrapper-title" data-lang="ruleAcount">Accumulated amount
                       </div>
-                      <div data-v-c1e312a2="" class="dailySignInRules__container-hero__wrapper-title">Attendance bonus</div>
+                      <div data-v-c1e312a2="" class="dailySignInRules__container-hero__wrapper-title" data-lang="ruleBonus">Attendance bonus</div>
                    </div>
                    <ul data-v-c1e312a2="">
                       <li data-v-c1e312a2="">
@@ -325,25 +325,25 @@
                 <svg data-v-b64fa971="" class="svg-icon icon-ruleHead">
                    <use xlink:href="#icon-ruleHead"></use>
                 </svg>
-                <div data-v-b64fa971="" class="head">Rules</div>
+                <div data-v-b64fa971="" class="head" data-lang="titleInvitationRule">Rules</div>
                 <div data-v-b64fa971="">
-                   <div data-v-b64fa971="">The higher the number of consecutive login days, the more rewards you get, up to
+                   <div data-v-b64fa971="" data-lang="desc1">The higher the number of consecutive login days, the more rewards you get, up to
                       7 consecutive days</div>
                 </div>
                 <div data-v-b64fa971="">
-                   <div data-v-b64fa971="">During the activity, please check once a day</div>
+                   <div data-v-b64fa971="" data-lang="desc2">During the activity, please check once a day</div>
                 </div>
                 <div data-v-b64fa971="">
-                   <div data-v-b64fa971="">Players with no deposit history cannot claim the bonus</div>
+                   <div data-v-b64fa971="" data-lang="desc3">Players with no deposit history cannot claim the bonus</div>
                 </div>
                 <div data-v-b64fa971="">
-                   <div data-v-b64fa971="">Deposit requirements must be met from day one</div>
+                   <div data-v-b64fa971="" data-lang="desc4">Deposit requirements must be met from day one</div>
                 </div>
                 <div data-v-b64fa971="">
-                   <div data-v-b64fa971="">The platform reserves the right to final interpretation of this activity</div>
+                   <div data-v-b64fa971="" data-lang="desc5">The platform reserves the right to final interpretation of this activity</div>
                 </div>
                 <div data-v-b64fa971="">
-                   <div data-v-b64fa971="">When you encounter problems, please contact customer service</div>
+                   <div data-v-b64fa971="" data-lang="desc6">When you encounter problems, please contact customer service</div>
                 </div>
              </div>
         
@@ -354,7 +354,24 @@
           <script src="https://momentjs.com/downloads/moment.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
         <script>
-          
+            $.ajax({
+                type: "POST",
+                url: "/api/webapi/getlangdata",
+                data: {
+                },
+                dataType: "json",
+                success: function (response) {
+                    load_lang_data(response.data);
+                }
+              });
+        
+              function load_lang_data(data)
+              {
+                $.each(data, function(key,valueObj){
+                  $("[data-lang="+key+"]").text(valueObj);
+                });
+              }
+              
       </script>
 </body>
 

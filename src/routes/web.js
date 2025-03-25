@@ -416,7 +416,7 @@ const initWebRouter = (app) => {
 
 
     router.get('/api/webapi/xpgain_value', middlewareController, userController.xpgain_value);
-    router.post('/api/webapi/getlangdata', userController.getlang_datacall);
+    router.post('/api/webapi/getlangdata', middlewareController,  userController.getlang_datacall);
 
     router.get(
         "/trx_wingo",
