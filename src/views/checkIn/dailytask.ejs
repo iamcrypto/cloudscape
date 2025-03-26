@@ -622,7 +622,7 @@
               <div data-v-20a4a6c6="" class="navi-record" onclick="location.href='/dailytask/record'">
                 <img data-v-20a4a6c6="" data-src="/assets/png/awardRecord-24e78a65.png"
                 src="/assets/png/awardRecord-24e78a65.png" lazy="loaded">
-                <span data-v-20a4a6c6="">
+                <span data-v-20a4a6c6="" data-lang="awardsRecord">
                   Collection record
                 </span>
               </div>
@@ -635,7 +635,7 @@
           <img data-v-20a4a6c6="" data-src="/assets/png/present-360b680e.png" src="/assets/png/present-360b680e.png"
           lazy="loaded">
           <p data-v-20a4a6c6="">
-            <div data-v-20a4a6c6="" class="banner-title">
+            <div data-v-20a4a6c6="" class="banner-title" data-lang="actTip1">
               Activity Award
             </div>
             <div data-v-20a4a6c6="" class="banner-content">
@@ -651,7 +651,7 @@
         <div data-v-20a4a6c6="" class="task-panel" id="activity_bonus">
         <div data-v-20a4a6c6="" class="task-item">
           <div data-v-20a4a6c6="" class="task-item-header">
-            <div data-v-20a4a6c6="" class="hearder-status day">
+            <div data-v-20a4a6c6="" class="hearder-status day" data-lang="dailyMission">
               Daily mission
             </div>
             <span data-v-20a4a6c6="" class="headerR">
@@ -1096,7 +1096,24 @@
           
        });
 
- 
+       $.ajax({
+            type: "POST",
+            url: "/api/webapi/getlangdata",
+            data: {
+            },
+            dataType: "json",
+            success: function (response) {
+                load_lang_data(response.data);
+            }
+          });
+    
+          function load_lang_data(data)
+          {
+            $.each(data, function(key,valueObj){
+              $("[data-lang="+key+"]").text(valueObj);
+            });
+          }
+
 </script>
 </body>
 
