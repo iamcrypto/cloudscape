@@ -1045,7 +1045,7 @@
              setTimeout(() => {
                 $("#failedTost").fadeOut()
                 $("#successTost").fadeOut()
-             }, 1600)
+             }, 1600);
           }
        }
         
@@ -1109,10 +1109,12 @@
     
           function load_lang_data(data)
           {
-            $.each(data, function(key,valueObj){
-              console.log(key);
-              $("[data-lang="+key+"]").text(valueObj);
-            });
+            setTimeout(() => {
+              $.each(data, function(key,valueObj){
+                console.log(key);
+                $("[data-lang="+key+"]").text(valueObj);
+              });
+           }, 1000); 
           }
 
 </script>
