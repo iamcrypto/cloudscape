@@ -689,7 +689,7 @@
         </div>
         <div data-v-20a4a6c6="" class="task-item">
           <div data-v-20a4a6c6="" class="task-item-header">
-            <div data-v-20a4a6c6="" class="hearder-status day">
+            <div data-v-20a4a6c6="" class="hearder-status day" data-lang="dailyMission">
               Daily mission
             </div>
             <span data-v-20a4a6c6="" class="headerR" data-lang="undone">
@@ -727,7 +727,7 @@
         </div>
         <div data-v-20a4a6c6="" class="task-item">
           <div data-v-20a4a6c6="" class="task-item-header">
-            <div data-v-20a4a6c6="" class="hearder-status day">
+            <div data-v-20a4a6c6="" class="hearder-status day" data-lang="dailyMission">
               Daily mission
             </div>
             <span data-v-20a4a6c6="" class="headerR" data-lang="undone">
@@ -765,7 +765,7 @@
         </div>
         <div data-v-20a4a6c6="" class="task-item">
           <div data-v-20a4a6c6="" class="task-item-header">
-            <div data-v-20a4a6c6="" class="hearder-status day">
+            <div data-v-20a4a6c6="" class="hearder-status day" data-lang="dailyMission">
               Daily mission
             </div>
             <span data-v-20a4a6c6="" class="headerR" data-lang="undone">
@@ -803,7 +803,7 @@
         </div>
         <div data-v-20a4a6c6="" class="task-item">
           <div data-v-20a4a6c6="" class="task-item-header">
-            <div data-v-20a4a6c6="" class="hearder-status day">
+            <div data-v-20a4a6c6="" class="hearder-status day" data-lang="dailyMission">
               Daily mission
             </div>
             <span data-v-20a4a6c6="" class="headerR" data-lang="undone">
@@ -880,19 +880,70 @@
 
 
 <script>
-
-
-     
-
-         function formatIndianNumber(num) {
+          function formatIndianNumber(num) {
           let formattedNum = new Intl.NumberFormat("en-IN", {
              maximumFractionDigits: 2,
              minimumFractionDigits: 2,
           }).format(num)
           return formattedNum
        }
- 
-       const initDailyRechargeBonus = async () => {
+       const initWeeklyBettingBonus = async () => {
+        try {
+           const response = await axios.post("/api/activity/weekly_betting_bonus")
+           console.log(response);
+           if (response.data.status === true) {
+              const list = response.data.data
+              const html = list
+                 .map(item => {
+                    return `<div data-v-20a4a6c6="" class="task-item">
+          <div data-v-20a4a6c6="" class="task-item-header">
+            <div data-v-20a4a6c6="" class="hearder-status week"  data-lang="actTip4">
+              weekly tasks
+            </div>
+            <span data-v-20a4a6c6="" class="headerR">
+              ${item.isFinished ?  '<span data-lang="undone">Finished</span>' : '<span data-lang="undone">Unfinished</span>'}
+            </span>
+          </div>
+          <div data-v-20a4a6c6="" class="task-item-type">
+            <div data-v-20a4a6c6="" class="type-title weeklyType3">
+              <div data-v-20a4a6c6="">
+                Lottery betting tasks
+              </div>
+            </div>
+            <div data-v-20a4a6c6="" class="type-tip">
+              ${item.bettingAmount}/${item.requiredBettingAmount}
+            </div>
+          </div>
+          <div data-v-20a4a6c6="" class="task-item-description">
+          </div>
+          <div data-v-20a4a6c6="" class="task-item-bottom">
+            <div data-v-20a4a6c6="" data-lang="awardsAmount">
+              Award amount
+            </div>
+            <div data-v-20a4a6c6="" class="bottom-title">
+              <img data-v-20a4a6c6="" data-src="/assets/png/amountIcon-b2c8faab.png"
+              src="/assets/png/amountIcon-b2c8faab.png" lazy="loaded">
+              <span data-v-20a4a6c6="">
+                ₹${formatIndianNumber(item.bonusAmount)}
+              </span>
+            </div>
+          </div>
+          <div data-v-20a4a6c6="" class="btnweekclaim btn btnOther  status${item.isFinished && item.isClaimed === false ? 2 : 1}" labelid="${item.id}">
+            ${item.isFinished ? (item.isClaimed ? '<span data-lang="">Already Claimed</span>' : '<span data-lang="goComplete">Claim</span>') : '<span data-lang="goComplete">to complete</span>'}
+          </div>
+        </div>
+                        `
+                 })
+                 .join("")
+              $("#weekly_bonus").html(html)
+           }
+        } catch (error) {
+           console.log(error)
+        }
+     };
+     initWeeklyBettingBonus();
+
+     const initDailyRechargeBonus = async () => {
           try {
              const response = await axios.post("/api/activity/daily_betting_bonus")
              console.log(response);
@@ -947,65 +998,8 @@
           } catch (error) {
              console.log(error)
           }
-       }
-
-       const initWeeklyBettingBonus = async () => {
-        try {
-           const response = await axios.post("/api/activity/weekly_betting_bonus")
-           console.log(response);
-           if (response.data.status === true) {
-              const list = response.data.data
-              const html = list
-                 .map(item => {
-                    return `<div data-v-20a4a6c6="" class="task-item">
-          <div data-v-20a4a6c6="" class="task-item-header">
-            <div data-v-20a4a6c6="" class="hearder-status week"  data-lang="actTip4">
-              weekly tasks
-            </div>
-            <span data-v-20a4a6c6="" class="headerR">
-              ${item.isFinished ?  '<span data-lang="undone">Finished</span>' : '<span data-lang="undone">Unfinished</span>'}
-            </span>
-          </div>
-          <div data-v-20a4a6c6="" class="task-item-type">
-            <div data-v-20a4a6c6="" class="type-title weeklyType3">
-              <div data-v-20a4a6c6="">
-                Lottery betting tasks
-              </div>
-            </div>
-            <div data-v-20a4a6c6="" class="type-tip">
-              ${item.bettingAmount}/${item.requiredBettingAmount}
-            </div>
-          </div>
-          <div data-v-20a4a6c6="" class="task-item-description">
-          </div>
-          <div data-v-20a4a6c6="" class="task-item-bottom">
-            <div data-v-20a4a6c6="" data-lang="awardsAmount">
-              Award amount
-            </div>
-            <div data-v-20a4a6c6="" class="bottom-title">
-              <img data-v-20a4a6c6="" data-src="/assets/png/amountIcon-b2c8faab.png"
-              src="/assets/png/amountIcon-b2c8faab.png" lazy="loaded">
-              <span data-v-20a4a6c6="">
-                ₹${formatIndianNumber(item.bonusAmount)}
-              </span>
-            </div>
-          </div>
-          <div data-v-20a4a6c6="" class="btnweekclaim btn btnOther  status${item.isFinished && item.isClaimed === false ? 2 : 1}" labelid="${item.id}">
-            ${item.isFinished ? (item.isClaimed ? '<span data-lang="">Already Claimed</span>' : '<span data-lang="goComplete">Claim</span>') : '<span data-lang="goComplete">to complete</span>'}
-          </div>
-        </div>
-                        `
-                 })
-                 .join("")
-              $("#weekly_bonus").html(html)
-           }
-        } catch (error) {
-           console.log(error)
-        }
-     }
- 
+       };
        initDailyRechargeBonus();
-       initWeeklyBettingBonus();
 
        $(document).on("click", '.btnweekclaim', function(e){
         e.preventDefault();
@@ -1109,10 +1103,12 @@
     
           function load_lang_data(data)
           {
-            $.each(data, function(key,valueObj){
-              console.log(key);
-              $("[data-lang="+key+"]").text(valueObj);
-            });
+            setTimeout(() => {
+              $.each(data, function(key,valueObj){
+                console.log(key);
+                $("[data-lang="+key+"]").text(valueObj);
+              });
+           }, 1000); 
           }
 
 </script>

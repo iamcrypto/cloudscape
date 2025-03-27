@@ -14118,10 +14118,10 @@ textarea {
       </div>
       <div data-v-3413288d="" class="laundry-page_container">
         <div data-v-3413288d="" class="laundry-page_box">
-          <div data-v-3413288d="" class="title">
+          <div data-v-3413288d="" class="title" data-lang="washableSize">
             All-Total betting rebate
           </div>
-          <div data-v-3413288d="" class="lab">
+          <div data-v-3413288d="" class="lab" data-lang="wealName3">
             Real-time count
           </div>
           <div data-v-3413288d="" class="number">
@@ -14130,13 +14130,13 @@ textarea {
             
             <span id="weekly_bet_val">0.00</span>
           </div>
-          <div data-v-3413288d="" class="txt">
+          <div data-v-3413288d="" class="txt" data-lang="laundryTxt1">
             Upgrade VIP level to increase rebate rate
           </div>
           <div data-v-3413288d="" class="c-row">
             <div data-v-3413288d="" class="item">
               <div data-v-3413288d="">
-                <p data-v-3413288d="" class="tit">
+                <p data-v-3413288d="" class="tit" data-lang="rebateToday">
                   Today rebate
                 </p>
                 <span data-v-3413288d="" class="num" id="today_rebate">
@@ -14153,7 +14153,7 @@ textarea {
               </div>
             </div>
             <div data-v-3413288d="" class="item">
-              <p data-v-3413288d="" class="tit">
+              <p data-v-3413288d="" class="tit" data-lang="totalRebate">
                 Total rebate
               </p>
               <span data-v-3413288d="" class="num" id="today_rebate1">
@@ -14161,10 +14161,10 @@ textarea {
               </span>
             </div>
           </div>
-          <div data-v-3413288d="" class="tip">
+          <div data-v-3413288d="" class="tip" data-lang="laundryTxt2">
             Automatic code washing at 01:00:00 every morning
           </div>
-          <button data-v-3413288d="" class="btn" id="btn_rebate_claim">
+          <button data-v-3413288d="" class="btn" id="btn_rebate_claim" data-lang="codeWashing">
             One-Click Rebate
           </button>
           <p data-v-3413288d="" class="rule" style="display: none;">
@@ -14174,7 +14174,7 @@ textarea {
           </p>
         </div>
         <div data-v-3413288d="" class="laundry-page_list">
-          <div data-v-3413288d="" class="title">
+          <div data-v-3413288d="" class="title" data-lang="laundryRed">
             Rebate history
           </div>
           <!---->
@@ -14182,7 +14182,7 @@ textarea {
           style="color: rgb(250, 90, 90); border-color: rgb(250, 90, 90);">
             <div class="van-button__content">
               <!---->
-              <span class="van-button__text">
+              <span class="van-button__text" data-lang="allRecords">
                 All history
               </span>
               <!---->
@@ -14353,6 +14353,28 @@ textarea {
        }
         
      });
+       
+     $.ajax({
+            type: "POST",
+            url: "/api/webapi/getlangdata",
+            data: {
+            },
+            dataType: "json",
+            success: function (response) {
+                load_lang_data(response.data);
+            }
+          });
+    
+          function load_lang_data(data)
+          {
+            setTimeout(() => {
+              $.each(data, function(key,valueObj){
+                console.log(key);
+                $("[data-lang="+key+"]").text(valueObj);
+              });
+           }, 1000); 
+          }
+
 </script>
 </body>
 

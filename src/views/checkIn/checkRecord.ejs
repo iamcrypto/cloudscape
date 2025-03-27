@@ -144,7 +144,7 @@
                         <i class="fa-light fa-angle-left fa-fade fa-xl center" style="color: #FFF"></i>
                     </div>
                 </div>
-                <div data-v-106b99c8="" class="navbar-title"> Registration Profile </div>
+                <div data-v-106b99c8="" class="navbar-title" data-lang="heroDirectSub"> Registration Profile </div>
                 <div data-v-106b99c8="" class="navbar-right" onclick="location.href='/keFuMenu'">
                     <div data-v-2973c506="" data-v-106b99c8="" class="c-row">
                         <i class="fa-fade fa center" style="color: #FFF">
@@ -214,8 +214,8 @@
                             return `
                                <div data-v-67e25db3="" class="item">
                                    <div data-v-67e25db3="" class="head"><span data-v-67e25db3="" class="name">${item.username}</span> <span data-v-67e25db3="" class="uid">UID:${item.uid}</span></div>
-                                   <div data-v-67e25db3="" class="line">Registration time<span data-v-67e25db3="" class="time">${item.create_time}</span></div>
-                                   <div data-v-67e25db3="" class="line">Deposit amount<span data-v-67e25db3="" class="amount">₹${formatIndianNumber(item.amount)}</span></div>
+                                   <div data-v-67e25db3="" class="line" data-lang="registerTime">Registration time<span data-v-67e25db3="" class="time">${item.create_time}</span></div>
+                                   <div data-v-67e25db3="" class="line" data-lang="rechageAmount">Deposit amount<span data-v-67e25db3="" class="amount">₹${formatIndianNumber(item.amount)}</span></div>
                                </div>`
                          })
                          .join("")
@@ -227,6 +227,27 @@
                 }
              }
              initInvitationRecord()
+
+             $.ajax({
+            type: "POST",
+            url: "/api/webapi/getlangdata",
+            data: {
+            },
+            dataType: "json",
+            success: function (response) {
+                load_lang_data(response.data);
+            }
+          });
+    
+          function load_lang_data(data)
+          {
+            setTimeout(() => {
+              $.each(data, function(key,valueObj){
+                console.log(key);
+                $("[data-lang="+key+"]").text(valueObj);
+              });
+           }, 1000); 
+          }
 
     </script>
 </body>
