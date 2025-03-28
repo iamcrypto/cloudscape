@@ -120,7 +120,7 @@ const get_user_invitor = async (phone_num) => {
     }
     else{
       invite_role = "admin";
-      invite_phone =  username;
+      invite_phone =  phone_num;
     }
     return invite_phone;
   }
@@ -131,7 +131,7 @@ const initiateManualUSDTPayment = async (req, res) => {
     const auth = req.cookies.auth;
     const [rows] = await connection.execute('SELECT `token`,`level`, `status` FROM `users` WHERE `token` = ? AND veri = 1', [auth]);
 
-    const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo' AND `phone` = ?", [rows[0].phone]);
+    const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE  `phone` = ?", [rows[0].phone]);
 
     let bank_recharge_momo_data
     if (bank_recharge_momo.length) {
