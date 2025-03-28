@@ -254,7 +254,7 @@
                         <i class="fa-light fa-angle-left fa-fade fa-xl center" style="color: #FFF"></i>
                     </div>
                 </div>
-                <div data-v-106b99c8="" class="navbar-title">Attendance history</div>
+                <div data-v-106b99c8="" class="navbar-title" data-lang="checkInRecord">Attendance history</div>
                 <div data-v-106b99c8="" class="navbar-right"></div>
             </div>
 
@@ -278,6 +278,7 @@
           <script src="https://momentjs.com/downloads/moment.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
         <script>
+
             function formatIndianNumber(num) {
                 let formattedNum = new Intl.NumberFormat("en-IN", {
                    maximumFractionDigits: 2,
@@ -298,7 +299,7 @@
                             return `
                                <div data-v-12a80a3e="" class="item">
                                    <div data-v-12a80a3e="" class="line rq_am_field">Consecutive Day<span data-v-12a80a3e="" class="time">${item.days}</span></div>
-                                   <div data-v-12a80a3e="" class="line time_field">Registration time<span data-v-12a80a3e="" class="time">${item.time}</span></div>
+                                   <div data-v-12a80a3e="" class="line time_field"> <span data-lang="registerTime">Registration time </span><span data-v-12a80a3e="" class="time">${item.time}</span></div>
                                    <div data-v-12a80a3e="" class="line">Received Bonus amount<span data-v-12a80a3e="" class="amount">₹${formatIndianNumber(item.amount)}</span></div>
                                </div>`
                          })
@@ -311,6 +312,24 @@
                 }
              }
              initInvitationRecord();
+
+             $.ajax({
+                type: "POST",
+                url: "/api/webapi/getlangdata",
+                data: {
+                },
+                dataType: "json",
+                success: function (response) {
+                    load_lang_data(response.data);
+                }
+              });
+        
+              function load_lang_data(data)
+              {
+                $.each(data, function(key,valueObj){
+                  $("[data-lang="+key+"]").text(valueObj);
+                });
+              }
       </script>
 </body>
 
