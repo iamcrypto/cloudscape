@@ -2261,7 +2261,7 @@
           </div>
           <div data-v-81ead1cb="" class="navbar__content-center">
             <!---->
-            <div data-v-81ead1cb="" class="navbar__content-title">
+            <div data-v-81ead1cb="" class="navbar__content-title" data-lang="invitationBonus">
               Invitation bonus
             </div>
           </div>
@@ -2271,26 +2271,26 @@
       </div>
     </div>
     <div data-v-94ab1e5c="" class="bonus-header" style="--f817f0ee: 'Roboto', 'Inter', sans-serif;">
-      <div data-v-94ab1e5c="" class="title left">
+      <div data-v-94ab1e5c="" class="title left" data-lang="inviteFriendRecharge">
         Invite friends and deposit
       </div>
-      <div data-v-94ab1e5c="" class="tip left">
+      <div data-v-94ab1e5c="" class="tip left" data-lang="inviteTip1">
         Both parties can receive rewards
       </div>
-      <div data-v-94ab1e5c="" class="tip left">
+      <div data-v-94ab1e5c="" class="tip left" data-lang="inviteTip2">
         Invite friends to register and recharge to receive rewards
       </div>
-      <div data-v-94ab1e5c="" class="tip left">
+      <div data-v-94ab1e5c="" class="tip left" data-lang="inviteTip3">
         activity date
       </div>
-      <div data-v-94ab1e5c="" class="time left">
+      <div data-v-94ab1e5c="" class="time left" >
         2024-02-28 - 2099-02-27
       </div>
       <div data-v-94ab1e5c="" class="nav">
-        <div data-v-94ab1e5c="" class="rule" onclick="location.href='/invitation_rules'">
+        <div data-v-94ab1e5c="" class="rule" onclick="location.href='/invitation_rules'" data-lang="inviteRule">
           Invitation reward rules
         </div>
-        <div data-v-94ab1e5c="" class="record"  onclick="location.href='/checkRecord'">
+        <div data-v-94ab1e5c="" class="record"  onclick="location.href='/checkRecord'"  data-lang="inviteRecord">
           Invitation record
         </div>
       </div>
@@ -2351,6 +2351,8 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
 
+    
+
          function formatIndianNumber(num) {
           let formattedNum = new Intl.NumberFormat("en-IN", {
               maximumFractionDigits: 2,
@@ -2373,7 +2375,7 @@
                             <div data-v-94ab1e5c="" class="bonus-items">
         <div data-v-94ab1e5c="" class="head">
           <div data-v-94ab1e5c="" class="left">
-            Bonus
+            <span data-lang="explainDesc5">Bonus</span>
             <div data-v-94ab1e5c="">
               ${item.id}
             </div>
@@ -2383,7 +2385,7 @@
           </div>
         </div>
         <div data-v-94ab1e5c="" class="detail">
-          <div data-v-94ab1e5c="" class="text">
+          <div data-v-94ab1e5c="" class="text" data-lang="invitationMember">
             Number of invitees
           </div>
           <div data-v-94ab1e5c="" class="people">
@@ -2391,7 +2393,7 @@
           </div>
         </div>
         <div data-v-94ab1e5c="" class="detail">
-          <div data-v-94ab1e5c="" class="text">
+          <div data-v-94ab1e5c="" class="text" data-lang="rechargePerPerson">
             Recharge per people
           </div>
           <div data-v-94ab1e5c="" class="num">
@@ -2405,7 +2407,7 @@
             <div data-v-94ab1e5c="" class="peopleval">
               ${item.current.numberOfInvitedMembers} / ${item.required.numberOfInvitedMembers}
             </div>
-            <div data-v-94ab1e5c="" class="text">
+            <div data-v-94ab1e5c="" class="text" data-lang="invitationMember">
               Number of invitees
             </div>
           </div>
@@ -2413,12 +2415,12 @@
             <div data-v-94ab1e5c="" class="rechargeval">
               ${item.current.numberOfDeposits} / ${item.required.numberOfDeposits}
             </div>
-            <div data-v-94ab1e5c="" class="text">
+            <div data-v-94ab1e5c="" class="text" data-lang="rechargeNumber">
               Deposit number
             </div>
           </div>
         </div>
-      <div data-v-144c92c3=""  labelid="${item.id}" class="btninviteclaim btn status${item.isFinished && item.isClaimed === false ? 2 : 1}">${item.isFinished ? (item.isClaimed ? "Claimed" : "Claim") : "Unfinished"}</div>
+      <div data-v-144c92c3=""  labelid="${item.id}" class="btninviteclaim btn status${item.isFinished && item.isClaimed === false ? 2 : 1}">${item.isFinished ? (item.isClaimed ? '<span data-lang="">Already Claimed</span>' : '<span data-lang="goComplete">Claim</span>') : '<span data-lang="undone">Unfinished</span>'}</div>
       </div>
                         `;
                       })
@@ -2474,7 +2476,23 @@
           }
       });
 
+      $.ajax({
+        type: "POST",
+        url: "/api/webapi/getlangdata",
+        data: {
+        },
+        dataType: "json",
+        success: function (response) {
+            load_lang_data(response.data);
+        }
+      });
 
+      function load_lang_data(data)
+      {
+        $.each(data, function(key,valueObj){
+          $("[data-lang="+key+"]").text(valueObj);
+        });
+      }
 </script>
 </body>
 

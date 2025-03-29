@@ -214,14 +214,14 @@
                         <i class="fa-light fa-angle-left fa-fade fa-xl center" style="color: #FFF"></i>
                     </div>
                 </div>
-                <div data-v-106b99c8="" class="navbar-title">Receive history</div>
+                <div data-v-106b99c8="" class="navbar-title" data-lang="titlePickUpRecord">Receive history</div>
                 <div data-v-106b99c8="" class="navbar-right"></div>
             </div>
             <div data-v-40b81b7f="">
                <div class="van-sticky">
                   <div data-v-40b81b7f="" class="head"><button data-v-40b81b7f="" class="active"
-                        id="weekly_tab_btn">weekly</button><button data-v-40b81b7f="" class=""
-                        id="daily_tab_btn">daily</button></div>
+                        id="weekly_tab_btn" data-lang="actTip7">weekly</button><button data-v-40b81b7f="" class=""
+                        id="daily_tab_btn" data-lang="actTip8">daily</button></div>
                </div>
             </div>
             <div data-v-40b81b7f="" role="feed" class="van-list" aria-busy="false">
@@ -261,7 +261,7 @@
                                     return `
                                        <div data-v-12a80a3e="" class="item">
                                            <div data-v-12a80a3e="" class="line rq_am_field">Required Betting Amount<span data-v-12a80a3e="" class="time">${formatIndianNumber(item.requireBettingAmount)}</span></div>
-                                           <div data-v-12a80a3e="" class="line time_field">Registration time<span data-v-12a80a3e="" class="time">${item.time}</span></div>
+                                           <div data-v-12a80a3e="" class="line time_field"><span data-lang="registerTime"> Registration time</span><span data-v-12a80a3e="" class="time">${item.time}</span></div>
                                            <div data-v-12a80a3e="" class="line">Received Bonus amount<span data-v-12a80a3e="" class="amount">₹${formatIndianNumber(item.amount)}</span></div>
                                        </div>`
                                  })
@@ -315,7 +315,23 @@
 
                      initWeeklyRechargeRewordRecord();
 
-                    
+                     $.ajax({
+                        type: "POST",
+                        url: "/api/webapi/getlangdata",
+                        data: {
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            load_lang_data(response.data);
+                        }
+                      });
+                
+                      function load_lang_data(data)
+                      {
+                        $.each(data, function(key,valueObj){
+                          $("[data-lang="+key+"]").text(valueObj);
+                        });
+                      }                    
       </script>
 </body>
 
