@@ -480,7 +480,7 @@
                         <i class="fa-light fa-angle-left fa-fade fa-xl center" style="color: #FFF"></i>
                     </div>
                 </div>
-                <div data-v-106b99c8="" class="navbar-title">Promotion</div>
+                <div data-v-106b99c8="" class="navbar-title" data-lang="promotion">Promotion</div>
                 <div data-v-106b99c8="" class="navbar-right"></div>
             </div>
             <div data-v-8c7eba72="" class="box">
@@ -488,10 +488,10 @@
                     <div data-v-7c8bbbf4="" class="promotion">
                         <div data-v-7c8bbbf4="" class="tab">
                             <ul data-v-7c8bbbf4="" class="c-row c-row-between">
-                                <li data-v-7c8bbbf4="" onclick="location.href='/promotion'" class="action block-click">Data</li>
-                                <li data-v-7c8bbbf4="" onclick="location.href='/promotion/myTeam'">My Team</li>
-                                <li data-v-7c8bbbf4="" onclick="location.href='/promotion/promotionDes'">History</li>
-                                <li data-v-7c8bbbf4="" onclick="location.href='/promotion/tutorial'">Tutorial</li>
+                                <li data-v-7c8bbbf4="" onclick="location.href='/promotion'" class="action block-click" data-lang="announcement">Data</li>
+                                <li data-v-7c8bbbf4="" onclick="location.href='/promotion/myTeam'" data-lang="subordinateD">My Team</li>
+                                <li data-v-7c8bbbf4="" onclick="location.href='/promotion/promotionDes'" data-lang="record">History</li>
+                                <li data-v-7c8bbbf4="" onclick="location.href='/promotion/tutorial'" data-lang="titleInvitationRule">Tutorial</li>
                             </ul>
                         </div>
                         <div data-v-7c8bbbf4="" class="box">
@@ -501,24 +501,24 @@
                                     <div data-v-167a3387="" id="yesterdayCommissionAmount" class="amount">
                                       0
                                     </div>
-                                    <div data-v-167a3387="" class="amount_txt">Yesterday's total commission
+                                    <div data-v-167a3387="" class="amount_txt" data-lang="yesterdayGrossCommision">Yesterday's total commission
                                     </div>
                                     <div data-v-167a3387="" class="tip">
-                                        Level : <span id= "span_level"></span>
+                                        <spam data-lang="level">Level :</spam> <span id= "span_level" ></span>
                                       </div>
-                                    <div data-v-167a3387="" class="tip">
+                                    <div data-v-167a3387="" class="tip"  data-lang="heroUpgradeLevel">
                                       Upgrade the level to increase commission income
                                     </div>
                                     <div data-v-167a3387="" class="info_content">
                                       <div data-v-167a3387="" class="info">
-                                        <div data-v-167a3387="" class="head">
+                                        <div data-v-167a3387="" class="head" data-lang="heroDirectSub">
                                           Direct subordinates
                                         </div>
                                         <div data-v-167a3387="" class="line1">
                                           <div data-v-167a3387="" class="d_n_register" id="noOfRegisteredSubordinates">
                                             0
                                           </div>
-                                          Number of register
+                                          <span data-lang="subordinatesNumber">Number of register</span>
                                         </div>
                                         <div data-v-167a3387="" class="line2">
                                           <div data-v-167a3387="" class="d_dep_num" id="directSubordinatesRechargeQuantity">
@@ -540,7 +540,7 @@
                                         </div>
                                       </div>
                                       <div data-v-167a3387="" class="info">
-                                        <div data-v-167a3387="" class="head u2">
+                                        <div data-v-167a3387="" class="head u2" data-lang="heroTeamSub">
                                           Team subordinates
                                         </div>
                                         <div data-v-167a3387="" class="line1">
@@ -816,6 +816,28 @@
                     document.execCommand("copy");
                     $temp.remove();
                 }
+
+                $.ajax({
+            type: "POST",
+            url: "/api/webapi/getlangdata",
+            data: {
+            },
+            dataType: "json",
+            success: function (response) {
+                load_lang_data(response.data);
+            }
+          });
+    
+          function load_lang_data(data)
+          {
+            setTimeout(() => {
+              $.each(data, function(key,valueObj){
+                console.log(key);
+                $("[data-lang="+key+"]").text(valueObj);
+              });
+           }, 1000); 
+          }
+
              </script>
 </body>
 
