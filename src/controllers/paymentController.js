@@ -488,7 +488,7 @@ const initiatePiPayment = async (req, res) => {
         const user = await getUserDataByAuthToken(auth)
         const query = req.query
         const [rows] = await connection.execute('SELECT * FROM `users` WHERE `token` = ? ', [auth]);
-        const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo' AND `phone` = ?", [rows[0].phone]);
+        const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE `phone` = ?", [rows[0].phone]);
     
         let bank_recharge_momo_data
         if (bank_recharge_momo.length) {
