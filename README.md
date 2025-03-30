@@ -4,34 +4,36 @@ The package.json file is the configuration file for the Node.js project. It defi
 
 Key Sections:
 Metadata:
-`{
+```{
     "name": "cloudscape",
     "version": "2.0.0",
     "description": "This project is blockchain based contract taking web3 app",
     "main": "server.js",
     "author": "",
     "license": "ISC"
-}`
+}
+```
 
 name: The name of the project.
 version: The version of the project.
 main: The entry point file for the project.
 license: The license for the project.
 
-`{
+```{
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "database": "nodemon --exec ./node_modules/.bin/babel-node src/modal/CreateDatabase.js",
         "start": "nodemon --exec ./node_modules/.bin/babel-node server.js"
     }
-}`
+}
+```
 
 test: A script placeholder for running tests.
 database: A script to run the CreateDatabase.js script using nodemon and babel-node.
 start: A script to start the server using nodemon and babel-node.
 
 Dependencies:
-`{
+```{
     "dependencies": {
         "@babel/core": "7.15.5",
         "@babel/node": "7.15.4",
@@ -61,7 +63,8 @@ Dependencies:
         "socket.io": "^4.4.1",
         "uuid": "^9.0.1"
     }
-}`
+}
+```
 Lists all the dependencies required for the project.
 
 server.js
