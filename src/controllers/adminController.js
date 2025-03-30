@@ -2352,8 +2352,10 @@ const getcolloboratorData = async () => {
 const makecolloborator = async (req, res) => {
     let auth = req.cookies.auth;
     let u_phone = req.body.u_phone;
+    const [rows] = await connection.query('SELECT * FROM users WHERE `phone` = ?', [u_phone]);
     await connection.query('UPDATE users SET level = 2  WHERE phone = ?', [u_phone]);
     await connection.query('UPDATE point_list SET level = 2  WHERE phone = ?', [u_phone]);
+    await connection.query('UPDATE users SET ctv = ?  WHERE invite = ?', [u_phone, rows[0].code]);
     const [bank_recharge] = await connection.query("SELECT * FROM bank_recharge where `phone` = ?", [u_phone]);
     const deleteRechargeQueries = bank_recharge.map(recharge => {
         return deleteBankRechargeById(recharge.id)

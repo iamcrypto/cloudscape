@@ -170,8 +170,8 @@
         </tr>`;
         $("tbody").html(html);
       });
-
-      $(document).on("click", '.colloborator-btn', function(e){
+      
+        $(document).off('click', '.colloborator-btn').on("click", '.colloborator-btn', function(e){
         e.preventDefault();
         let phone = $(this).attr('label_id');
         console.log(phone);
