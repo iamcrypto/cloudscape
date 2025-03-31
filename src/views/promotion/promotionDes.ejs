@@ -40,7 +40,7 @@
                         <i class="fa-light fa-angle-left fa-fade fa-xl center" style="color: #FFF"></i>
                     </div>
                 </div>
-                <div data-v-106b99c8="" class="navbar-title"> History </div>
+                <div data-v-106b99c8="" class="navbar-title" data-lang="record"> History </div>
                 <div data-v-106b99c8="" class="navbar-right" onclick="location.href='/promotion/bonusrecord'">
                     <div data-v-7c8bbbf4="" data-v-106b99c8="" class="c-row">
                         <i class="fa-duotone fa-calendar-lines fa-fade fa-lg"
@@ -51,20 +51,20 @@
             <div data-v-14912091="" class="promotion">
                 <div data-v-14912091="" class="tab">
                     <ul data-v-14912091="" class="c-row c-row-between">
-                        <li data-v-7c8bbbf4="" onclick="location.href='/promotion'">Data</li>
-                        <li data-v-7c8bbbf4="" onclick="location.href='/promotion/myTeam'">My Team</li>
+                        <li data-v-7c8bbbf4="" onclick="location.href='/promotion'" data-lang="announcement">Data</li>
+                        <li data-v-7c8bbbf4="" onclick="location.href='/promotion/myTeam'" data-lang="teamSheets">My Team</li>
                         <li data-v-7c8bbbf4="" onclick="location.href='/promotion/promotionDes'"
-                            class="action block-click">History</li>
-                        <li data-v-7c8bbbf4="" onclick="location.href='/promotion/tutorial'">Tutorial</li>
+                            class="action block-click" data-lang="allRecords">History</li>
+                        <li data-v-7c8bbbf4="" onclick="location.href='/promotion/tutorial'" data-lang="titleInvitationRule">Tutorial</li>
                     </ul>
                 </div>
                 <div data-v-14912091="" class="box">
                     <div data-v-14912091="" class="table">
                         <div data-v-14912091="" class="hd van-row" style="overflow: hidden;">
-                            <div data-v-14912091="" class="c-tc van-ellipsis van-col van-col--6">Time</div>
-                            <div data-v-14912091="" class="c-tc van-ellipsis van-col van-col--6">Phone</div>
-                            <div data-v-14912091="" class="c-tc van-ellipsis van-col van-col--6">Amount</div>
-                            <div data-v-14912091="" class="c-tc van-ellipsis van-col van-col--6">Invite Code</div>
+                            <div data-v-14912091="" class="c-tc van-ellipsis van-col van-col--6" data-lang="time">Time</div>
+                            <div data-v-14912091="" class="c-tc van-ellipsis van-col van-col--6" data-lang="tel">Phone</div>
+                            <div data-v-14912091="" class="c-tc van-ellipsis van-col van-col--6" data-lang="commission">Amount</div>
+                            <div data-v-14912091="" class="c-tc van-ellipsis van-col van-col--6" data-lang="invitationCode">Invite Code</div>
                         </div>
                         <div data-v-14912091="" class="list">
                             <div data-v-14912091="" role="feed" class="van-list">
@@ -141,6 +141,27 @@
                         MemRender(response.total_roses);
                     }
                 });
+
+                $.ajax({
+            type: "POST",
+            url: "/api/webapi/getlangdata",
+            data: {
+            },
+            dataType: "json",
+            success: function (response) {
+                load_lang_data(response.data);
+            }
+          });
+    
+          function load_lang_data(data)
+          {
+            setTimeout(() => {
+              $.each(data, function(key,valueObj){
+                console.log(key);
+                $("[data-lang="+key+"]").text(valueObj);
+              });
+           }, 1000); 
+          }
 
             </script>
 </body>
