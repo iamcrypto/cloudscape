@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="noindex,nofollow">
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
-    <title>Tiranga</title>
+    <title>Cloudscape</title>
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-thin.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css">
@@ -402,16 +402,16 @@
                         <i class="fa-light fa-angle-left fa-fade fa-xl center" style="color: #FFF"></i>
                     </div>
                 </div>
-                <div data-v-106b99c8="" class="navbar-title">Game Statics</div>
+                <div data-v-106b99c8="" class="navbar-title" data-lang="gameStats">Game Statics</div>
                 <div data-v-106b99c8="" class="navbar-right"></div>
             </div>
             <div data-v-40b81b7f="">
                <div class="van-sticky">
                   <div data-v-40b81b7f="" class="head">
-                     <button data-v-40b81b7f="" class="tabgame active" data-type="1" id="todaytab_btn">Today</button>
-                     <button data-v-40b81b7f="" class="tabgame" data-type="2" id="yester_tab_btn">Yesterday</button>
-                     <button data-v-40b81b7f="" class="tabgame" data-type="3" id="weekly_tab_btn">Weekly</button>
-                     <button data-v-40b81b7f="" class="tabgame" data-type="4" id="monthly_tab_btn">Monthly</button>
+                     <button data-v-40b81b7f="" class="tabgame active" data-type="1" id="todaytab_btn" data-lang="today">Today</button>
+                     <button data-v-40b81b7f="" class="tabgame" data-type="2" id="yester_tab_btn" data-lang="yesterday">Yesterday</button>
+                     <button data-v-40b81b7f="" class="tabgame" data-type="3" id="weekly_tab_btn" data-lang="actTip7">Weekly</button>
+                     <button data-v-40b81b7f="" class="tabgame" data-type="4" id="monthly_tab_btn" data-lang="thisMonth">Monthly</button>
                   </div>
                   <div data-v-dc01f921="" class="gamestats-container-banner">
                      
@@ -419,7 +419,7 @@
                         <div data-v-7b659096="" class="parent_div_main">
                            <img data-v-7b659096="" src="/images/recharge.png">
                            <div data-v-7b659096="" class="financialServices__container-box-para">
-                               <h3 data-v-7b659096="" data-lang="gameRecords">Total Bets</h3>
+                               <h3 data-v-7b659096="" data-lang="gameRecords" data-lang="betAmount" >Total Bets</h3>
                                <span data-v-7b659096="" id="mytotalbets"></span>
                            </div>
                            </div>
@@ -429,7 +429,7 @@
                            <div data-v-7b659096=""  class="parent_div_main">
                               <img data-v-7b659096="" src="/images/withdraw.png">
                               <div data-v-7b659096="" class="financialServices__container-box-para">
-                                  <h3 data-v-7b659096="" data-lang="gameRecords">No. of Bets</h3>
+                                  <h3 data-v-7b659096="" data-lang="betTimes">No. of Bets</h3>
                                   <span data-v-7b659096="" id="mynoofbets"></span>
                               </div>
                               </div>
@@ -439,7 +439,7 @@
                            <div data-v-7b659096=""  class="parent_div_main">
                               <img data-v-7b659096="" src="/images/walletIMG.png">
                               <div data-v-7b659096="" class="financialServices__container-box-para">
-                                  <h3 data-v-7b659096="" data-lang="gameRecords">Win/Loss</h3>
+                                  <h3 data-v-7b659096="" data-lang="profitNloss">Win/Loss</h3>
                                   <span data-v-7b659096="" id="mywin_loss"></span>
                               </div>
                               </div>
@@ -766,6 +766,28 @@
                }
            });
          });
+
+         $.ajax({
+            type: "POST",
+            url: "/api/webapi/getlangdata",
+            data: {
+            },
+            dataType: "json",
+            success: function (response) {
+                load_lang_data(response.data);
+            }
+          });
+    
+          function load_lang_data(data)
+          {
+            setTimeout(() => {
+              $.each(data, function(key,valueObj){
+                console.log(key);
+                $("[data-lang="+key+"]").text(valueObj);
+              });
+           }, 1000); 
+          }
+
       </script>
 </body>
 

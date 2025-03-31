@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="noindex,nofollow">
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
-    <title>BINOD game</title>
+    <title>Cloudscape</title>
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-thin.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css">
@@ -59,7 +59,7 @@
                         <i class="fa-light fa-angle-left fa-fade fa-xl center" style="color: #FFF"></i>
                     </div>
                 </div>
-                <div data-v-106b99c8="" class="navbar-title"> Deposit </div>
+                <div data-v-106b99c8="" class="navbar-title" data-lang="recharge"> Deposit </div>
                 <div data-v-106b99c8="" class="navbar-right">
                     <div data-v-11ffe290="" data-v-106b99c8="" class="c-row">
                         <i class="fa-fade fa center" style="color: #FFF">
@@ -84,7 +84,7 @@
                 <div data-v-618c2f5a="" class="balanceAssets__header">
                   <div data-v-618c2f5a="" class="balanceAssets__header__left">
                     <img data-v-618c2f5a="" src="/assets/png/balance-d5880fa1.png">
-                    Total Balance
+                    <span data-lang="totalAmount">Total Balance</span>
                   </div>
                 </div>
                 <div data-v-618c2f5a="" class="balanceAssets__main">
@@ -133,7 +133,7 @@
                         <div data-v-67caa467="" class="van-image" style="width: 20px; height: 20px;">
                             <img src="/images/htmls2.png" class="van-image__img">
                         </div>
-                        <span data-v-67caa467="" class="m-l-10"> Payment Method </span>
+                        <span data-v-67caa467="" class="m-l-10" data-lang="paymentMethod"> Payment Method </span>
                     </div>
                     <!-- Payment Methods Label -->
 
@@ -624,6 +624,27 @@
 
         /* Some Event Listeners added in handleCheckAndSelectPaymentMethod function */
         // --------------
+       
+        $.ajax({
+            type: "POST",
+            url: "/api/webapi/getlangdata",
+            data: {
+            },
+            dataType: "json",
+            success: function (response) {
+                load_lang_data(response.data);
+            }
+          });
+    
+          function load_lang_data(data)
+          {
+            setTimeout(() => {
+              $.each(data, function(key,valueObj){
+                console.log(key);
+                $("[data-lang="+key+"]").text(valueObj);
+              });
+           }, 1000); 
+          }
 
     </script>
 </body>
