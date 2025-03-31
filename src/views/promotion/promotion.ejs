@@ -721,14 +721,13 @@
                 const initSubordinatesData = async () => {
                    try {
                       const response = await axios.get("/api/subordinates/summary");
-          
-                      $("#directSubordinatesCount").text(response?.data?.data?.directSubordinatesCount);
-                      $("#noOfRegisteredSubordinates").text(response?.data?.data?.noOfRegisteredSubordinates);
+                      //$("#directSubordinatesCount").text(response?.data?.data?.directSubordinatesCount);
+                      $("#noOfRegisteredSubordinates").text(response?.data?.data?.directSubordinatesCount);
                       $("#directSubordinatesRechargeQuantity").text(response?.data?.data?.directSubordinatesRechargeQuantity);
                       $("#directSubordinatesRechargeAmount").text(response?.data?.data?.directSubordinatesRechargeAmount);
                       $("#directSubordinatesWithDepositCount").text(response?.data?.data?.directSubordinatesWithDepositCount);
-                      $("#teamSubordinatesCount").text(response?.data?.data?.teamSubordinatesCount);
-                      $("#noOfRegisterAllSubordinates").text(response?.data?.data?.noOfRegisterAllSubordinates);
+                      //$("#teamSubordinatesCount").text(response?.data?.data?.teamSubordinatesCount);
+                      $("#noOfRegisterAllSubordinates").text(response?.data?.data?.teamSubordinatesCount);
                       $("#teamSubordinatesRechargeQuantity").text(response?.data?.data?.teamSubordinatesRechargeQuantity);
                       $("#teamSubordinatesRechargeAmount").text(response?.data?.data?.teamSubordinatesRechargeAmount);
                       $("#teamSubordinatesWithDepositCount").text(response?.data?.data?.teamSubordinatesWithDepositCount);

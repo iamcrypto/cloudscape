@@ -2167,7 +2167,10 @@ const getdashboardInfo = async (req, res) => {
     let totalUsers = 0;
     let peningRecharge = 0; 
     let sucessRecharge = 0; 
+    let monthRecharge = 0; 
     let totalwithdrawal = 0; 
+    let totalwithdrawal_amt = 0; 
+    let totalwithdrawal_no = 0;
     let withdrawalRequest = 0;
     let totalBet = 0;
     let total_w = 0;
@@ -2218,14 +2221,23 @@ const getdashboardInfo = async (req, res) => {
     const [list_pending_recharge] = await connection.query("SELECT COUNT(*) AS `count` FROM recharge WHERE  `status` = ?;", [0]);
     peningRecharge = list_pending_recharge[0].count || 0;
 
-    const [list_success_recharge] = await connection.query("SELECT COUNT(*) AS `count` FROM recharge WHERE  `status` = ?;", [1]);
+    const [list_success_recharge] = await connection.query("SELECT COUNT(*) AS `count` FROM recharge WHERE  `status` = ? ", [1]);
     sucessRecharge = list_success_recharge[0].count || 0;
+
+    const [list_success_recharge_month] = await connection.query("SELECT SUM(money) AS `sum` FROM recharge WHERE  `status` = ? AND MONTH(STR_TO_DATE(`today`, '%Y-%d-%m %h:%i:%s %p')) = MONTH(CURRENT_DATE()) AND YEAR(STR_TO_DATE(`today`, '%Y-%d-%m %h:%i:%s %p')) = YEAR(CURRENT_DATE()) ORDER BY `id` DESC;", [1]);
+    monthRecharge = list_success_recharge_month[0].sum || 0;
 
     const [list_pending_withdraw] = await connection.query("SELECT COUNT(*) AS `count` FROM withdraw WHERE  `status` = ?;", [0]);
     withdrawalRequest = list_pending_withdraw[0].count || 0;
 
     const [list_success_withdraw] = await connection.query("SELECT COUNT(*) AS `count` FROM withdraw WHERE  `status` = ?;", [1]);
     totalwithdrawal = list_success_withdraw[0].count || 0;
+
+    const [list_success_withdraw_amt] = await connection.query("SELECT SUM(`money`) AS `sum` FROM withdraw WHERE  `status` = ? AND MONTH(STR_TO_DATE(`today`, '%Y-%d-%m %h:%i:%s %p')) = MONTH(CURRENT_DATE()) AND YEAR(STR_TO_DATE(`today`, '%Y-%d-%m %h:%i:%s %p')) = YEAR(CURRENT_DATE()) ORDER BY `id` DESC;", [1]);
+    totalwithdrawal_amt = list_success_withdraw_amt[0].sum || 0;
+
+    const [list_success_withdraw_no] = await connection.query("SELECT COUNT(*) AS `count` FROM withdraw WHERE  `status` = ? AND MONTH(STR_TO_DATE(`today`, '%Y-%d-%m %h:%i:%s %p')) = MONTH(CURRENT_DATE()) AND YEAR(STR_TO_DATE(`today`, '%Y-%d-%m %h:%i:%s %p')) = YEAR(CURRENT_DATE()) ORDER BY `id` DESC;", [1]);
+    totalwithdrawal_no = list_success_withdraw_no[0].count || 0;
 
     let monthkyturnover = 0;
     const [list_month_turn_over] = await connection.query("SELECT SUM(daily_turn_over) AS `sum` FROM turn_over WHERE MONTH(`date_time`) = MONTH(CURRENT_DATE()) AND YEAR(`date_time`) = YEAR(CURRENT_DATE()) ORDER BY `id` DESC;");
@@ -2277,7 +2289,10 @@ const getdashboardInfo = async (req, res) => {
             a_TotalUsers:totalUsers - 1,
             a_PendingRecharge:peningRecharge,
             a_SuccessRecharge:sucessRecharge,
+            a_TotalRechargeMonth:monthRecharge,
             a_TotalWithdrawal:totalwithdrawal,
+            a_TotalWithdrawal_No:totalwithdrawal_no,
+            a_TotalWithdrawal_AMT:totalwithdrawal_amt,
             a_WithdrawalRequests:withdrawalRequest,
             a_TodaysTotalBets:totalBet,
             a_TodaysTotalWin:totalWinning,

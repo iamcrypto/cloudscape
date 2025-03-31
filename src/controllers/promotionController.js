@@ -244,6 +244,7 @@ const getUserLevels = (rows, userCode, maxLevel = 10) => {
 };
 
 const userStats = async (startTime, endTime, phone = "") => {
+  const time = moment().startOf("day").valueOf();
   const [rows] = await connection.query(
     `
       SELECT
@@ -268,7 +269,7 @@ const userStats = async (startTime, endTime, phone = "") => {
               FROM
                   recharge
               WHERE
-                  time > ? AND time < ?
+                  time >= ?
               GROUP BY
                   phone
           ) r ON u.phone = r.phone
@@ -284,7 +285,7 @@ const userStats = async (startTime, endTime, phone = "") => {
                       SUM(money + fee) AS total_bet_amount,
                       COUNT(*) AS total_bets
                   FROM minutes_1
-                  WHERE time >= ? AND time <= ?
+                  WHERE time >= ?
                   GROUP BY phone
                   UNION ALL
                   SELECT 
@@ -292,7 +293,7 @@ const userStats = async (startTime, endTime, phone = "") => {
                       SUM(money + fee) AS total_bet_amount,
                       COUNT(*) AS total_bets
                   FROM trx_wingo_bets
-                  WHERE time >= ? AND time <= ?
+                  WHERE time >= ?
                   GROUP BY phone
               ) AS combined
               GROUP BY phone
@@ -305,7 +306,7 @@ const userStats = async (startTime, endTime, phone = "") => {
               FROM
                   commissions
               WHERE
-                  time > ? AND time <= ? AND phone = ?
+                  time >= ? AND phone = ?
               GROUP BY
                   from_user_phone
           ) c ON u.phone = c.phone
@@ -315,14 +316,10 @@ const userStats = async (startTime, endTime, phone = "") => {
           u.time DESC;
       `,
     [
-      startTime,
-      endTime,
-      startTime,
-      endTime,
-      startTime,
-      endTime,
-      startTime,
-      endTime,
+      time,
+      time,
+      time,
+      time,
       phone,
     ],
   );
@@ -361,9 +358,11 @@ const getCommissionStatsByTime = async (time, phone) => {
 const subordinatesDataAPI = async (req, res) => {
   try {
     const authToken = req.cookies.auth;
+    const now = new Date();
     const startOfWeek = getStartOfWeekTimestamp();
-    const { startOfYesterdayTimestamp, endOfYesterdayTimestamp } =
-      yesterdayTime();
+    const startOfYesterdayTimestamp = getTodayStartTime();
+    const endOfYesterdayTimestamp = now.getTime();
+    const time = moment().startOf("day").valueOf();
     const [userRow] = await connection.execute(
       "SELECT * FROM `users` WHERE `token` = ? AND `veri` = 1",
       [authToken],
@@ -384,11 +383,10 @@ const subordinatesDataAPI = async (req, res) => {
       userStatsData,
       user.code,
     );
-
     const directSubordinatesCount = level1Referrals.length;
     const noOfRegisteredSubordinates = level1Referrals.filter(
-      (user) => user.time >= startOfYesterdayTimestamp,
-    ).length;
+      (user) => user.time >= time,
+    ).length;;
     const directSubordinatesRechargeQuantity = level1Referrals.reduce(
       (acc, curr) => acc + curr.total_deposit_number,
       0,
@@ -403,7 +401,7 @@ const subordinatesDataAPI = async (req, res) => {
 
     const teamSubordinatesCount = usersByLevels.length;
     const noOfRegisterAll = usersByLevels.filter(
-      (user) => user.time >= startOfYesterdayTimestamp,
+      (user) => user.time >= time,
     );
     const noOfRegisterAllSubordinates = noOfRegisterAll.length;
     const teamSubordinatesRechargeQuantity = usersByLevels.reduce(
@@ -599,9 +597,9 @@ const subordinatesAPI = async (req, res) => {
       [authToken],
     );
     const type = req.query.type || "today";
-
-    const { startOfYesterdayTimestamp, endOfYesterdayTimestamp } =
-      yesterdayTime();
+    const now1 = new Date();
+    const startOfYesterdayTimestamp = getTodayStartTime();
+    const endOfYesterdayTimestamp = now1.getTime();
     const { startOfMonthTimestamp, endOfMonthTimestamp } = monthTime();
 
     const startDate =
@@ -1766,7 +1764,6 @@ const getDailyBettingeReword = async (req, res) => {
     });
     total2 += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
 
-    console.log(total2);
     const todayBettingAmount = total2;
 
     const [claimedBettingRow] = await connection.execute(
