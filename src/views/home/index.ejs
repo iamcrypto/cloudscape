@@ -938,7 +938,7 @@ style="z-index: 2001;">
               ₹0.00
             </span>
           </div>
-          <p data-v-c67ad2ea="" class="tips">
+          <p data-v-c67ad2ea="" class="tips" data-lang="trxRule">
             By obtaining the real-time hash value of the TRX blockchain as the result
             of the period end 
           </p>
@@ -981,7 +981,7 @@ style="z-index: 2001;">
               ₹0.00
             </span>
           </div>
-          <p data-v-c67ad2ea="" class="tips">
+          <p data-v-c67ad2ea="" class="tips" data-lang="winGoRule">
             Through the platform Sidra Hash Value seed as the result of the output
           </p>
         </div>
@@ -3245,6 +3245,28 @@ style="z-index: 2001;">
     document.querySelector('.van-button__text').addEventListener('click', function () {
       document.querySelector('.van-popup').style.display = 'none';
     });
+
+    $.ajax({
+            type: "POST",
+            url: "/api/webapi/getlangdata",
+            data: {
+            },
+            dataType: "json",
+            success: function (response) {
+                load_lang_data(response.data);
+            }
+          });
+    
+          function load_lang_data(data)
+          {
+            setTimeout(() => {
+              $.each(data, function(key,valueObj){
+                console.log(key);
+                $("[data-lang="+key+"]").text(valueObj);
+              });
+           }, 1000); 
+          }
+
   </script>
 </body>
 
