@@ -71,6 +71,7 @@ CREATE TABLE `bank_recharge` (
   `name_user` varchar(100) NOT NULL DEFAULT '0',
   `stk` varchar(100) NOT NULL DEFAULT '0',
   `qr_code_image` varchar(255) NOT NULL,
+  `upi_wallet` varchar(255) NOT NULL,
   `type` varchar(20) NOT NULL DEFAULT 'bank',
   `time` varchar(30) NOT NULL DEFAULT '0',
   `transfer_mode` varchar(200) DEFAULT NULL,
@@ -465,6 +466,15 @@ CREATE TABLE `evtslog` (
   `dtWhenLogged` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+
+ALTER TABLE `evtslog`
+  ADD PRIMARY KEY (`id`);
+
+
+
+ALTER TABLE `evtslog`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=330;
+COMMIT;
 
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
@@ -943,6 +953,9 @@ INSERT INTO `bank_recharge`( `name_bank`, `name_user`, `stk`, `qr_code_image`, `
 INSERT INTO `turn_over` ( `phone`, `code`, `invite`, `daily_turn_over`, `total_turn_over`, `date_time`) VALUES
 ('8895203112', 'uVxnY75353', 'SUTFD37284', 0.00, 0.00, '2025-01-21 11:32:59');
 
+
+DROP EVENT IF EXISTS release_stack;
+
 DELIMITER @@;
 
 CREATE EVENT release_stack
@@ -951,11 +964,52 @@ starts current_date + interval 1 day + interval 1 minute -- starts tomorrow at 0
 DO
 BEGIN
 
-SELECT @stake_amnt:=amount , @user_phone:=phone FROM claimed_rewards WHERE DATE(to_date) = CURDATE() AND status=2;
-update users set money = money + ROUND(@stake_amnt) where phone = @user_phone;
-update claimed_rewards SET status=1 WHERE DATE(to_date) = CURDATE() AND status=2 AND phone = @user_phone AND reward_id = 136;
+ 
+	INSERT INTO `evtslog` (`evtName`, `step`, `debugMsg`, `dtWhenLogged`) VALUES
+	('testing', 1, 'Event Fired', now());
+	
+	SELECT @stake_amnt:=amount , @user_phone:=phone, @user_date:=to_date  FROM claimed_rewards WHERE DATE(to_date) = CURDATE() AND status=2;
+	
+	update users set money = money + ROUND(@stake_amnt) , total_money = total_money + ROUND(@stake_amnt)  where phone = @user_phone;
+	
+	update claimed_rewards SET status=1 WHERE to_date = @user_date AND status=2 AND phone = @user_phone AND reward_id = 136;
+	
+	INSERT INTO `evtslog` (`evtName`, `step`, `debugMsg`, `dtWhenLogged`) VALUES
+	('testing', 2, 'Event Updated', now());
+	
+	INSERT INTO `evtslog` (`evtName`, `step`, `debugMsg`, `dtWhenLogged`) VALUES
+	('testing', 3, 'Event Finished', now());
 
 END;
 @@;
 
 DELIMITER ; 
+
+
+
+
+DROP EVENT IF EXISTS one_minute_test;
+DELIMITER $$
+CREATE EVENT one_minute_test
+  ON SCHEDULE EVERY 1 MINUTE STARTS '2015-09-01 00:00:00'
+  ON COMPLETION PRESERVE
+DO
+BEGIN
+ 
+	INSERT INTO `evtslog` (`evtName`, `step`, `debugMsg`, `dtWhenLogged`) VALUES
+	('testing', 1, 'Event Fired', now());
+	
+	SELECT @stake_amnt:=amount , @user_phone:=phone, @user_date:=to_date  FROM claimed_rewards WHERE DATE(to_date) = CURDATE() AND status=2;
+	
+	update users set money = money + ROUND(@stake_amnt) , total_money = total_money + ROUND(@stake_amnt)  where phone = @user_phone;
+	
+	update claimed_rewards SET status=1 WHERE to_date = @user_date AND status=2 AND phone = @user_phone AND reward_id = 136;
+	
+	INSERT INTO `evtslog` (`evtName`, `step`, `debugMsg`, `dtWhenLogged`) VALUES
+	('testing', 2, 'Event Updated', now());
+	
+	INSERT INTO `evtslog` (`evtName`, `step`, `debugMsg`, `dtWhenLogged`) VALUES
+	('testing', 3, 'Event Finished', now());
+
+END $$
+DELIMITER ;

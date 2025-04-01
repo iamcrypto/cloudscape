@@ -126,8 +126,8 @@
                   <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box mb-3">
                         <div class="title">
-                            <p class="text-title" style="text-align:left">Total Recharge(Month)</p>
-                              <h4 class="text-amount" style="text-align:left" id="TotalRechargeMonth">2,751,182</h4>
+                              <p class="text-title" style="text-align:left">No. Total Recharge(Month): <span  style="text-align:left" id="TotalRecharge_No">475,535</span> </p>
+                            <p class="text-title" style="text-align:left">Total Recharge(Month): <span style="text-align:left" id="TotalRechargeMonth">475,535</span> </p>
                               <a href="/admin/manager/rechargeRecord">
                                 <span class="pull-left" style="color: white;">See in Detail</span>
                             </a>
@@ -295,6 +295,7 @@
         $("#TotalUsers").text(response.data.a_TotalUsers);
         $("#PendingRecharge").text(response.data.a_PendingRecharge);
         $("#SuccessRecharge").text(response.data.a_SuccessRecharge);
+        $("#TotalRecharge_No").text(response.data.a_TotalRecharge_No);
         $("#TotalRechargeMonth").text(response.data.a_TotalRechargeMonth);
         $("#TotalWithdrawal").html(response.data.a_TotalWithdrawal);
         $("#TotalWithdrawal_No").html(response.data.a_TotalWithdrawal_No);

@@ -93,9 +93,15 @@
                                     <input type="text" class="form-control" placeholder="Wallet Owner Name"
                                         id="edit-momo-name" value=""><br>
                                     <input type="text" class="form-control" placeholder="UPI ID" id="edit-momo-info"
-                                        value=""><br>
+                                        value="" required><br>
                                     <input type="text" class="form-control" placeholder="USDT Wallet Address"
                                         id="edit-momo-qr" value=""><br>
+                                    
+                                    
+
+                                    <label for="telegram" style="color: #3498db;">Upload Qr Code</label>
+                                    <input type='file' name='fileUploaded' id="qr_code_scanner" accept="image/*" required>
+                                    <label id="qr_code_image" name="qr_code_image" style="color: green;" ></label>
                                     <button type="submit" class="btn btn-primary edit-momo"
                                         style="width: 100%;">Submit</button>
                                 </div>
@@ -142,9 +148,12 @@
                 $('#edit-momo-info').val(momo.upi_id);
                 $('#edit-momo-qr').val(momo.usdt_wallet_address);
 
+                $('#qr_code_image').text(momo.qr_code_image);
+
                 $('#edit-banking-name_bank').val(bank.name_bank);
                 $('#edit-banking-name').val(bank.name_user);
                 $('#edit-banking-info').val(bank.stk);
+                
                 // $('#edit-momo-qr').val(momo.qr_code_image);
 
                 $('#telegram').val(response.settings[0].telegram);
@@ -253,18 +262,59 @@
                 const username = $('#edit-momo-name').val();
                 const upi_id = $('#edit-momo-info').val();
                 const usdt_wallet_address = $('#edit-momo-qr').val();
-
-                const response = await axios.post("/admin/manager/settings/bank", {
-                    bank_name,
-                    username,
-                    upi_id,
-                    usdt_wallet_address,
-                    typer: 'momo'
-                })
-
-                if (response?.data?.status === true) {
-                    alertMessage(response?.data?.message)
+                const file_code = $('#qr_code_scanner')[0].files[0];
+                if(upi_id.length != 0)
+                {
+                    if($('#qr_code_scanner')[0].files.length != 0 || $('#qr_code_image').text().length != 0)
+                    {
+                        let formData = new FormData();    
+                        formData.append('qr_code', file_code);
+                        formData.append('file_name', $('#qr_code_scanner')[0].files[0].name);
+                        formData.append("bank_name", bank_name);
+                        formData.append("username", username);
+                        formData.append("upi_id", upi_id);
+                        formData.append("usdt_wallet_address", usdt_wallet_address);
+                        formData.append("typer", "momo");
+                        
+                        fetch('/admin/manager/settings/bank', {
+                        method: 'POST', 
+                        body: formData,
+                        data: {
+                            file_name: $('#qr_code_scanner')[0].files[0].name,
+                        }, 
+                        mode: "cors",
+                      }).then(res =>{ res.json().then((data)=>{
+                        if (data.status === true) {
+                            Swal.fire(
+                            'Good job!',
+                            'Details Updated Successfully!',
+                            'success'
+                        )
+                        }
+                      });
+                    });
+                    }
+                    else
+                    {
+                        Swal.fire({
+                            icon: "error",
+                            text: "Atleast one file is required!",
+                            color: "#716add",
+                            background: "#fff",
+                          });
+                    }
                 }
+                else{
+                    Swal.fire({
+                        icon: "error",
+                        text: "UPi id is required!",
+                        color: "#716add",
+                        background: "#fff"
+                      });     
+                }
+               
+                
+                
             } catch (error) {
                 console.log(error)
             }
