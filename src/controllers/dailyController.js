@@ -3,6 +3,11 @@ import jwt from 'jsonwebtoken'
 import md5 from "md5";
 require('dotenv').config();
 
+import path from 'path';
+var multer  = require('multer');
+import formidable from "formidable";
+import fs from 'fs';
+
 let timeNow = Date.now();
 
 const dailyPage = async(req, res) => {
@@ -57,17 +62,49 @@ const deleteBankRechargeById = async (id) => {
     return recharge
 }
 
+let path_dir = path.dirname(path.basename(__dirname));
+const uploadDir = path.join(path_dir + '/src/public/qr_code');
+let uploaded_fileName = '';
+const storage = multer.diskStorage({
+    destination: uploadDir,
+    filename: function(req, file, cb){
+        uploaded_fileName = file.originalname;
+        cb(null, file.originalname);
+    }
+})
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1000000 //give no. of bytes
+    },
+}).single('qr_code');
+
+
 
 const settingCollo_Details = async (req, res) => {
     try {
-        let auth = req.cookies.auth;
-        let name_bank = req.body.name_bank;
-        let name = req.body.name;
-        let info = req.body.info;
-        let qr = req.body.qr;
-        let typer = req.body.typer;
-
         
+        let uploadfile = await upload(req, res, (err) =>{
+            if(err){
+                console.log(err);
+            }else{
+                console.log('file uploaded succcessfully');
+            }
+        });
+
+        const form = formidable({});
+        let fields;
+
+        [fields] = await form.parse(req);
+        let auth = req.cookies.auth;
+
+
+        let name_bank = fields["name_bank"];
+        let name =fields["name"];
+        let info = fields["info"];
+        let qr = fields["qr"];
+        let typer =  fields["typer"];
+
         if (!auth || !typer) {
             return res.status(200).json({
                 message: 'Failed',
@@ -81,11 +118,13 @@ const settingCollo_Details = async (req, res) => {
             return res.status(200).json({
                 message: 'Successful change',
                 status: true,
-                datas: [],
+                datas: recharge,
             });
         }
+
         if (typer == 'momo') {
-            const [bank_recharge] = await connection.query(`SELECT * FROM bank_recharge WHERE phone = ?;`, [users[0].phone]);
+            
+            const [bank_recharge] = await connection.query(`SELECT * FROM bank_recharge WHERE phone = ? AND status = 0;`, [users[0].phone]);
             var transfer_mode = '';
             if(bank_recharge.length != 0)
             {
@@ -94,22 +133,33 @@ const settingCollo_Details = async (req, res) => {
             else{
                 transfer_mode = "manual";
             }
+            let file_name1 = fields["file_name"];
+            const uploadDir1 = path.join(path_dir + '/src/public/qr_code/'+file_name1);
             const deleteRechargeQueries = bank_recharge.map(recharge => {
+                if(recharge.qr_code_image.toString().trim() != uploadDir1)
+                {
+                    if (fs.existsSync(recharge.qr_code_image.toString().trim())) {
+                        fs.unlink(recharge.qr_code_image.toString().trim(),function(err){
+                        if(err) return console.log(err);
+                        console.log('file deleted successfully');
+                    });  
+                    };
+                }
                 return deleteBankRechargeById(recharge.id)
             });
 
             await Promise.all(deleteRechargeQueries)
 
-            // await connection.query(`UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ? WHERE type = 'upi'`, [name_bank, name, info, qr]);
+            //await connection.query(`UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ? WHERE type = 'upi'`, [name_bank, name, info, qr]);
 
-            const bankName = req.body.bank_name
-            const username = req.body.username
-            const upiId = req.body.upi_id
-            const usdtWalletAddress = req.body.usdt_wallet_address
+            const bankName = fields["bank_name"];
+            const username = fields["username"]
+            const upiId =  fields["upi_id"]
+            const usdtWalletAddress =  fields["usdt_wallet_address"]
             let timeNow = Date.now();
 
-            await connection.query("INSERT INTO bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ?, transfer_mode = ?,phone=?, colloborator_action = ?, time = ?, type = 'momo'", [
-                bankName, username, upiId, usdtWalletAddress,transfer_mode,users[0].phone, "off", timeNow
+            await connection.query("INSERT INTO bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ?, upi_wallet = ?, transfer_mode = ?,phone=?, colloborator_action = ?, time = ?, type = 'momo', status = 0;", [
+                bankName, username, upiId, uploadDir1, usdtWalletAddress,transfer_mode,users[0].phone, "off", timeNow
             ])
 
             return res.status(200).json({
@@ -117,16 +167,15 @@ const settingCollo_Details = async (req, res) => {
                 status: true,
                 datas: [],
             });
-        }
-    
-} catch (error) {
-    console.log(error)
-    return res.status(500).json({
-        message: 'Failed',
-        status: false,
-    });
-}
-}
+       }
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: 'Something went wrong!',
+            status: false,
+        });
+    }
+};
 
 
 const settingGet = async (req, res) => {
@@ -140,8 +189,8 @@ const settingGet = async (req, res) => {
             });
         }
         const [rows] = await connection.execute('SELECT * FROM `users` WHERE `token` = ? AND veri = 1', [auth]);
-        const [bank_recharge] = await connection.query("SELECT * FROM bank_recharge where `phone` = ?", [rows[0].phone]);
-        const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo' AND `phone` = ?", [rows[0].phone]);
+        const [bank_recharge] = await connection.query("SELECT * FROM bank_recharge where `phone` = ? AND status= 1", [rows[0].phone]);
+        const [bank_recharge_momo] = await connection.query("SELECT * FROM bank_recharge WHERE type = 'momo' AND `phone` = ? AND status= 1", [rows[0].phone]);
         const [settings] = await connection.query('SELECT * FROM admin ');
 
         let bank_recharge_momo_data
@@ -157,7 +206,8 @@ const settingGet = async (req, res) => {
                 bank_name: bank_recharge_momo_data?.name_bank || "",
                 username: bank_recharge_momo_data?.name_user || "",
                 upi_id: bank_recharge_momo_data?.stk || "",
-                usdt_wallet_address: bank_recharge_momo_data?.qr_code_image || "",
+                usdt_wallet_address: bank_recharge_momo_data?.upi_wallet || "",
+                qr_code_image: bank_recharge_momo_data?.qr_code_image || "",
             }
         });
     } catch (error) {
@@ -263,7 +313,6 @@ const collo_rechargeDuyet = async (req, res) => {
 }
 
 const collo_handlWithdraw = async (req, res) => {
-    console.log("fired");
     let auth = req.cookies.auth;
     let id = req.body.id;
     let type = req.body.type;
@@ -811,6 +860,7 @@ const infoCtv = async(req, res) => {
 
     const [point_list] = await connection.query('SELECT * FROM point_list WHERE phone = ? ', [phone]);
     let moneyCTV = point_list[0].money;
+    let moneyRecharge = point_list[0].recharge;
 
     let list_recharge_news = [];
     let list_withdraw_news = [];
@@ -873,6 +923,7 @@ const infoCtv = async(req, res) => {
         list_recharge_news: list_recharge_news,
         list_withdraw_news: list_withdraw_news, 
         moneyCTV: moneyCTV,
+        moneyRecharge:moneyRecharge,
         redenvelopes_used: redenvelopes_used_today,
         financial_details_today: financial_details_today,
     });
@@ -1547,7 +1598,6 @@ const buffMoney = async(req, res) => {
 module.exports = {
     collo_handlWithdraw,
     collo_rechargeDuyet,
-    settingCollo_Details,
     buffMoney,
     dailyPage,
     middlewareDailyController,

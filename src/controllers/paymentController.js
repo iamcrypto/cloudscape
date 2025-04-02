@@ -43,19 +43,24 @@ const initiateManualUPIPayment = async (req, res) => {
     const user_admin_invitor = await get_user_invitor(rows[0].phone);
     const [bank_recharge] = await connection.query("SELECT * FROM bank_recharge WHERE phone = ?", [user_admin_invitor]);
     var upi_address = '';
+    var upi_image = '';
     if(bank_recharge[0].colloborator_action == "off")
     {
         const [f_admin] = await connection.query('SELECT *  FROM users WHERE `level` = 1 ');
         var invite_phone = f_admin[0].phone;
         const [bank_recharge12] = await connection.query("SELECT * FROM bank_recharge WHERE phone = ?", [invite_phone]);
         upi_address = bank_recharge12[0].stk;
+        upi_image = bank_recharge12[0].qr_code_image.toString().trim();
     }
     else{
         upi_address = bank_recharge[0].stk;
+        upi_image = bank_recharge[0].qr_code_image.toString().trim();
     }
+    
     return res.render("wallet/manual_payment.ejs", {
         Amount: query?.am,
         UpiId: momo.upi_id,
+        upi_address_image:upi_image.replace(/\\/g, "/").replace("src/public",""),
         dynamic_upi_Addr:upi_address,
     });
 }

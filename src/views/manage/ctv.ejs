@@ -12,6 +12,25 @@
   <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet" />
   <link rel="stylesheet" href="/dist/css/adminlte.min.css" />
   <link rel="stylesheet" href="/css/admin.css" />
+  <style>
+    #comments
+    {
+      width: 100%;
+      padding:2%;
+    }
+    #req_tbl
+    {
+      width: 100%;
+    }
+    #req_tbl th:first-child, #req_tbl td:first-child
+    {
+      width:40%;
+    }
+    #req_tbl th, #req_tbl td
+    {
+      padding: 2%;
+    }
+  </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -54,8 +73,8 @@
                   <tr>
                     <th class="text-center">#</th>
                     <th class="text-center">Account</th>
-                    <th class="text-center">Level</th>
                     <th class="text-center">UPI Address</th>
+                    <th class="text-center">UPI Wallet</th>
                     <th class="text-center">Balance</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Action</th>
@@ -79,14 +98,73 @@
             </nav>
           </div>
         </section>
+        <div class="modal fade" id="myModal_req" role="dialog" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog modal-lg">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">View Request</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <input type="hidden" id="req_phone" name="req_phone" value="3487">
+                <table border="1" id="req_tbl" >
+                  <tr>
+                      <th>Request Name</th>
+                      <th>Change For</th>
+                  </tr>
+                  <tr>
+                      <td>Rate</td>
+                      <td><span id="rate_txt"></span></td>
+                  </tr>
+                  <tr>
+                    <td>Wallet Owner Name</td>
+                    <td><span id="name_txt"></span></td>
+                  </tr>
+                  <tr>
+                    <td>UPI Id</td>
+                      <td><span id="upi_id_txt"></span></td>
+                  </tr>
+                  <tr>
+                    <td>UPI Wallet</td>
+                      <td><span id="wallet_txt"></span></td>
+                  </tr>
+                  <tr>
+                    <td>Qr Code Image</td>
+                      <td><span id="qr_code_txt"></span></td>
+                  </tr>
+              </table>
+              <div style="padding: 5%;" id="commentsDiv">
+                <label for="comments">Your Comments:</label><br>
+                <textarea id="comments" name="comments" rows="5" cols="40"></textarea>
+              </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="btn_accept_click">Accept</button>
+                <button type="button" class="btn btn-danger" id="btn_reject_click">Reject</button>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
       </div>
+      
   </div>
-  <script src="/plugins/jquery/jquery.min.js"></script>
+
+
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/dist/js/adminlte.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
   <script src="/js/admin/admin.js"></script>
   <script>
+
+ 
     $("#search").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("tbody tr").filter(function() {
@@ -117,13 +195,13 @@
             <b style="color: #2003db">${data.phone}</b>
           </td>
           <td>
-            <b>${(data.level == 1) ? 'ADMIN' : (data.level == 2) ? 'CTV' : 'USER'}</b>
+            <b>${response.collo_upi}</b>
           </td>
            <td>
-            <b>${data.money}</b>
+            <b>${response.collo_wallet}</b>
           </td>
           <td>
-            <b>${response.collo_upi}</b>
+            <b>${data.money}</b>
           </td>
           <td class="project-state">
             ${(data.status == 1) ? '<span class="badge badge-success">Online</span>' : '<span class="badge badge-warning">Banned</span>'}
@@ -149,18 +227,91 @@
             </a>-->
 
              ${(response.datas == 'off') ? `<a class="btn btn-info btn-sm btn-warning" id="${data.phone}" href="#">
-              <i class="fas  fa-credit-card"></i> Enable Payment
+              <i class="fas fa-credit-card"></i> Enable Payment
             </a>` : ''}
             ${(response.datas == 'on') ? `<a class="btn btn-info btn-sm btn-primary" id="${data.phone}" href="#">
-              <i class="fas  fa-credit-card"></i> Disable Payment
+              <i class="fas fa-credit-card"></i> Disable Payment
+            </a>` : ''}
+            ${(parseInt(response.req_count) > 0) ? `<a class="btn_request btn btn-info btn-sm btn-sucess" id="${data.phone}">
+              <i class="fas fa-eye  "></i> View Request
             </a>` : ''}
           </td>
         </tr>`;
-        $("tbody").html(html);
+        $("#table1 tbody").html(html);
       }
     });
       });
     }
+  
+    $(document).off('click', '.btn_request').on("click", '.btn_request', function(e){
+      e.preventDefault();
+      let id = $(this).attr('id');
+      $.ajax({
+        type: "POST",
+        url: "/api/webapi/admin/get_bank_request",
+        data: {
+          id: id,
+        },
+        dataType: "json",
+        success: function (response) {
+          $("#req_phone").val(response.datas[0].phone);
+          $("#rate_txt").text(response.datas[0].name_bank);
+          $("#name_txt").text(response.datas[0].name_user);
+          $("#upi_id_txt").text(response.datas[0].stk);
+          $("#wallet_txt").text(response.datas[0].upi_wallet);
+          $("#qr_code_txt").text(response.datas[0].qr_code_image);
+          $("#commentsDiv").css("display", "none");
+          $('#myModal_req').modal('show');
+        }
+      });
+    });
+
+    $(document).off('click', '#btn_accept_click').on("click", '#btn_accept_click', function(e){
+      e.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: "/api/webapi/admin/accept_reject",
+        data: {
+          id: $("#req_phone").val(),
+          type:'accept',
+          comments:$("#comments").val().toString().trim()
+        },
+        dataType: "json",
+        success: function (response) {
+          if(response.status == true)
+          {
+            $('#myModal_req').modal('hide'); 
+            location.reload();
+          }
+        }
+      });
+    });
+    $(document).off('click', '#btn_reject_click').on("click", '#btn_reject_click', function(e){
+      e.preventDefault();
+      if($("#comments").val().toString().trim().length != 0)
+      {
+          $.ajax({
+            type: "POST",
+            url: "/api/webapi/admin/accept_reject",
+            data: {
+              id: $("#req_phone").val(),
+              type:'reject',
+              comments:$("#comments").val().toString().trim()
+            },
+            dataType: "json",
+            success: function (response) {
+              if(response.status == true)
+              {
+                $('#myModal_req').modal('hide'); 
+                location.reload();
+              }
+            }
+          });
+      }
+      else{
+        $("#commentsDiv").css("display", "block");
+      }
+    });
 
     $(document).on("click", '.btn_danger', function(e){
       e.preventDefault();

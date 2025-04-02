@@ -402,6 +402,8 @@ const initWebRouter = (app) => {
     router.post('/api/webapi/admin/member/info', adminController.middlewareAdminController, adminController.userInfo); // get info account
     router.post('/api/webapi/admin/statistical', adminController.middlewareAdminController, adminController.statistical2); // get info account
 
+    router.post('/api/webapi/admin/get_bank_request', adminController.middlewareAdminController, adminController.getbankRequest); 
+    router.post('/api/webapi/admin/accept_reject', adminController.middlewareAdminController, adminController.ReqAcceptReject); 
     router.post('/api/webapi/admin/banned', adminController.middlewareAdminController, adminController.banned); // get info account
     router.post('/api/webapi/admin/on_off_collo', adminController.middlewareAdminController, adminController.on_off_colloborator); 
     router.post('/api/webapi/admin/totalJoin', adminController.middlewareAdminController, adminController.totalJoin); // get info account

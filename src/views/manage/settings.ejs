@@ -25,7 +25,10 @@
             border-radius: 5px;
             box-shadow: 0 0 5px #2ecc71;
         }
-
+        #swal2-html-container
+        {
+            color:white;
+        }
         .form-group button {
             margin-top: 30px;
         }
@@ -99,7 +102,7 @@
                                     
                                     
 
-                                    <label for="telegram" style="color: #3498db;">Upload Qr Code</label>
+                                    <label for="qr_code" style="color: #3498db;">Upload Qr Code</label>
                                     <input type='file' name='fileUploaded' id="qr_code_scanner" accept="image/*" required>
                                     <label id="qr_code_image" name="qr_code_image" style="color: green;" ></label>
                                     <button type="submit" class="btn btn-primary edit-momo"
@@ -148,7 +151,7 @@
                 $('#edit-momo-info').val(momo.upi_id);
                 $('#edit-momo-qr').val(momo.usdt_wallet_address);
 
-                $('#qr_code_image').text(momo.qr_code_image);
+                $('#qr_code_image').text(momo.qr_code_image.toString().trim().replace(/\\/g, "/").replace("src/public",document.location.origin));
 
                 $('#edit-banking-name_bank').val(bank.name_bank);
                 $('#edit-banking-name').val(bank.name_user);
@@ -267,32 +270,42 @@
                 {
                     if($('#qr_code_scanner')[0].files.length != 0 || $('#qr_code_image').text().length != 0)
                     {
+                        var file_name_up = '';
+                        var tarr = $('#qr_code_image').text().split('/');
+                        if($('#qr_code_scanner')[0].files.length == 0)
+                        {
+                            
+                            file_name_up = tarr[tarr.length-1];
+                        }
+                        else{
+                            file_name_up = $('#qr_code_scanner')[0].files[0].name
+                        }
                         let formData = new FormData();    
                         formData.append('qr_code', file_code);
-                        formData.append('file_name', $('#qr_code_scanner')[0].files[0].name);
+                        formData.append('file_name', file_name_up);
                         formData.append("bank_name", bank_name);
                         formData.append("username", username);
                         formData.append("upi_id", upi_id);
                         formData.append("usdt_wallet_address", usdt_wallet_address);
                         formData.append("typer", "momo");
-                        
+
                         fetch('/admin/manager/settings/bank', {
-                        method: 'POST', 
-                        body: formData,
-                        data: {
-                            file_name: $('#qr_code_scanner')[0].files[0].name,
-                        }, 
-                        mode: "cors",
-                      }).then(res =>{ res.json().then((data)=>{
-                        if (data.status === true) {
-                            Swal.fire(
-                            'Good job!',
-                            'Details Updated Successfully!',
-                            'success'
-                        )
-                        }
-                      });
-                    });
+                            method: 'POST', 
+                            body: formData,
+                            data: {
+                                file_name: file_name_up,
+                            }, 
+                            mode: "cors",
+                          }).then(res =>{ res.json().then((data)=>{
+                            if (data.status === true) {
+                                Swal.fire(
+                                'Good job!',
+                                'Details Updated Successfully!',
+                                'success'
+                            )
+                            }
+                          });
+                        }); 
                     }
                     else
                     {
