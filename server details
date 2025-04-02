@@ -1,0 +1,51 @@
+https://signin.aws.amazon.com/signin?redirect_uri=https%3A%2F%2Fap-south-1.console.aws.amazon.com%2Frds%2Fhome%3FhashArgs%3D%2523event-list%26isauthcode%3Dtrue%26oauthStart%3D1743560293136%26region%3Dap-south-1%26state%3DhashArgsFromTB_ap-south-1_ec287f2726a9ce94&client_id=arn%3Aaws%3Asignin%3A%3A%3Aconsole%2Frds-tb&forceMobileApp=0&code_challenge=v6Wky-jIpXNU9x7b1MqmIXHZJ7t3xaoAEUCrNRI0KZM&code_challenge_method=SHA-256
+
+
+https://ap-south-1.console.aws.amazon.com/ec2-instance-connect/ssh/home?addressFamily=ipv4&connType=standard&instanceId=i-01b94805ccf87a22a&osUser=ubuntu&region=ap-south-1&sshPort=22#
+
+
+manojtitun9@gmail.com
+
+Xmail@365
+
+
+
+cloudscape_db
+
+database-1.c1o64g8g6qdg.ap-south-1.rds.amazonaws.com
+3306 -u cloudyscape -p
+
+mysql -h database-1.c1o64g8g6qdg.ap-south-1.rds.amazonaws.com   -P 3306 -u cloudyscape -p
+
+
+Ajax24x7#365
+
+
+
+UPDATE `wingo` SET `status` = '0' WHERE `wingo`.`game` = 'wingo' ORDER BY id DESC LIMIT 1;
+UPDATE `wingo` SET `status` = '0' WHERE `wingo`.`game` = 'wingo3' ORDER BY id DESC LIMIT 1;
+UPDATE `wingo` SET `status` = '0' WHERE `wingo`.`game` = 'wingo5' ORDER BY id DESC LIMIT 1;
+UPDATE `wingo` SET `status` = '0' WHERE `wingo`.`game` = 'wingo10' ORDER BY id DESC LIMIT 1;
+
+UPDATE `k3` SET `status` = '0' WHERE `k3`.`game` = '1' ORDER BY id DESC LIMIT 1;
+UPDATE `k3` SET `status` = '0' WHERE `k3`.`game` = '3' ORDER BY id DESC LIMIT 1;
+UPDATE `k3` SET `status` = '0' WHERE `k3`.`game` = '5' ORDER BY id DESC LIMIT 1;
+UPDATE `k3` SET `status` = '0' WHERE `k3`.`game` = '10' ORDER BY id DESC LIMIT 1;
+
+
+UPDATE `d5` SET `status` = '0' WHERE `d5`.`game` = '1' ORDER BY id DESC LIMIT 1;
+UPDATE `d5` SET `status` = '0' WHERE `d5`.`game` = '3' ORDER BY id DESC LIMIT 1;
+UPDATE `d5` SET `status` = '0' WHERE `d5`.`game` = '5' ORDER BY id DESC LIMIT 1;
+UPDATE `d5` SET `status` = '0' WHERE `d5`.`game` = '10' ORDER BY id DESC LIMIT 1;
+
+
+UPDATE `trx_wingo_game` SET `status` = '0' WHERE `trx_wingo_game`.`game` = 'trx_wingo' ORDER BY id DESC LIMIT 1;
+UPDATE `trx_wingo_game` SET `status` = '0' WHERE `trx_wingo_game`.`game` = 'trx_wingo3' ORDER BY id DESC LIMIT 1;
+UPDATE `trx_wingo_game` SET `status` = '0' WHERE `trx_wingo_game`.`game` = 'trx_wingo5' ORDER BY id DESC LIMIT 1;
+UPDATE `trx_wingo_game` SET `status` = '0' WHERE `trx_wingo_game`.`game` = 'trx_wingo10' ORDER BY id DESC LIMIT 1;
+
+
+
+
+
+
