@@ -195,7 +195,10 @@
             <h2>Pay Through UPI</h2>
         </header>
 
-        <but class="upi_display_root"><br>
+        <div class="upi_display_root"><br>
+
+        <input type="hidden" id="upi_user" name="upi_user" value="<%=upi_user_phone%>">
+            
         <img src="<%=upi_address_image%>" width="175px">
             <h2 class="upi_display_title">
                 Send ₹ <span id="display_amount">
@@ -316,10 +319,12 @@
                 event.preventDefault();
                 const upiRefNo = document.getElementById("upi_ref_no").value;
                 const amount = '<%=Amount%>';
+                const upi_user = document.getElementById("upi_user").value;
 
                 const response = await axios.post("/wallet/paynow/manual_upi_request", {
                     money: amount,
                     utr: upiRefNo,
+                    upi_user:upi_user,   
                 })
 
                 if (!response?.data) {

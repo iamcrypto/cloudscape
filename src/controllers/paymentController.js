@@ -40,7 +40,7 @@ const initiateManualUPIPayment = async (req, res) => {
         upi_id: bank_recharge_momo_data?.stk || "",
         usdt_wallet_address: bank_recharge_momo_data?.qr_code_image || "",
     }
-    const user_admin_invitor = await get_user_invitor(rows[0].phone);
+    const user_admin_invitor = await get_user_invitor(rows[0].phone,query?.am);
     const [bank_recharge] = await connection.query("SELECT * FROM bank_recharge WHERE phone = ?", [user_admin_invitor]);
     var upi_address = '';
     var upi_image = '';
@@ -62,10 +62,11 @@ const initiateManualUPIPayment = async (req, res) => {
         UpiId: momo.upi_id,
         upi_address_image:upi_image.replace(/\\/g, "/").replace("src/public",""),
         dynamic_upi_Addr:upi_address,
+        upi_user_phone:user_admin_invitor,
     });
 }
 
-const get_user_invitor = async (phone_num) => {
+const get_user_invitor = async (phone_num, amount) => {
     let phone = phone_num;
     let invite_phone = "";
     let invite_role = "";
@@ -127,6 +128,21 @@ const get_user_invitor = async (phone_num) => {
       invite_role = "admin";
       invite_phone =  phone_num;
     }
+    if(invite_role = "colloborator")
+    {
+        const [rows] = await connection.execute('SELECT * FROM `point_list` WHERE `phone` = ? ', [invite_phone]);
+        let coll_rech_limit = rows[0].recharge;
+        if(parseInt(coll_rech_limit) >= amount)
+        {
+            invite_phone =  invite_phone;   
+        }
+        else
+        {
+            const [f_admin] = await connection.query('SELECT *  FROM users WHERE `level` = 1 ');
+            invite_role = 'admin';
+            invite_phone = f_admin[0].phone;  
+        }
+    }
     return invite_phone;
   }
   
@@ -162,6 +178,7 @@ const addManualUPIPaymentRequest = async (req, res) => {
         let auth = req.cookies.auth;
         let money = parseInt(data.money);
         let utr = parseInt(data.utr);
+        let upi_user = (data.upi_user);
         const minimumMoneyAllowed = parseInt(process.env.MINIMUM_MONEY)
 
         if (!money || !(money >= minimumMoneyAllowed)) {
@@ -193,18 +210,60 @@ const addManualUPIPaymentRequest = async (req, res) => {
         }
 
         const orderId = getRechargeOrderId()
-
-        const newRecharge = {
-            orderId: orderId,
-            transactionId: 'NULL',
-            utr: utr,
-            phone: user.phone,
-            money: money,
-            type: PaymentMethodsMap.UPI_MANUAL,
-            status: 0,
-            today: rechargeTable.getCurrentTimeForTodayField(),
-            url: "NULL",
-            time: timeNow,
+        const [rows] = await connection.execute('SELECT * FROM `users` WHERE `phone` = ? ', [upi_user]);
+        const upi_user_level = rows[0].level;
+        var newRecharge
+        if(upi_user_level == 1)
+        {
+            newRecharge = {
+                orderId: orderId,
+                transactionId: 'NULL',
+                utr: utr,
+                phone: user.phone,
+                money: money,
+                type: PaymentMethodsMap.UPI_MANUAL,
+                status: 0,
+                today: rechargeTable.getCurrentTimeForTodayField(),
+                url: "NULL",
+                time: timeNow,
+                redirect_to:"",
+            }
+        }
+        if(upi_user_level == 2){
+            const [rows] = await connection.execute('SELECT * FROM `point_list` WHERE `phone` = ? ', [upi_user]);
+            let coll_rech_limit = rows[0].recharge;
+            if(parseInt(coll_rech_limit) >= money)
+            {
+                await connection.query(`UPDATE point_list SET recharge = recharge - ? WHERE level = 2 and phone = ?`, [money, upi_user]);
+                newRecharge = {
+                    orderId: orderId,
+                    transactionId: 'NULL',
+                    utr: utr,
+                    phone: user.phone,
+                    money: money,
+                    type: PaymentMethodsMap.UPI_MANUAL,
+                    status: 0,
+                    today: rechargeTable.getCurrentTimeForTodayField(),
+                    url: "NULL",
+                    time: timeNow,
+                    redirect_to:"colloborator",
+                }    
+            }
+            else{
+                newRecharge = {
+                    orderId: orderId,
+                    transactionId: 'NULL',
+                    utr: utr,
+                    phone: user.phone,
+                    money: money,
+                    type: PaymentMethodsMap.UPI_MANUAL,
+                    status: 0,
+                    today: rechargeTable.getCurrentTimeForTodayField(),
+                    url: "NULL",
+                    time: timeNow,
+                    redirect_to:"admin",
+                }    
+            }
         }
 
         const recharge = await rechargeTable.create(newRecharge)
@@ -276,6 +335,7 @@ const addManualUSDTPaymentRequest = async (req, res) => {
             today: rechargeTable.getCurrentTimeForTodayField(),
             url: "NULL",
             time: timeNow,
+            redirect_to:"",
         }
 
         const recharge = await rechargeTable.create(newRecharge)
@@ -356,6 +416,7 @@ const initiateUPIPayment = async (req, res) => {
             today: rechargeTable.getCurrentTimeForTodayField(),
             url: ekqrData.data.payment_url,
             time: timeNow,
+            redirect_to:"",
         }
 
         const recharge = await rechargeTable.create(newRecharge)
@@ -589,6 +650,7 @@ const verifyPiPayment = async (req, res) => {
             today: rechargeTable.getCurrentTimeForTodayField(),
             url: 'NULL',
             time: timeNow,
+            redirect_to:"",
         }
 
 
@@ -757,8 +819,8 @@ const rechargeTable = {
         }
 
         await connection.query(
-            `INSERT INTO recharge SET id_order = ?, transaction_id = ?, phone = ?, money = ?, type = ?, status = ?, today = ?, url = ?, time = ?, utr = ?`,
-            [newRecharge.orderId, newRecharge.transactionId, newRecharge.phone, newRecharge.money, newRecharge.type, newRecharge.status, newRecharge.today, newRecharge.url, newRecharge.time, newRecharge?.utr || "NULL"]
+            `INSERT INTO recharge SET id_order = ?, transaction_id = ?, phone = ?, money = ?, type = ?, status = ?, today = ?, url = ?, time = ?, utr = ?, redirect_to = ?`,
+            [newRecharge.orderId, newRecharge.transactionId, newRecharge.phone, newRecharge.money, newRecharge.type, newRecharge.status, newRecharge.today, newRecharge.url, newRecharge.time, newRecharge?.utr || "NULL", newRecharge?.redirect_to || "NULL"]
         );
         
 

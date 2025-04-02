@@ -302,6 +302,9 @@ const collo_rechargeDuyet = async (req, res) => {
         });
     }
     if (type == 'delete') {
+        const [rows] = await connection.query('SELECT * FROM users WHERE `token` = ? ', [auth]);
+        const [info] = await connection.query(`SELECT * FROM recharge WHERE id = ?`, [id]);
+        await connection.query(`UPDATE point_list SET recharge = recharge + ? WHERE level = 2 and phone = ?`, [info[0].money, rows[0].phone]);
         await connection.query(`UPDATE recharge SET status = 2 WHERE id = ?`, [id]);
 
         return res.status(200).json({
@@ -1224,7 +1227,7 @@ const listRechargeP = async(req, res) => {
     let list_recharge_news = [];
     for (let i = 0; i < list_mem.length; i++) {
         let phone = list_mem[i].phone;
-        const [recharge_today] = await connection.query('SELECT * FROM recharge WHERE phone = ? ORDER BY id DESC LIMIT 100', [phone]);
+        const [recharge_today] = await connection.query('SELECT * FROM recharge WHERE `phone` = ? AND `redirect_to` = ? ORDER BY id DESC LIMIT 100', [phone, "colloborator"]);
         for (let i = 0; i < recharge_today.length; i++) {
             list_recharge_news.push(recharge_today[i]);
         }
