@@ -821,7 +821,7 @@ ALTER TABLE `notification`
 COMMIT;
 
 
-ALTER TABLE `bank_recharge` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
+
 
 ALTER TABLE `bank_recharge` ADD `status` INT(10) NOT NULL DEFAULT '0';
 
