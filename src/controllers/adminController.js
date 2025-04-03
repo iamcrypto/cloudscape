@@ -967,6 +967,7 @@ const tranfermode = async (req, res) => {
 const settingCskh = async (req, res) => {
     let auth = req.cookies.auth;
     let telegram = req.body.telegram;
+    let whatsapp = req.body.whatsapp;
     let cskh = req.body.cskh;
     let myapp_web = req.body.myapp_web;
     if (!auth || !cskh || !telegram) {
@@ -976,7 +977,7 @@ const settingCskh = async (req, res) => {
             timeStamp: timeNow,
         });
     }
-    await connection.query(`UPDATE admin SET telegram = ?, cskh = ?, app = ?`, [telegram, cskh, myapp_web]);
+    await connection.query(`UPDATE admin SET telegram = ?,whatsapp = ?, cskh = ?, app = ?`, [telegram,whatsapp, cskh, myapp_web]);
     return res.status(200).json({
         message: 'Successful change',
         status: true,

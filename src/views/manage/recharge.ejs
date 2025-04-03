@@ -130,6 +130,7 @@
       }
       let html = '';
       let show = params.map((data) => {
+        console.log(data.redirect_to);
         html += `<tr class="text-center">
                   <td id="${data.id}">
                     ${data.id}
@@ -156,7 +157,7 @@
                     <b>${timerJoin(data.time)}</b>
                   </td>
                   <td class="project-state">
-                    <span class="badge badge-warning">Waiting...</span>
+                    ${( data.redirect_to == "colloborator") ? '<span class="badge badge-danger">Colloborator</span>' : '<span class="badge badge-warning">Waiting...</span>' }
                   </td>
                   <td class="project-actions text-center" style="min-width: 160px;">
                     <!-- xác nhận -->

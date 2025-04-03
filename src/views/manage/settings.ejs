@@ -116,6 +116,9 @@
                                     <label for="telegram" style="color: #3498db;">Telegram</label>
                                     <input type="text" class="form-control" id="telegram"
                                         placeholder="Enter Telegram Link" value=""><br>
+                                    <label for="whatsapp" style="color: #3498db;">WhatsApp</label>
+                                    <input type="text" class="form-control" id="whatsapp"
+                                            placeholder="Enter WhatsApp Link" value=""><br>
                                     <label for="cskh" style="color: #3498db;">Online Services</label>
                                     <input type="text" class="form-control" id="cskh" placeholder="Online Services"
                                         value=""><br>
@@ -160,6 +163,7 @@
                 // $('#edit-momo-qr').val(momo.qr_code_image);
 
                 $('#telegram').val(response.settings[0].telegram);
+                $('#whatsapp').val(response.settings[0].whatsapp);
                 $('#cskh').val(response.settings[0].cskh);
                 $('#myapp_web').val(response.settings[0].app);
             }
@@ -342,6 +346,7 @@
         $('.telegram').click(function (e) {
             e.preventDefault();
             const telegram = $('#telegram').val();
+            const whatsapp = $('#whatsapp').val();
             const cskh = $('#cskh').val();
             const myapp_web = $('#myapp_web').val();
             $.ajax({
@@ -349,6 +354,7 @@
                 url: "/admin/manager/settings/cskh",
                 data: {
                     telegram: telegram,
+                    whatsapp:whatsapp,
                     cskh: cskh,
                     myapp_web: myapp_web,
                 },

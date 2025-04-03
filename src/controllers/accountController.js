@@ -141,7 +141,7 @@ const register = async (req, res) => {
             });
         } else {
             if (check_i.length == 1) {
-               // if (check_ip.length <= 3) {
+               //if (check_ip.length <= 3) {
                     let ctv = '';
                     if (check_i[0].level == 2) {
                         ctv = check_i[0].phone;
@@ -177,18 +177,18 @@ const register = async (req, res) => {
                         message: "Registered successfully",
                         status: true
                     });
-                // } else {
-                //     return res.status(200).json({
-                //         message: 'Registered IP address',
-                //         status: false
-                //     });
-                // }
-            } else {
-                return res.status(200).json({
-                    message: 'Referrer code does not exist',
-                    status: false
-                });
-            }
+                } else {
+                    return res.status(200).json({
+                        message: 'Registered IP address',
+                        status: false
+                    });
+                }
+            // } else {
+            //     return res.status(200).json({
+            //         message: 'Referrer code does not exist',
+            //         status: false
+            //     });
+            // }
         }
     } catch (error) {
         if (error) console.log(error);
@@ -354,24 +354,27 @@ const keFuMenu = async(req, res) => {
     const [users] = await connection.query('SELECT `level`, `ctv` FROM users WHERE token = ?', [auth]);
 
     let telegram = '';
+    let whatsapp = '';
     if (users.length == 0) {
-        let [settings] = await connection.query('SELECT `telegram`, `cskh` FROM admin');
+        let [settings] = await connection.query('SELECT `telegram`, `cskh`,`whatsapp` FROM admin');
         telegram = settings[0].telegram;
+        whatsapp = settings[0].whatsapp;
     } else {
         if (users[0].level != 0) {
             var [settings] = await connection.query('SELECT * FROM admin');
         } else {
-            var [check] = await connection.query('SELECT `telegram` FROM point_list WHERE phone = ?', [users[0].ctv]);
+            var [check] = await connection.query('SELECT `telegram`,`whatsapp` FROM point_list WHERE phone = ?', [users[0].ctv]);
             if (check.length == 0) {
                 var [settings] = await connection.query('SELECT * FROM admin');
             } else {
-                var [settings] = await connection.query('SELECT `telegram` FROM point_list WHERE phone = ?', [users[0].ctv]);
+                var [settings] = await connection.query('SELECT `telegram`, `whatsapp` FROM point_list WHERE phone = ?', [users[0].ctv]);
             }
         }
         telegram = settings[0].telegram;
+        whatsapp = settings[0].whatsapp;
     }
     
-    return res.render("keFuMenu.ejs", {telegram}); 
+    return res.render("keFuMenu.ejs", {telegram, whatsapp}); 
 }
 
 

@@ -88,6 +88,10 @@
                                     </div>
                                     <label for="telegram" style="color: #3498db;">Link Telegram</label>
                                     <input type="text" id="telegram_url" class="form-control" id="telegram" placeholder="Enter Telegram Link" value=""><br>
+
+                                    <label for="whatsapp" style="color: #3498db;">WhatsApp</label>
+                                    <input type="text" class="form-control" id="whatsapp_url"
+                                            placeholder="Enter WhatsApp Link" value=""><br>
                                     <button type="submit" class="btn btn-primary telegram" style="width: 100%;">Edit</button>
                                 </div>
 
@@ -126,10 +130,6 @@
                 $('#edit-banking-name').val(bank.name_user);
                 $('#edit-banking-info').val(bank.stk);
                 // $('#edit-momo-qr').val(momo.qr_code_image);
-
-                $('#telegram').val(response.settings[0].telegram);
-                $('#cskh').val(response.settings[0].cskh);
-                $('#myapp_web').val(response.settings[0].app);
             }
         });
 
@@ -240,11 +240,13 @@
             dataType: "json",
             success: function (response) {
                 $('#telegram_url').val(response.telegram2);
+                $('#whatsapp_url').val(response.whatsapp);
             }
         });
         $('.telegram').click(function (e) { 
             e.preventDefault();
             let value = $('#telegram_url').val().trim();
+            let whatsapp = $('#whatsapp_url').val().trim();
             if (value) {
                 $.ajax({
                     type: "POST",
@@ -252,6 +254,7 @@
                     data: {
                         type: 'edit',
                         value: value,
+                        whatsapp: whatsapp,
                     },
                     dataType: "json",
                     success: function (response) {

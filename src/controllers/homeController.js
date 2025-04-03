@@ -159,10 +159,29 @@ const readFileAsync = async () => {
   
 const mianPage = async (req, res) => {
     let auth = req.cookies.auth;
-    const [user] = await connection.query('SELECT `level` FROM users WHERE `token` = ? ', [auth]);
-    const [settings] = await connection.query('SELECT `cskh` FROM admin');
-    let cskh = settings[0].cskh;
-    let level = user[0].level;
+    const [users] = await connection.query('SELECT `level` FROM users WHERE `token` = ? ', [auth]);
+    let telegram = '';
+    let whatsapp = '';
+    if (users.length == 0) {
+        let [settings] = await connection.query('SELECT `telegram`, `cskh`,`whatsapp` FROM admin');
+        telegram = settings[0].telegram;
+        whatsapp = settings[0].whatsapp;
+    } else {
+        if (users[0].level != 0) {
+            var [settings] = await connection.query('SELECT * FROM admin');
+        } else {
+            var [check] = await connection.query('SELECT `telegram`,`whatsapp` FROM point_list WHERE phone = ?', [users[0].ctv]);
+            if (check.length == 0) {
+                var [settings] = await connection.query('SELECT * FROM admin');
+            } else {
+                var [settings] = await connection.query('SELECT `telegram`, `whatsapp` FROM point_list WHERE phone = ?', [users[0].ctv]);
+            }
+        }
+        telegram = settings[0].telegram;
+        whatsapp = settings[0].whatsapp;
+    }
+    let cskh = whatsapp;
+    let level = users[0].level;
     return res.render("member/index.ejs", { level, cskh });
 }
 
