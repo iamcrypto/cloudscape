@@ -229,7 +229,7 @@
              ${(response.datas == 'off') ? `<a class="btn btn-info btn-sm btn-warning" id="${data.phone}" href="#">
               <i class="fas fa-credit-card"></i> Enable Payment
             </a>` : ''}
-            ${(response.datas == 'on') ? `<a class="btn btn-info btn-sm btn-primary" id="${data.phone}" href="#">
+            ${(response.datas == 'on') ? `<a class="btn btn-info btn-sm btn-disable" id="${data.phone}" href="#">
               <i class="fas fa-credit-card"></i> Disable Payment
             </a>` : ''}
             ${(parseInt(response.req_count) > 0) ? `<a class="btn_request btn btn-info btn-sm btn-sucess" id="${data.phone}">
@@ -373,7 +373,7 @@
         });
       }
     });
-    $(document).on("click", '.btn-primary', function(e){
+    $(document).on("click", '.btn-disable', function(e){
       e.preventDefault();
       let check = confirm("Are you sure you want to remove payment access to this account ?");
       let id = $(this).attr('id');

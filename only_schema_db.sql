@@ -953,7 +953,7 @@ INSERT INTO `level` (`id`, `level`, `f1`, `f2`, `f3`, `f4`) VALUES
 (14, 14, '0.5', '0.5', '0.5', '0.5');
 
 
-INSERT INTO `bank_recharge`( `name_bank`, `name_user`, `stk`, `qr_code_image`, `type`, `time`, `transfer_mode`, `phone`, `colloborator_action`) VALUES ('','','','','','','manual','8895203112','off');
+INSERT INTO `bank_recharge`( `name_bank`, `name_user`, `stk`, `qr_code_image`, `type`, `time`, `transfer_mode`, `phone`, `colloborator_action`,`status`) VALUES ('','','','','','','manual','8895203112','on','1');
 
 
 INSERT INTO `turn_over` ( `phone`, `code`, `invite`, `daily_turn_over`, `total_turn_over`, `date_time`) VALUES

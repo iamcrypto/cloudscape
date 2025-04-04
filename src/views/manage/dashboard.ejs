@@ -189,8 +189,17 @@
                   <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box mb-3">
                         <div class="title">
-                            <p class="text-title" style="text-align:left">Today's profit</p>
+                            <p class="text-title" style="text-align:left">Yesterday's profit</p>
                               <h4 class="text-amount" style="text-align:left" id="TodaysProfit">-856602</h4>
+                              
+                          </div>                    
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <div class="title">
+                            <p class="text-title" style="text-align:left">Yesterday's Networth</p>
+                              <h4 class="text-amount" style="text-align:left" id="TodaysProfit_EXP">-856602</h4>
                               
                           </div>                    
                     </div>
@@ -304,7 +313,7 @@
         $("#TodaysTotalBets").text(response.data.a_TodaysTotalBets);
         $("#TodaysTotalWin").text(response.data.a_TodaysTotalWin);
         $("#TodaysProfit").text(response.data.a_TodaysProfit);
-
+        $("#TodaysProfit_EXP").text(response.data.a_TodaysProfit_EXP);
         $("#month_colloborator").text(response.data.a_month_colloborator);
         $("#month_turnover").text(response.data.a_month_turnover);
         $("#month_gift_redeem").text(response.data.a_month_gift_redeem);

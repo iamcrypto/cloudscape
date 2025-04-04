@@ -7,6 +7,10 @@ import path from 'path';
 var multer  = require('multer');
 import formidable from "formidable";
 import fs from 'fs';
+import {
+  REWARD_STATUS_TYPES_MAP,
+  REWARD_TYPES_MAP,
+} from "../constants/reward_types.js";
 
 
 let timeNow = Date.now();
@@ -342,6 +346,29 @@ function timerJoin2(params = '', addHours = 0) {
     return years + '-' + months + '-' + days + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + ampm;
 }
 
+function timerJoin3(params = '', addHours = 0) {
+    let date = '';
+    if (params) {
+        date = new Date(Number(params));
+    } else {
+        date = new Date();
+    }
+
+    date.setHours(date.getHours() + addHours);
+
+    let years = formateT(date.getFullYear());
+    let months = formateT(date.getMonth() + 1);
+    let days = formateT(date.getDate()-1);
+
+    let hours = date.getHours() % 12;
+    hours = hours === 0 ? 12 : hours;
+    let ampm = date.getHours() < 12 ? "AM" : "PM";
+
+    let minutes = formateT(date.getMinutes());
+    let seconds = formateT(date.getSeconds());
+
+    return years + '-' + months + '-' + days + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+}
 const statistical2 = async (req, res) => {
     const [wingo] = await connection.query(`SELECT SUM(money) as total FROM minutes_1 WHERE status = 1 `);
     const [wingo2] = await connection.query(`SELECT SUM(money) as total FROM minutes_1 WHERE status = 2 `);
@@ -2236,6 +2263,7 @@ const gettranfermode = async (req, res) => {
     })
 };
 
+
 const getdashboardInfo = async (req, res) => {
     let auth = req.cookies.auth;
     let totaltodayUsers = 0;
@@ -2257,30 +2285,68 @@ const getdashboardInfo = async (req, res) => {
     let total_5d = 0;
     let total_trx = 0;
     let totalWinning = 0;
+    let totalProfit = 0;
     let win_total_w = 0;
     let win_total_k3 = 0;
     let win_total_5d = 0;
     let win_total_trx = 0;
     const today = moment().startOf("day").valueOf();
-    const [today_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE  `time` >= ?;", [today]);
-    const [today_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE  `time` >= ?;", [today]);
-    const [today_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE  `time` >= ?;", [today]);
-    const [today_trx_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE  `time` >= ?;", [today]);
+    const yesterday = moment().subtract(1, "days").valueOf();
+    const [today_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE  `time` >= ?;", [yesterday]);
+    const [today_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE  `time` >= ?;", [yesterday]);
+    const [today_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE  `time` >= ?;", [yesterday]);
+    const [today_trx_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE  `time` >= ?;", [yesterday]);
     total_w = today_minutes_1[0].sum || 0;
     total_k3 = today_k3_bet_money[0].sum || 0;
     total_5d = today_d5_bet_money[0].sum || 0;
     total_trx = today_trx_bet_money[0].sum || 0;
     totalBet += parseInt(total_w) + parseInt(total_k3) + parseInt(total_5d) + parseInt(total_trx);
 
-    const [win_today_minutes_1] = await connection.query("SELECT SUM(get) AS `sum` FROM minutes_1 WHERE  `time` >= ?;", [today]);
-    const [win_today_k3_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM result_k3 WHERE  `time` >= ?;", [today]);
-    const [win_today_d5_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM result_5d WHERE  `time` >= ?;", [today]);
-    const [win_today_trx_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM trx_wingo_bets WHERE  `time` >= ?;", [today]);
+    const [win_today_minutes_1] = await connection.query("SELECT SUM(get) AS `sum` FROM minutes_1 WHERE  `time` >= ?;", [yesterday]);
+    const [win_today_k3_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM result_k3 WHERE  `time` >= ?;", [yesterday]);
+    const [win_today_d5_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM result_5d WHERE  `time` >= ?;", [yesterday]);
+    const [win_today_trx_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM trx_wingo_bets WHERE  `time` >= ?;", [yesterday]);
     win_total_w = win_today_minutes_1[0].sum || 0;
     win_total_k3 = win_today_k3_bet_money[0].sum || 0;
     win_total_5d = win_today_d5_bet_money[0].sum || 0;
     win_total_trx = win_today_trx_bet_money[0].sum || 0;
     totalWinning += parseInt(win_total_w) + parseInt(win_total_k3) + parseInt(win_total_5d) + parseInt(win_total_trx);
+
+    totalProfit = totalBet -totalWinning
+    const [list_recharge_users_today] = await connection.query("SELECT * FROM recharge WHERE `status`=1 AND `time`>= ? ORDER BY `id` DESC;", [yesterday]);
+    let today_bonus_amt = 0;
+    for (let i = 0; i < list_recharge_users_today.length; i++) {
+        const user_money_td =  (parseInt(list_recharge_users_today[i].money) / 100) * 5;
+        const inviter_money_td = (parseInt(list_recharge_users_today[i].money) / 100) * 5;
+        today_bonus_amt = today_bonus_amt + user_money_td;
+        const [list_mem_td] = await connection.query('SELECT * FROM users WHERE phone = ? ', [list_recharge_users_today[i].phone]);
+        const [list_mem_in_td] = await connection.query('SELECT * FROM users WHERE code = ? ', [list_mem_td[0].invite]);
+        if(list_mem_in_td.length != 0)
+        {
+            today_bonus_amt = today_bonus_amt + inviter_money_td;
+        }
+    }
+
+    const [list_gift_code_today] = await connection.query("SELECT SUM(money) AS `sum` FROM redenvelopes_used WHERE `time`>= ? ORDER BY `id` DESC;", [yesterday]);
+    const today_gift_code = list_gift_code_today[0].sum || 0;
+
+    const [list_vip_level_today] = await connection.query("SELECT SUM(amount) AS `sum` FROM claimed_rewards WHERE `type` = ? AND `time`>= ? ORDER BY `id` DESC;", [REWARD_TYPES_MAP.VIP_LEVEL_UP_BONUS,yesterday]);
+    const today_vip_level = list_vip_level_today[0].sum || 0;
+
+    const [list_vip_month_rwd_today] = await connection.query("SELECT SUM(amount) AS `sum` FROM claimed_rewards WHERE `type` = ? AND `time`>= ? ORDER BY `id` DESC;", [REWARD_TYPES_MAP.VIP_MONTHLY_REWARD,yesterday]);
+    const today_vip_month_rwd_level = list_vip_month_rwd_today[0].sum || 0;
+
+    const [list_stake_amt_list_today] = await connection.query("SELECT SUM(amount) AS `sum` FROM claimed_rewards WHERE `type` = 136 AND `status`=1 AND `to_date` = ? ORDER BY `id` DESC;", [timerJoin3()]);
+    const total_stake_amt_today = list_stake_amt_list_today[0].sum || 0;
+
+    const [list_stake_list_today] = await connection.query("SELECT SUM(stake_amnt) AS `sum` FROM claimed_rewards WHERE `type` = 136 AND `status`=1 AND `to_date` = ? ORDER BY `id` DESC;", [timerJoin3()]);
+    const total_stake_today = list_stake_list_today[0].sum || 0;
+
+    const stake_rwrd_today = parseInt(total_stake_amt_today) - parseInt(total_stake_today);
+
+    const total_today_expen = parseInt(today_bonus_amt) + parseInt(today_gift_code) + parseInt(today_vip_level) + parseInt(today_vip_month_rwd_level) + parseInt(stake_rwrd_today);
+
+    const profit_after_exp = parseInt(totalProfit) - parseInt(total_today_expen);
 
     const [users_join_today] = await connection.query("SELECT COUNT(*) AS `count` FROM users WHERE  `time` >= ?;", [today]);
     totaltodayUsers = users_join_today[0].count || 0;
@@ -2391,7 +2457,8 @@ const getdashboardInfo = async (req, res) => {
             a_WithdrawalRequests:withdrawalRequest,
             a_TodaysTotalBets:totalBet,
             a_TodaysTotalWin:totalWinning,
-            a_TodaysProfit:totalBet -totalWinning,
+            a_TodaysProfit:totalProfit,
+            a_TodaysProfit_EXP:profit_after_exp,
             a_month_colloborator:colloboratordata.result_val,
             a_month_turnover:monthkyturnover,
             a_month_gift_redeem:giftcodevalue,
