@@ -43,6 +43,10 @@ const adminPageK3 = async (req, res) => {
     return res.render("manage/k3.ejs");
 }
 
+const adminPageTrx = async (req, res) => {
+    return res.render("manage/manaJtrx.ejs");
+} 
+
 const ctvProfilePage = async (req, res) => {
     var phone = req.params.phone;
     return res.render("manage/profileCTV.ejs", { phone });
@@ -2665,6 +2669,7 @@ module.exports = {
     adminPage3,
     adminPage5,
     adminPage10,
+    adminPageTrx,
     totalJoin,
     middlewareAdminController,
     changeAdmin,

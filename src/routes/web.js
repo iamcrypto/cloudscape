@@ -320,7 +320,7 @@ const initWebRouter = (app) => {
 
     router.get('/admin/manager/5d', adminController.middlewareAdminController, adminController.adminPage5d); // get info account
     router.get('/admin/manager/k3', adminController.middlewareAdminController, adminController.adminPageK3); // get info account
-
+    router.get('/admin/manager/trx', adminController.middlewareAdminController, adminController.adminPageTrx);
 
 
     router.get(
