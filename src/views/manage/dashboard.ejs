@@ -43,8 +43,12 @@
         <div class="content-header">
           <div class="container-fluid">
             <div class="row mb-2">
-              <div class="col-sm-6">
-                <h1 class="m-0">Dashboard</h1>
+              <div class="col-sm-6" style="display:contents;">
+                <h1 class="m-0" style="margin-top: 14px !important;">Dashboard</h1>
+
+                <div data-v-a9660e98="" class="van-image img m-l-10 dashboard_reload" style="width: 15px;height: 15px;padding: 10px;color: white;height: 40px;width: 40px;margin-left: 12px;top: 14px;margin-top: 10px;">
+                  <img src="/images/king.png" class="van-image__img" style="height: 30px;width: 30px;"/>
+              </div>
               </div>
             </div>
           </div>
@@ -53,231 +57,338 @@
         <section class="content">
             <div class="container-fluid">
               <div class="row info-box">
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Today User Join</p>
-                              <h4 class="text-amount" style="text-align:left" id="usersJoin"> 8</h4>
-                          </div>
+                <div class="col-md-3 col-sm-6 col-12">
+                  <div class="info-box">
+                      <span class="info-box-icon bg-success"><i class="fa fa-user-circle" aria-hidden="true"></i></span>
+                      <div class="info-box-content">
+                          <span class="info-box-text">Today User Join</span>
+                          <span class="info-box-number totalMember" id="usersJoin">0</span>
+                      </div>
+                      <!-- /.info-box-content -->
+                  </div>
+                  <!-- /.info-box -->
+               </div>
+
+                  <div class="col-md-3 col-sm-6 col-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-warning"><i class="fa fa-check" aria-hidden="true"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Today's Recharge</span>
+                            <span class="info-box-number totalMember" id="TodaysRecharge">0</span>
+                        </div>
+                        <!-- /.info-box-content -->
                     </div>
+                    <!-- /.info-box -->
+                 </div>
+
+                <div class="col-md-3 col-sm-6 col-12">
+                  <div class="info-box">
+                      <span class="info-box-icon bg-info"><i class="fa fa-university" aria-hidden="true"></i></span>
+                      <div class="info-box-content">
+                          <span class="info-box-text">Today's Withdrawal</span>
+                          <span class="info-box-number totalMember" id="TodaysWithdrawal">0</span>
+                      </div>
+                      <!-- /.info-box-content -->
+                  </div>
+                  <!-- /.info-box -->
+               </div>
+
+               
+               <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-danger"><i class="fa fa-scale-balanced" aria-hidden="true"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">User Balance</span>
+                        <span class="info-box-number totalMember" id="UserBalance">0</span>
+                        
+                    </div>
+                    <!-- /.info-box-content -->
                 </div>
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Today's Recharge</p>
-                              <h4 class="text-amount" style="text-align:left" id="TodaysRecharge"> 31,400</h4>
-                          </div>
-                    </div>
-                  </div>
+                <!-- /.info-box -->
+             </div>
 
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Today's Withdrawal</p>
-                              <h4 class="text-amount" style="text-align:left" id="TodaysWithdrawal"> 0</h4>
-                          </div>
-                    </div>
+             
+             <div class="col-md-3 col-sm-6 col-12">
+              <div class="info-box">
+                  <span class="info-box-icon bg-info"><i class="fa fa-users" aria-hidden="true"></i></span>
+                  <div class="info-box-content">
+                      <span class="info-box-text">Total Users</span>
+                      <span class="info-box-number totalMember" id="TotalUsers">0</span>
                   </div>
+                  <!-- /.info-box-content -->
+              </div>
+              <!-- /.info-box -->
+           </div>
 
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">User Balance</p>
-                              <h4 class="text-amount" style="text-align:left" id="UserBalance">124,226,660,913.83</h4>
-                              <a href="/admin/manager/members">
-                                <span class="pull-left" style="color: white;">See in Detail</span>
-                            </a>
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Total Users</p>
-                              <h4 class="text-amount" style="text-align:left" id="TotalUsers">130</h4>
-                              <a href="/admin/manager/members">
-                                <span class="pull-left" style="color: white;">See in Detail</span>
-                            </a>
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Pending Recharge</p>
-                              <h4 class="text-amount" style="text-align:left" id="PendingRecharge">1,324,661</h4>
-                              <a href="/admin/manager/recharge">
-                                <span class="pull-left" style="color: white;">See in Detail</span>
-                            </a>
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Success Recharge</p>
-                              <h4 class="text-amount" style="text-align:left" id="SuccessRecharge">2,751,182</h4>
-                              <a href="/admin/manager/rechargeRecord">
-                                <span class="pull-left" style="color: white;">See in Detail</span>
-                            </a>
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                              <p class="text-title" style="text-align:left">No. Total Recharge(Month): <span  style="text-align:left" id="TotalRecharge_No">475,535</span> </p>
-                            <p class="text-title" style="text-align:left">Total Recharge(Month): <span style="text-align:left" id="TotalRechargeMonth">475,535</span> </p>
-                              <a href="/admin/manager/rechargeRecord">
-                                <span class="pull-left" style="color: white;">See in Detail</span>
-                            </a>
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">No. Total Withdrawal</p>
-                              <h4 class="text-amount" style="text-align:left" id="TotalWithdrawal">475,535</h4>
-                              <a href="/admin/manager/withdrawRecord">
-                                <span class="pull-left" style="color: white;">See in Detail</span>
-                            </a>
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">No. Withdrawal Requests</p>
-                              <h4 class="text-amount" style="text-align:left" id="WithdrawalRequests">165,343</h4>
-                              <a href="/admin/manager/withdraw">
-                                <span class="pull-left" style="color: white;">See in Detail</span>
-                            </a>
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                          <p class="text-title" style="text-align:left">No. Total Withdrawal(Month): <span  style="text-align:left" id="TotalWithdrawal_No">475,535</span> </p>
-                            <p class="text-title" style="text-align:left">Total Withdrawal(Month): <span style="text-align:left" id="TotalWithdrawal_AMT">475,535</span> </p>
-                              <a href="/admin/manager/withdrawRecord">
-                                <span class="pull-left" style="color: white;">See in Detail</span>
-                            </a>
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Today's total bet</p>
-                              <h4 class="text-amount" style="text-align:left" id="TodaysTotalBets">123,300.00</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Today's total win</p>
-                              <h4 class="text-amount" style="text-align:left" id="TodaysTotalWin">
-                                979,902.00</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Yesterday's profit</p>
-                              <h4 class="text-amount" style="text-align:left" id="TodaysProfit">-856602</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Yesterday's Networth</p>
-                              <h4 class="text-amount" style="text-align:left" id="TodaysProfit_EXP">-856602</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Monthly Colaborator Salary Disburse </p>
-                              <h4 class="text-amount" style="text-align:left" id="month_colloborator">-856602</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Total Turnover (Month)</p>
-                              <h4 class="text-amount" style="text-align:left" id="month_turnover">-856602</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Total Gift Code Redeem (Month)</p>
-                              <h4 class="text-amount" style="text-align:left" id="month_gift_redeem">-856602</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Total Recharge Bonus (Month)</p>
-                              <h4 class="text-amount" style="text-align:left" id="month_recharge_bonus">-856602</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Current Month Stakes</p>
-                              <h4 class="text-amount" style="text-align:left" id="month_staking_amt">-856602</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left"> Current Month Stake Rewards</p>
-                              <h4 class="text-amount" style="text-align:left" id="month_staking_rewards">-856602</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
+            
+           <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-danger"><i class="fa fa-bolt" aria-hidden="true"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Pending Recharge</span>
+                    <span class="info-box-number totalMember" id="PendingRecharge">0</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+         </div>
 
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">Active Stakes</p>
-                              <h4 class="text-amount" style="text-align:left" id="active_stakes">-856602</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
+         <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box">
+              <span class="info-box-icon bg-success"><i class="fa fa-bolt" aria-hidden="true"></i></span>
+              <div class="info-box-content">
+                  <span class="info-box-text">Success Recharge </span>
+                  <span class="info-box-number totalMember" id="SuccessRecharge">0</span>
+              </div>
+              <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+       </div>
 
-                  <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <div class="title">
-                            <p class="text-title" style="text-align:left">ROI OF Stake (inc amt%)</p> Stakes</p>
-                              <h4 class="text-amount" style="text-align:left" id="roi_active_stakes">-856602</h4>
-                              
-                          </div>                    
-                    </div>
-                  </div>
+       <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-warning"><i class="fa fa-file-invoice-dollar" aria-hidden="true"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">No. Total Recharge(Month) </span>
+                <span class="info-box-number totalMember" id="TotalRecharge_No">0</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+     </div>
+
+     <div class="col-md-3 col-sm-6 col-12">
+      <div class="info-box">
+          <span class="info-box-icon bg-warning"><i class="fa fa-money-check-alt" aria-hidden="true"></i></span>
+          <div class="info-box-content">
+              <span class="info-box-text">Total Recharge(Month) </span>
+              <span class="info-box-number totalMember" id="TotalRechargeMonth">0</span>
+          </div>
+          <!-- /.info-box-content -->
+      </div>
+      <!-- /.info-box -->
+   </div>
+
+   <div class="col-md-3 col-sm-6 col-12">
+    <div class="info-box">
+        <span class="info-box-icon bg-success"><i class="fa fa-file-invoice-dollar" aria-hidden="true"></i></span>
+        <div class="info-box-content">
+            <span class="info-box-text">No. Total Withdrawal </span>
+            <span class="info-box-number totalMember" id="TotalWithdrawal">0</span>
+        </div>
+        <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+ </div>
+                  
+
+ <div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-danger"><i class="fa fa-money-bill-transfer" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">No. Withdrawal Requests </span>
+          <span class="info-box-number totalMember" id="WithdrawalRequests">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-info"><i class="fa fa-receipt" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">No. Total Withdrawal(Month) </span>
+          <span class="info-box-number totalMember" id="TotalWithdrawal_No">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-danger"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Total Withdrawal(Month)</span>
+          <span class="info-box-number totalMember" id="TotalWithdrawal_AMT">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-info"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Today's total bet</span>
+          <span class="info-box-number totalMember" id="TodaysTotalBets">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-warning"><i class="fa fa-trophy" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Today's total win</span>
+          <span class="info-box-number totalMember" id="TodaysTotalWin">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-success"><i class="fa fa-gem aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Yesterday's profit</span>
+          <span class="info-box-number totalMember" id="TodaysProfit">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-success"><i class="fa fa-cart-plus" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Yesterday's Networth</span>
+          <span class="info-box-number totalMember" id="TodaysProfit_EXP">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-warning"><i class="fa fa-wallet" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Monthly Colaborator Salary Disburse</span>
+          <span class="info-box-number totalMember" id="month_colloborator">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-info"><i class="fa fa-dollar-sign" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Total Turnover (Month)</span>
+          <span class="info-box-number totalMember" id="month_turnover">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-danger"><i class="fa fa-gift" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Total Gift Code Redeem (Month)</span>
+          <span class="info-box-number totalMember" id="month_gift_redeem">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-info"><i class="fa fa-heart" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Total Recharge Bonus (Month)</span>
+          <span class="info-box-number totalMember" id="month_recharge_bonus">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-danger"><i class="fa fa-chart-simple" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Current Month Stakes</span>
+          <span class="info-box-number totalMember" id="month_staking_amt">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-success"><i class="fa fa-money-bill-wave" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Current Month Stake Rewards</span>
+          <span class="info-box-number totalMember" id="month_staking_rewards">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-warning"><i class="fa fa-chart-line" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Active Stakes</span>
+          <span class="info-box-number totalMember" id="active_stakes">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+           
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-danger"><i class="fa fa-percent" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">ROI OF Stake (inc amt%)</span>
+          <span class="info-box-number totalMember" id="roi_active_stakes">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-info"><i class="fa fa-level-up-alt" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">VIP Level Up Bonus</span>
+          <span class="info-box-number totalMember" id="vipLevelBonus">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-warning"><i class="fa fa-award" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">VIP Monthly Reward </span>
+          <span class="info-box-number totalMember" id="vipMonthReward">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
+
+
                 </div>
             </div>
         </div>
@@ -290,39 +401,51 @@
   <script src="/js/admin/admin.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
   <script>
-    $.ajax({
-      type: "POST",
-      url: "/admin/manager/getdashboardInfo",
-      data: {
-      },
-      dataType: "json",
-      success: function (response) {
-        $("#usersJoin").text(response.data.a_usersJoin);
-        $("#TodaysRecharge").text(response.data.a_TodaysRecharge);
-        $("#TodaysWithdrawal").text(response.data.a_TodaysWithdrawal);
-        $("#UserBalance").text(response.data.a_UserBalance);
-        $("#TotalUsers").text(response.data.a_TotalUsers);
-        $("#PendingRecharge").text(response.data.a_PendingRecharge);
-        $("#SuccessRecharge").text(response.data.a_SuccessRecharge);
-        $("#TotalRecharge_No").text(response.data.a_TotalRecharge_No);
-        $("#TotalRechargeMonth").text(response.data.a_TotalRechargeMonth);
-        $("#TotalWithdrawal").html(response.data.a_TotalWithdrawal);
-        $("#TotalWithdrawal_No").html(response.data.a_TotalWithdrawal_No);
-        $("#TotalWithdrawal_AMT").html(response.data.a_TotalWithdrawal_AMT);
-        $("#WithdrawalRequests").text(response.data.a_WithdrawalRequests);
-        $("#TodaysTotalBets").text(response.data.a_TodaysTotalBets);
-        $("#TodaysTotalWin").text(response.data.a_TodaysTotalWin);
-        $("#TodaysProfit").text(response.data.a_TodaysProfit);
-        $("#TodaysProfit_EXP").text(response.data.a_TodaysProfit_EXP);
-        $("#month_colloborator").text(response.data.a_month_colloborator);
-        $("#month_turnover").text(response.data.a_month_turnover);
-        $("#month_gift_redeem").text(response.data.a_month_gift_redeem);
-        $("#month_recharge_bonus").text(response.data.a_month_recharge_bonus);
-        $("#month_staking_amt").text(response.data.a_month_staking_amt);
-        $("#month_staking_rewards").text(response.data.a_month_staking_rewards);
-        $("#active_stakes").text(response.data.a_active_stakes);
-        $("#roi_active_stakes").text(response.data.a_roi_active_stakes);
-      }
+    function refresh_All_prameters()
+    {
+      $.ajax({
+        type: "POST",
+        url: "/admin/manager/getdashboardInfo",
+        data: {
+        },
+        dataType: "json",
+        success: function (response) {
+          $("#usersJoin").text(response.data.a_usersJoin);
+          $("#TodaysRecharge").text(response.data.a_TodaysRecharge);
+          $("#TodaysWithdrawal").text(response.data.a_TodaysWithdrawal);
+          $("#UserBalance").text(response.data.a_UserBalance);
+          $("#TotalUsers").text(response.data.a_TotalUsers);
+          $("#PendingRecharge").text(response.data.a_PendingRecharge);
+          $("#SuccessRecharge").text(response.data.a_SuccessRecharge);
+          $("#TotalRecharge_No").text(response.data.a_TotalRecharge_No);
+          $("#TotalRechargeMonth").text(response.data.a_TotalRechargeMonth);
+          $("#TotalWithdrawal").html(response.data.a_TotalWithdrawal);
+          $("#TotalWithdrawal_No").html(response.data.a_TotalWithdrawal_No);
+          $("#TotalWithdrawal_AMT").html(response.data.a_TotalWithdrawal_AMT);
+          $("#WithdrawalRequests").text(response.data.a_WithdrawalRequests);
+          $("#TodaysTotalBets").text(response.data.a_TodaysTotalBets);
+          $("#TodaysTotalWin").text(response.data.a_TodaysTotalWin);
+          $("#TodaysProfit").text(response.data.a_TodaysProfit);
+          $("#TodaysProfit_EXP").text(response.data.a_TodaysProfit_EXP);
+          $("#month_colloborator").text(response.data.a_month_colloborator);
+          $("#month_turnover").text(response.data.a_month_turnover);
+          $("#month_gift_redeem").text(response.data.a_month_gift_redeem);
+          $("#month_recharge_bonus").text(response.data.a_month_recharge_bonus);
+          $("#month_staking_amt").text(response.data.a_month_staking_amt);
+          $("#month_staking_rewards").text(response.data.a_month_staking_rewards);
+          $("#active_stakes").text(response.data.a_active_stakes);
+          $("#roi_active_stakes").text(response.data.a_roi_active_stakes);
+          $("#vipLevelBonus").text(response.data.a_vipLevelBonus);
+          $("#vipMonthReward").text(response.data.a_vipMonthReward);
+        }
+      });  
+    }
+
+    refresh_All_prameters();
+
+    $(".dashboard_reload").click(function (e) {
+      e.preventDefault();
+      refresh_All_prameters();
     });
   </script>
 
