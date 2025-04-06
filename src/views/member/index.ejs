@@ -962,6 +962,11 @@
         $('.reload_money').click(function (e) {
             e.preventDefault();
             $(this).addClass('action block-click');
+            fetch('/api/webapi/GetUserInfo')
+            .then(response => response.json())
+            .then(data => {
+                $('.money .txt').text(` ₹ ${data.data.money_user} `);
+			});	
             setTimeout(() => {
                 $(this).removeClass('action block-click');
             }, 3000);
