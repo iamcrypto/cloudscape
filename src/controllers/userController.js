@@ -52,7 +52,7 @@ const verifyCode = async (req, res) => {
 
 const aviator = async (req, res) => {
     let auth = req.cookies.auth;
-    res.redirect(`https://247cashwin.cloud/theninja/src/api/userapi.php?action=loginandregisterbyauth&token=${auth}`);
+    res.redirect(`https://cloudyscape.net/theninja/src/api/userapi.php?action=loginandregisterbyauth&token=${auth}`);
     //res.redirect(`https://jetx.asia/#/jet/loginbyauth/${auth}`);
 }
 
@@ -835,8 +835,8 @@ const recharge = async (req, res) => {
             customer_name: userInfo.name_user,
             customer_email: 'manas.xdr@gmail.com',
             customer_mobile: userInfo.phone,
-            redirect_url: `https://247cashwin.cloud/wallet/verify/upi`,
-            udf1: 'TIRANGA',
+            redirect_url: `https://cloudyscape.net/wallet/verify/upi`,
+            udf1: 'CLOUDSCAPE',
         };
         try {
             const apiResponse = await axios.post('https://api.ekqr.in/api/create_order', apiData);
