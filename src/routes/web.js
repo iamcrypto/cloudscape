@@ -44,11 +44,7 @@ const initWebRouter = (app) => {
     router.get('/wallet/transfer', middlewareController, homeController.transfer);
 
     
-  router.get(
-    "/dailytask/record",
-    middlewareController,
-    homeController.rechargeAwardCollectionRecord,
-  );
+  router.get("/dailytask/record", middlewareController, homeController.rechargeAwardCollectionRecord,);
 
     router.get('/promotion', middlewareController, homeController.promotionPage);
     router.get('/promotion1', middlewareController, homeController.promotion1Page);
@@ -92,57 +88,21 @@ const initWebRouter = (app) => {
     router.get('/mian/safe', middlewareController, homeController.safePage);
     router.patch("/api/webapi/change/avatar",middlewareController, accountController.updateAvatarAPI, ); 
 
-    router.post(
-      "/api/activity/daily_recharge_bonus/record",
-      middlewareController,
-      promotionController.dailyRechargeRewordRecord,
-    );
-    router.post(
-      "/api/activity/daily_recharge_bonus",
-      middlewareController,
-      promotionController.getDailyRechargeReword,
-    );
-    router.post(
-      "/api/activity/daily_recharge_bonus/claim",
-      middlewareController,
-      promotionController.claimDailyRechargeReword,
-    );
+    router.post(  "/api/activity/daily_recharge_bonus/record", middlewareController, promotionController.dailyRechargeRewordRecord,);
+    router.post( "/api/activity/daily_recharge_bonus", middlewareController, promotionController.getDailyRechargeReword,);
+    router.post("/api/activity/daily_recharge_bonus/claim",middlewareController, promotionController.claimDailyRechargeReword, );
 
-    router.post(
-      "/api/activity/daily_betting_bonus/record",
-      middlewareController,
-      promotionController.dailyBetttingRewordRecord,
-    );
+    router.post( "/api/activity/daily_betting_bonus/record", middlewareController, promotionController.dailyBetttingRewordRecord, );
 
-    router.post(
-      "/api/activity/daily_betting_bonus",
-      middlewareController,
-      promotionController.getDailyBettingeReword,
-    );
+    router.post( "/api/activity/daily_betting_bonus", middlewareController, promotionController.getDailyBettingeReword,);
 
-    router.post(
-      "/api/activity/daily_betting_bonus/claim",
-      middlewareController,
-      promotionController.claimDailyBettingReword,
-    );
+    router.post( "/api/activity/daily_betting_bonus/claim", middlewareController, promotionController.claimDailyBettingReword,);
 
-    router.post(
-      "/api/activity/daily_rebate_bonus/record",
-      middlewareController,
-      promotionController.dailyRebateRewordRecord,
-    );
+    router.post( "/api/activity/daily_rebate_bonus/record", middlewareController, promotionController.dailyRebateRewordRecord,);
 
-    router.post(
-      "/api/activity/daily_rebate_bonus",
-      middlewareController,
-      promotionController.getDailyRebateReword,
-    );
+    router.post( "/api/activity/daily_rebate_bonus", middlewareController, promotionController.getDailyRebateReword,);
 
-    router.post(
-      "/api/activity/daily_rebate_bonus/claim",
-      middlewareController,
-      promotionController.claimDailyRebateReword,
-    );
+    router.post( "/api/activity/daily_rebate_bonus/claim", middlewareController, promotionController.claimDailyRebateReword, );
 
     router.post( "/api/activity/stake_details/claim", middlewareController, promotionController.addonstake,);
 
@@ -375,48 +335,22 @@ const initWebRouter = (app) => {
     router.get('/api/webapi/xpgain_value', middlewareController, userController.xpgain_value);
     router.post('/api/webapi/getlangdata', middlewareController,  userController.getlang_datacall);
 
-    router.get(
-        "/trx_wingo",
-        middlewareController,
-        trxWingoController.trxWingoPage,
-      );
+    router.get( "/trx_wingo",  middlewareController, trxWingoController.trxWingoPage,);
+
       // router.get("/trx_wingo/3", middlewareController, trxWingoController.trxWingoPage3)
       // router.get("/trx_wingo/5", middlewareController, trxWingoController.trxWingoPage3)
       // router.get("/trx_wingo/10", middlewareController, trxWingoController.trxWingoPage10)
 
-      router.get(
-        "/trx_block",
-        middlewareController,
-        trxWingoController.trxWingoBlockPage,
-      );
+      router.get( "/trx_block", middlewareController, trxWingoController.trxWingoBlockPage, );
 
         // bet TRX wingo
-  router.post(
-    "/api/webapi/trx_wingo/action/join",
-    middlewareController,
-    trxWingoController.betTrxWingo,
-  ); // register
-  router.post(
-    "/api/webapi/trx_wingo/GetNoaverageEmerdList",
-    middlewareController,
-    trxWingoController.listOrderOld,
-  ); // register
-  router.post(
-    "/api/webapi/trx_wingo/GetNoaverageEmerdList_Statistics",
-    middlewareController,
-    trxWingoController.Stat_listOrderOld,
-  ); 
-  router.post(
-    "/api/webapi/trx_wingo/GetMyEmerdList",
-    middlewareController,
-    trxWingoController.GetMyEmerdList,
-  ); // register
+  router.post("/api/webapi/trx_wingo/action/join", middlewareController, trxWingoController.betTrxWingo,); // register
+  
+  router.post( "/api/webapi/trx_wingo/GetNoaverageEmerdList", middlewareController, trxWingoController.listOrderOld,); // register
+  router.post("/api/webapi/trx_wingo/GetNoaverageEmerdList_Statistics", middlewareController, trxWingoController.Stat_listOrderOld,); 
+  router.post( "/api/webapi/trx_wingo/GetMyEmerdList", middlewareController, trxWingoController.GetMyEmerdList, ); // register
 
-  router.post(
-    "/api/vip/history",
-    middlewareController,
-    vipController.getVIPHistory,
-  );
+  router.post( "/api/vip/history", middlewareController, vipController.getVIPHistory, );
 
     return app.use('/', router);
 }
