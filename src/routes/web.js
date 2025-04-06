@@ -407,7 +407,10 @@ const initWebRouter = (app) => {
     router.post('/api/webapi/admin/banned', adminController.middlewareAdminController, adminController.banned); // get info account
     router.post('/api/webapi/admin/on_off_collo', adminController.middlewareAdminController, adminController.on_off_colloborator); 
     router.post('/api/webapi/admin/totalJoin', adminController.middlewareAdminController, adminController.totalJoin); // get info account
+    router.post('/api/webapi/admin/totalJoin_trx', adminController.middlewareAdminController, adminController.totalJoinTRX); 
     router.post('/api/webapi/admin/change', adminController.middlewareAdminController, adminController.changeAdmin); // get info account
+
+    router.post('/api/webapi/admin/trx_change', adminController.middlewareAdminController, adminController.TRXchangeAdmin); 
     router.post('/api/webapi/admin/profileUser', adminController.middlewareAdminController, adminController.profileUser); // get info account
 
     // admin 5d 

@@ -51,6 +51,22 @@ const CreateK3 = async(req, res) => {
     console.log("Please press ctrl + C and enter npm start to run the server.");
 }
 
+const Createtrx_Wingo = async(req, res) => {
+    
+    // Reset DataBase Wingo
+    await connection.execute('DELETE FROM trx_wingo_game');
+
+    let arr = ['trx_wingo10', 'trx_wingo5', 'trx_wingo3', 'trx_wingo'];
+
+    // for (let i = 0; i < arr.length; i++) {
+    //     const sql = "INSERT INTO trx_wingo_game SET period = ?, game = ?, amount = 6, status = 1, time = ?";
+    //     await connection.execute(sql, ['2022070110000', arr[i], timeNow]);
+    //     const sql_1 = "INSERT INTO wingo SET period = ?, game = ?, amount = 0, status = 0, time = ?";
+    //     await connection.execute(sql_1, ['2022070110001', arr[i], timeNow]);
+    // }
+    console.log("Create Success Database Trx_wingo.");
+}
+
 const Level = async(req, res) => {
     
     // Reset DataBase Level
@@ -83,3 +99,4 @@ const Admin = async(req, res) => {
 CreateWingo();
 Create5D();
 CreateK3();
+Createtrx_Wingo();

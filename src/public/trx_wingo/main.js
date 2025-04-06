@@ -763,11 +763,12 @@ function initGameLogics({
           alertMessage(response.message);
           if (response.status === false) return;
           $("#balance_amount").text("₹ " + response.money + ".00");
-          socket.emit("data-server_2", {
+          socket.emit("data-server_trx", {
             money: currentX * money,
             join,
             time: Date.now(),
             change: response.change,
+            game:GAME_TYPE_ID,
           });
   
           initMyBets();
