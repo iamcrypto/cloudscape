@@ -16,6 +16,9 @@ const sendMessageAdmin = (io) => {
         socket.on('data-server-3', (msg) => {
             io.emit('data-server-3', msg);
         });
+        socket.on('data-server_trx', (msg) => {
+            io.emit('data-server_trx', msg);
+        });
         // socket.on("disconnect", () => {
         // console.log('a user disconnect ' + socket.id);
         // });
