@@ -7,6 +7,7 @@
     <meta name="robots" content="noindex,nofollow">
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
     <title>CLOUDSCAPE</title>
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
     <link rel="stylesheet" href="./index_files/index-96409872.css">
     <link href="/css/home/chunk-vendors.css" rel="stylesheet" />
     <link href="/css/home/app.css" rel="stylesheet" />
@@ -255,7 +256,7 @@
                 };
                 $("#prof_image").attr("src","/assets/png/"+ data.data.user_avatar);
                 $('.profile .name').text(data.data.name_user);
-                $('.profile .id').text(data.data.id_user);
+                $('.profile .id').html(`<span>UID | </span> <span id="user_id">`+data.data.id_user+`</span> <i data-v-9f3a9836="" class="copy_user_id m-l-10 fa-solid fa-copy" style="color: rgb(149, 149, 149); font-size: 16px; margin-left:10px;"></i>`);
                 $('.profile .number').text("+91 " + data.data.phone_user);
             });
     </script>
@@ -277,7 +278,12 @@
                 }, 100);
             }, 1000);
         }
-
+        $(document).on("click", '.copy_user_id', function(e){
+            e.preventDefault();
+            var userid = $("#user_id").text();
+           alertMess('Copy successful', $(this));
+            navigator.clipboard.writeText(userid);
+        });
         $('.food .item:eq(0)').click(function (e) {
             e.preventDefault();
             $('.van-popup, .van-overlay').fadeOut(100);

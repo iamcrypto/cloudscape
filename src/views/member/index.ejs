@@ -366,8 +366,7 @@
             </div>
             <div data-v-8cd483ca="" class="menu-box">
                 <div data-v-8cd483ca="" class="info p-t-30 p-l-30 p-b-30 p-r-20" style="padding-top: 0rem!important">
-                    <div data-v-8cd483ca="" class="c-row c-row-between c-row-middle state-box c-pr"
-                        onclick="location.href='/myProfile'">
+                    <div data-v-8cd483ca="" class="c-row c-row-between c-row-middle state-box c-pr">
                         <div data-v-8cd483ca="" class="c-row c-row-middle">
                             <div data-v-8cd483ca="" class="user-img">
                                 <img data-v-8cd483ca="" src="" class="img" id="prof_image">
@@ -381,7 +380,7 @@
                             
 
                         </div>
-                        <div data-v-8cd483ca="" class="profile">
+                        <div data-v-8cd483ca="" class="profile" onclick="location.href='/myProfile'">
                             <i data-v-8cd483ca="" class="fa-regular fa-angle-right fa-fade fa-lg center"
                                 style="color: #8f5206; font-size: 20px;">
                             </i>
@@ -930,13 +929,36 @@
                 };
                 $("#prof_image").attr("src","/assets/png/"+ data.data.user_avatar);
                 $('.infoName .name').text(data.data.name_user);
-                $('.infoName .id').text(`UID   |    ${data.data.id_user}`);
-                $('.infoName .id').attr('data-clipboard-text', '');
+                $('.infoName .id').html(`<span>UID | </span> <span id="user_id">`+data.data.id_user+`</span><i class="copy_user_id fa-solid fa-copy" style="margin-left:10px;"></i>`);
+                $('.infoName .id').attr('data-clipboard-text', data.data.id_user);
                 $('.infoName .number').text(`Mobile Number: +91 ${data.data.phone_user.slice(0, 2)}****${data.data.phone_user.slice(-4)}`);
                 $('.money .txt').text(` ₹ ${data.data.money_user} `);
             });
     </script>
     <script>
+
+        function alertMess(text) {
+            $('body').append(
+                `
+                <div data-v-1dcba851="" class="msg">
+                    <div data-v-1dcba851="" class="msg-content v-enter-active v-enter-to" style=""> ${text} </div>
+                </div>
+                `
+            );
+            setTimeout(() => {
+                $('.msg .msg-content').removeClass('v-enter-active v-enter-to');
+                $('.msg .msg-content').addClass('v-leave-active v-leave-to');
+                setTimeout(() => {
+                    $('.msg').remove();
+                }, 100);
+            }, 1000);
+        }
+        $(document).on("click", '.copy_user_id', function(e){
+            e.preventDefault();
+            var userid = $("#user_id").text();
+           alertMess('Copy successful', $(this));
+            navigator.clipboard.writeText(userid);
+        });
         $('.reload_money').click(function (e) {
             e.preventDefault();
             $(this).addClass('action block-click');
