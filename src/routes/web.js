@@ -144,49 +144,20 @@ const initWebRouter = (app) => {
       promotionController.claimDailyRebateReword,
     );
 
-    router.post(
-      "/api/activity/stake_details/claim",
-      middlewareController,
-      promotionController.addonstake,
-    );
+    router.post( "/api/activity/stake_details/claim", middlewareController, promotionController.addonstake,);
 
-    router.post(
-      "/api/webapi/stake/details",
-      middlewareController,
-      promotionController.getstakedetails,
-    );
+    router.post("/api/webapi/stake/details", middlewareController, promotionController.getstakedetails, );
 
-    router.post(
-      "/api/activity/weekly_betting_bonus",
-      promotionController.getweeklyBettingeReword,
-    );
+    router.post( "/api/activity/weekly_betting_bonus", promotionController.getweeklyBettingeReword,);
 
-    router.post(
-      "/api/activity/weekly_betting_bonus/record",
-      promotionController.weeklyBetttingRewordRecord,
-    );
+    router.post( "/api/activity/weekly_betting_bonus/record", promotionController.weeklyBetttingRewordRecord, );
 
     
-  router.post(
-    "/api/activity/weekly_betting_bonus/claim",
-    promotionController.claimWeeklyBettingReword,
-  );
+    router.post( "/api/activity/weekly_betting_bonus/claim", promotionController.claimWeeklyBettingReword,);
 
-    router.post(
-      "/api/activity/invitation_bonus",
-      middlewareController,
-      promotionController.getInvitationBonus,
-    );
-    router.post(
-      "/api/activity/invitation_bonus/claim",
-      middlewareController,
-      promotionController.claimInvitationBonus,
-    );
-    router.post(
-      "/api/activity/invitation/record",
-      middlewareController,
-      promotionController.getInvitedMembers,
-    );
+    router.post( "/api/activity/invitation_bonus", middlewareController, promotionController.getInvitationBonus,);
+    router.post( "/api/activity/invitation_bonus/claim", middlewareController, promotionController.claimInvitationBonus,);
+    router.post( "/api/activity/invitation/record", middlewareController, promotionController.getInvitedMembers,);
 
     router.get('/recordsalary', middlewareController, homeController.recordsalary);
     router.get('/getrecord', middlewareController, homeController.getSalaryRecord);
@@ -322,31 +293,15 @@ const initWebRouter = (app) => {
     router.get('/admin/manager/k3', adminController.middlewareAdminController, adminController.adminPageK3); // get info account
     router.get('/admin/manager/trx', adminController.middlewareAdminController, adminController.adminPageTrx);
 
+    //Activity Page
+    router.get("/attendance/record", homeController.attendanceRecordPage,);
+    router.get("/attendance/rules", homeController.attendanceRulesPage,);
+    router.get("/attendance", homeController.attendancePage,);
+    router.post("/api/activity/attendance_bonus", promotionController.getAttendanceBonus,);
+    router.post("/api/activity/attendance_bonus/claim", promotionController.claimAttendanceBonus,);
+    router.post( "/api/activity/attendance/record", promotionController.getAttendanceBonusRecord,);
+    //Activity page end
 
-    router.get(
-      "/attendance/record",
-      homeController.attendanceRecordPage,
-    );
-    router.get(
-      "/attendance/rules",
-      homeController.attendanceRulesPage,
-    );
-    router.get(
-      "/attendance",
-      homeController.attendancePage,
-    );
-    router.post(
-      "/api/activity/attendance_bonus",
-      promotionController.getAttendanceBonus,
-    );
-    router.post(
-      "/api/activity/attendance_bonus/claim",
-      promotionController.claimAttendanceBonus,
-    );
-    router.post(
-      "/api/activity/attendance/record",
-      promotionController.getAttendanceBonusRecord,
-    );
     router.get('/admin/manager/members', adminController.middlewareAdminController, adminController.membersPage);
     router.post('/admin/manager/makecolloborator', adminController.middlewareAdminController,  adminController.makecolloborator); // get info account
     router.get('/admin/manager/adminChatPage', adminController.middlewareAdminController, adminController.adminChatPage);
