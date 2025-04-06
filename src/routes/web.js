@@ -44,7 +44,7 @@ const initWebRouter = (app) => {
     router.get('/wallet/transfer', middlewareController, homeController.transfer);
 
     
-  router.get("/dailytask/record", middlewareController, homeController.rechargeAwardCollectionRecord,);
+    router.get("/dailytask/record", middlewareController, homeController.rechargeAwardCollectionRecord,);
 
     router.get('/promotion', middlewareController, homeController.promotionPage);
     router.get('/promotion1', middlewareController, homeController.promotion1Page);
@@ -57,11 +57,7 @@ const initWebRouter = (app) => {
     router.get('/promotion/rebate_ratio', middlewareController, homeController.rabateRatioPage);
     router.get('/promotion/bonusrecord', middlewareController, homeController.bonusRecordPage);
 
-    router.get(
-      "/api/subordinates/summary",
-      middlewareController,
-      promotionController.subordinatesDataAPI,
-    );
+    router.get("/api/subordinates/summary", middlewareController, promotionController.subordinatesDataAPI,);
 
     router.get('/wallet', middlewareController, homeController.walletPage);
     router.get('/wallet/recharge', middlewareController, homeController.rechargePage);
