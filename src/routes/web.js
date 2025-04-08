@@ -179,7 +179,7 @@ const initWebRouter = (app) => {
     router.post('/api/webapi/addBank', middlewareController, userController.addBank); // register
     router.post('/api/webapi/otp', middlewareController, userController.verifyCode); // register
     router.post('/api/webapi/use/redenvelope', middlewareController, userController.useRedenvelope); // register
-    router.post('/api/webapi/get/mybets', middlewareController, userController.getmybets); 
+    router.post('/api/webapi/get/mybets', middlewareController, userController.getmybets);
 
     // wallet
     router.post('/api/webapi/recharge', middlewareController, userController.recharge);
@@ -345,6 +345,8 @@ const initWebRouter = (app) => {
         // bet TRX wingo
   router.post("/api/webapi/trx_wingo/action/join", middlewareController, trxWingoController.betTrxWingo,); // register
   
+  router.post("/api/webapi/trx_wingo/manageResult", middlewareController, trxWingoController.manageResult,); 
+
   router.post( "/api/webapi/trx_wingo/GetNoaverageEmerdList", middlewareController, trxWingoController.listOrderOld,); // register
   router.post("/api/webapi/trx_wingo/GetNoaverageEmerdList_Statistics", middlewareController, trxWingoController.Stat_listOrderOld,); 
   router.post( "/api/webapi/trx_wingo/GetMyEmerdList", middlewareController, trxWingoController.GetMyEmerdList, ); // register

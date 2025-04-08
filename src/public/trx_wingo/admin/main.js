@@ -101,6 +101,7 @@ const isNumber = (params) => {
 $('#manage .col-12').click(async function (e) {
     e.preventDefault();
     $('#preloader').fadeIn(0);
+    $('#list-orders-hash').html('');
     let game = $(this).attr('data');
     $('html').attr('data-change', game);
     $(".direct-chat-msg").html('');
@@ -633,6 +634,87 @@ $.ajax({
         if (typeid == '3') $('#winrate').text(`Next Result: ${(response.setting[0].bs5 == '-1') ? 'Random' : response.setting[0].bs5}`);
         if (typeid == '4') $('#winrate').text(`Next Result: ${(response.setting[0].bs10 == '-1') ? 'Random' : response.setting[0].bs10}`);
     }
+});
+
+function generateResultByHash(hash) {
+    const hashItemList = hash.split("");
+  
+    let Result = "";
+    for (let index = 0; index < hashItemList.length; index++) {
+      const hashItem = hashItemList[hashItemList.length - 1 - index];
+  
+      const NUMBER_LIST = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+      const isNumber = NUMBER_LIST.includes(hashItem);
+      if (isNumber) {
+        Result = hashItem;
+        break;
+      }
+    }
+  
+    return Result;
+  };
+
+
+$('#btn_manual_results').click(function (e) {
+    e.preventDefault();
+    fetch("https://apilist.tronscanapi.com/api/block?sort=-balance&start=0&limit=20&producer=&number=&start_timestamp=&end_timestamp=")
+    .then((response) => response.json())
+    .then((data) => {
+        $('#list-orders-hash').html('');
+        if(parseInt($('html').attr('data-change')) == 1 || parseInt($('html').attr('data-change')) == 5)
+        {
+            let html = '';
+            for (let i=0; i< 10; i++)
+            {
+                var result = generateResultByHash(data.data[i].hash);
+                html += ` <div data-v-a9660e98="" class="c-tc van-row" style="text-align: center;border-bottom: 1px solid;padding: 6px">
+                <div data-v-a9660e98="" class="van-col van-col--8">`+data.data[i].number+`</div>
+                <div data-v-a9660e98="" class="van-col van-col--5">`+data.data[i].hash+`</div>
+                <div data-v-a9660e98="" class="van-col van-col--5">`+result+`</div>
+                <div data-v-a9660e98="" class="van-col van-col--6"> <a class="btn btn-success btn-sm manage_result" data-number="${data.data[i].number}" data-hash="${data.data[i].hash}" data-result="${result}" data-time="${data.data[i].timestamp}"><i class="fas fa-check"></i></a></div>
+                </div>`;
+            }
+            $('#list-orders-hash').html(html);
+        }
+        else if(parseInt($('html').attr('data-change')) == 3 || parseInt($('html').attr('data-change')) == 10)
+        {
+            let html = '';
+            for (let i=10; i< 20; i++)
+            {
+                var result = generateResultByHash(data.data[i].hash);
+                html += ` <div data-v-a9660e98="" class="c-tc van-row" style="text-align: center;border-bottom: 1px solid;padding: 6px">
+                <div data-v-a9660e98="" class="van-col van-col--8">`+data.data[i].number+`</div>
+                <div data-v-a9660e98="" class="van-col van-col--5">`+data.data[i].hash+`</div>
+                <div data-v-a9660e98="" class="van-col van-col--5">`+result+`</div>
+                <div data-v-a9660e98="" class="van-col van-col--6"> <a class="btn btn-success btn-sm manage_result" data-number="${data.data[i].number}" data-hash="${data.data[i].hash}" data-result="${result}" data-time="${data.data[i].timestamp}"><i class="fas fa-check"></i></a></div>
+                </div>`;
+            }
+            $('#list-orders-hash').html(html);
+        }
+    });
+});
+
+$(document).off('click', '.manage_result').on("click", '.manage_result', function(e){
+    e.preventDefault();
+    let hash_number = $(this).attr('data-number');
+    let hash_hash = $(this).attr('data-hash');
+    let hash_result = $(this).attr('data-result');
+    let hash_time = $(this).attr('data-time');
+    $.ajax({
+        type: "POST",
+        url: "/api/webapi/trx_wingo/manageResult",
+        data: {
+            hash_number: hash_number,
+            hash_hash: hash_hash,
+            hash_result: hash_result,
+            hash_time:hash_time,
+            typeid: $('html').attr('data-change'),
+        },
+        dataType: "json",
+        success: function (response) {
+            $('#list-orders-hash').html('');
+        }
+    });
 });
 
 $('.start-order').click(function (e) {

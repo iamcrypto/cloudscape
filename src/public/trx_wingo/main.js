@@ -1410,7 +1410,7 @@ socket.on("data-server-trx-wingo", async function (msg) {
     console.log("lastGame.period");
     console.log(lastGame.period);
     console.log("firstGame.period");
-    console.log(firstGame.stage);
+    // console.log(firstGame.stage);
               
               if (firstGame && firstGame.stage === lastGame.period) {
                 var modal = document.getElementById("trx_myModal");
