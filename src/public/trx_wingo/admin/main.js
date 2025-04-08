@@ -244,7 +244,7 @@ function showJoinMember2(data) {
     {
         if (data.change == 1) return;
         let bet = data.join;
-        let money = formatMoney(data.money, ',');
+        let money = formatMoney(data.bet_amount, ',');
         let name = data.bet;
         let time = timerJoin(data.time);
         let result = '';
@@ -649,7 +649,7 @@ $('.start-order').click(function (e) {
     if (value != '') {
         $.ajax({
             type: "POST",
-            url: "/api/webapi/admin/change",
+            url: "/api/webapi/admin/trx_change",
             data: {
                 type: 'change-wingo1',
                 value: value,

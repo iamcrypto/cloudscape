@@ -763,8 +763,11 @@ function initGameLogics({
           alertMessage(response.message);
           if (response.status === false) return;
           $("#balance_amount").text("₹ " + response.money + ".00");
+          let fee = (currentX * money) * 0.02;
+          let total = (currentX * money) - fee;
           socket.emit("data-server_trx", {
-            money: currentX * money,
+            money: total,
+            bet_amount: currentX * money,  
             join,
             time: Date.now(),
             change: response.change,

@@ -46,6 +46,10 @@ UPDATE `trx_wingo_game` SET `status` = '0' WHERE `trx_wingo_game`.`game` = 'trx_
 
 
 
+        // "database": "pm2 start ./node_modules/.bin/babel-node --name database -- src/modal/CreateDatabase.js --watch",
+        // "start": "pm2 start ./node_modules/.bin/babel-node --name app -- server.js --watch"
+
+
 
 
 

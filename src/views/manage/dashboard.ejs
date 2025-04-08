@@ -283,6 +283,18 @@
   <!-- /.info-box -->
 </div>
 
+
+<div class="col-md-3 col-sm-6 col-12">
+  <div class="info-box">
+      <span class="info-box-icon bg-success"><i class="fa fa-balance-scale-right" aria-hidden="true"></i></span>
+      <div class="info-box-content">
+          <span class="info-box-text">Today's total Loss</span>
+          <span class="info-box-number totalMember" id="TodaysTotalLoss">0</span>
+      </div>
+      <!-- /.info-box-content -->
+  </div>
+  <!-- /.info-box -->
+</div>
 <div class="col-md-3 col-sm-6 col-12">
   <div class="info-box">
       <span class="info-box-icon bg-success"><i class="fa fa-gem aria-hidden="true"></i></span>
@@ -466,6 +478,7 @@
           $("#WithdrawalRequests").text(response.data.a_WithdrawalRequests);
           $("#TodaysTotalBets").text(response.data.a_TodaysTotalBets);
           $("#TodaysTotalWin").text(response.data.a_TodaysTotalWin);
+          $("#TodaysTotalLoss").text(response.data.a_TodaysTotalLoss);
           $("#TodaysProfit").text(response.data.a_TodaysProfit);
           $("#TodaysProfit_EXP").text(response.data.a_TodaysProfit_EXP);
           $("#month_colloborator").text(response.data.a_month_colloborator);
@@ -482,7 +495,7 @@
       });  
     }
 
- 
+    refresh_All_prameters();
     $('.reload_money').click(function (e) {
       e.preventDefault();
       $(this).addClass('rotating block-click');

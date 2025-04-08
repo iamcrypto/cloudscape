@@ -738,6 +738,7 @@ $(".foot .right").click(function (e) {
     dataType: "json",
     success: function (response) {
       alertMessJoin(response.message);
+      console.log(response);
       if (response.status === false) return;
       $("#history-order").prepend(response.data);
       $(".total-box .num span").text("₹ " + response.money + ".00");

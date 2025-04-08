@@ -2395,6 +2395,7 @@ const getdashboardInfo = async (req, res) => {
     let total_5d = 0;
     let total_trx = 0;
     let totalWinning = 0;
+    let totalLoss = 0;
     let totalProfit = 0;
     let win_total_w = 0;
     let win_total_k3 = 0;
@@ -2402,8 +2403,45 @@ const getdashboardInfo = async (req, res) => {
     let win_total_trx = 0;
     let vip_level_bonus = 0;
     let vip_month_reward = 0;
+
+
     const today = moment().startOf("day").valueOf();
     const yesterday = moment().subtract(1, "days").valueOf();
+
+    let td_wingo_bet= 0;
+    let td_5d_bet= 0;
+    let td_k3_bet= 0;
+    let td_trx_bet= 0;
+    let td_totalBet = 0;
+
+    let td_wingo_win= 0;
+    let td_5d_win= 0;
+    let td_k3_win= 0;
+    let td_trx_win= 0;
+    let td_totalwin = 0;
+    let td_totalLoss = 0;
+    const [win_td_minutes_1] = await connection.query("SELECT SUM(get) AS `sum` FROM minutes_1 WHERE  `time` >= ?;", [today]);
+    const [win_td_k3_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM result_k3 WHERE  `time` >= ?;", [today]);
+    const [win_td_d5_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM result_5d WHERE  `time` >= ?;", [today]);
+    const [win_td_trx_bet_money] = await connection.query("SELECT SUM(get) AS `sum` FROM trx_wingo_bets WHERE  `time` >= ?;", [today]);
+    td_wingo_win = win_td_minutes_1[0].sum || 0;
+    td_k3_win = win_td_k3_bet_money[0].sum || 0;
+    td_5d_win = win_td_d5_bet_money[0].sum || 0;
+    td_trx_win = win_td_trx_bet_money[0].sum || 0;
+    td_totalwin += parseInt(td_wingo_win) + parseInt(td_k3_win) + parseInt(td_5d_win) + parseInt(td_trx_win);
+
+    const [td_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE  `time` >= ?;", [today]);
+    const [td_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE  `time` >= ?;", [today]);
+    const [td_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE  `time` >= ?;", [today]);
+    const [td_trx_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM trx_wingo_bets WHERE  `time` >= ?;", [today]);
+    td_wingo_bet = td_minutes_1[0].sum || 0;
+    td_k3_bet = td_k3_bet_money[0].sum || 0;
+    td_5d_bet = td_d5_bet_money[0].sum || 0;
+    td_trx_bet = td_trx_bet_money[0].sum || 0;
+    td_totalBet += parseInt(td_wingo_bet) + parseInt(td_k3_bet) + parseInt(td_5d_bet) + parseInt(td_trx_bet);
+
+    td_totalLoss =  td_totalwin - td_totalBet;
+
     const [today_minutes_1] = await connection.query("SELECT SUM(money) AS `sum` FROM minutes_1 WHERE  `time` >= ?;", [yesterday]);
     const [today_k3_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_k3 WHERE  `time` >= ?;", [yesterday]);
     const [today_d5_bet_money] = await connection.query("SELECT SUM(money) AS `sum` FROM result_5d WHERE  `time` >= ?;", [yesterday]);
@@ -2424,7 +2462,7 @@ const getdashboardInfo = async (req, res) => {
     win_total_trx = win_today_trx_bet_money[0].sum || 0;
     totalWinning += parseInt(win_total_w) + parseInt(win_total_k3) + parseInt(win_total_5d) + parseInt(win_total_trx);
 
-    totalProfit = totalBet -totalWinning
+    totalProfit = totalBet -totalWinning;
     const [list_recharge_users_today] = await connection.query("SELECT * FROM recharge WHERE `status`=1 AND `time`>= ? ORDER BY `id` DESC;", [yesterday]);
     let today_bonus_amt = 0;
     for (let i = 0; i < list_recharge_users_today.length; i++) {
@@ -2580,8 +2618,9 @@ const getdashboardInfo = async (req, res) => {
             a_TotalWithdrawal_No:totalwithdrawal_no,
             a_TotalWithdrawal_AMT:totalwithdrawal_amt,
             a_WithdrawalRequests:withdrawalRequest,
-            a_TodaysTotalBets:totalBet,
-            a_TodaysTotalWin:totalWinning,
+            a_TodaysTotalBets:td_totalBet,
+            a_TodaysTotalWin:td_totalwin,
+            a_TodaysTotalLoss:td_totalLoss,
             a_TodaysProfit:totalProfit,
             a_TodaysProfit_EXP:profit_after_exp,
             a_month_colloborator:colloboratordata.result_val,
