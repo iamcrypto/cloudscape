@@ -730,7 +730,9 @@ var myModal_result_Period = document.getElementById("myModal_result_Period");
         if (response.status === false) return;
         $("#history-order").prepend(response.data);
         $(".total-box .num span").text("₹ " + response.money + ".00");
-        socket.emit('data-server_2', { money: x * money, join, time: Date.now(), change: response.change });
+        let fee = (x * money) * 0.02;
+        let total = (x * money) - fee;
+        socket.emit('data-server_2', { money: total,bet_amount: x * money,  join, time: Date.now(), change: response.change });
       },
     });
   
