@@ -130,15 +130,15 @@ const settingCollo_Details = async (req, res) => {
             let file_name1 = req.body.file_name;
             const uploadDir1 = path.join(path_dir + '/src/public/qr_code/'+file_name1);
             const deleteRechargeQueries = bank_recharge.map(recharge => {
-                if(recharge.qr_code_image.toString().trim() != uploadDir1)
-                {
-                    if (fs.existsSync(recharge.qr_code_image.toString().trim())) {
-                        fs.unlink(recharge.qr_code_image.toString().trim(),function(err){
-                        if(err) return console.log(err);
-                        console.log('file deleted successfully');
-                    }); 
-                    };
-                }
+                // if(recharge.qr_code_image.toString().trim() != uploadDir1)
+                // {
+                //     if (fs.existsSync(recharge.qr_code_image.toString().trim())) {
+                //         fs.unlink(recharge.qr_code_image.toString().trim(),function(err){
+                //         if(err) return console.log(err);
+                //         console.log('file deleted successfully');
+                //     }); 
+                //     };
+                // }
                 return deleteBankRechargeById(recharge.id)
             });
 
