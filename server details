@@ -50,6 +50,13 @@ UPDATE `trx_wingo_game` SET `status` = '0' WHERE `trx_wingo_game`.`game` = 'trx_
         // "start": "pm2 start ./node_modules/.bin/babel-node --name app -- server.js --watch"
 
 
+--         database": "nodemon --exec ./node_modules/.bin/babel-node src/modal/CreateDatabase.js",
+--         "start": "nodemon --exec ./node_modules/.bin/babel-node server.js"
+
+-- "nodemon": "^3.1.9",
+
+
+
 
 
 

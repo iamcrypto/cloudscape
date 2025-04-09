@@ -510,63 +510,6 @@ const changeAdmin = async (req, res) => {
 
 }
 
-const TRXchangeAdmin = async (req, res) => {
-    let auth = req.cookies.auth;
-    let value = req.body.value;
-    let type = req.body.type;
-    let typeid = req.body.typeid;
-
-    if (!value || !type || !typeid) return res.status(200).json({
-        message: 'Failed',
-        status: false,
-        timeStamp: timeNow,
-    });;
-    let game = '';
-    let bs = '';
-    if (typeid == '1') {
-        game = 'trx_wingo1';
-        bs = 'bs1';
-    }
-    if (typeid == '2') {
-        game = 'trx_wingo3';
-        bs = 'bs3';
-    }
-    if (typeid == '3') {
-        game = 'trx_wingo5';
-        bs = 'bs5';
-    }
-    if (typeid == '4') {
-        game = 'trx_wingo10';
-        bs = 'bs10';
-    }
-    switch (type) {
-        case 'change-wingo1':
-            await connection.query(`UPDATE admin SET ${game} = ? `, [value]);
-            return res.status(200).json({
-                message: 'Editing results successfully',
-                status: true,
-                timeStamp: timeNow,
-            });
-            break;
-        case 'change-win_rate':
-            await connection.query(`UPDATE admin SET ${bs} = ? `, [value]);
-            return res.status(200).json({
-                message: 'Editing win rate successfully',
-                status: true,
-                timeStamp: timeNow,
-            });
-            break;
-
-        default:
-            return res.status(200).json({
-                message: 'Failed',
-                status: false,
-                timeStamp: timeNow,
-            });
-            break;
-    }
-
-}
 
 function formateT(params) {
     let result = (params < 10) ? "0" + params : params;
@@ -988,27 +931,14 @@ const upload = multer({
 
 const settingBank = async (req, res) => {
     try {
-        
-        let uploadfile = await upload(req, res, (err) =>{
-            if(err){
-                console.log(err);
-            }else{
-                console.log('file uploaded succcessfully');
-            }
-        });
-
-        const form = formidable({});
-        let fields;
-
-        [fields] = await form.parse(req);
+        let name_bank = req.body.name_bank;
+        let name = req.body.name;
+        let info = req.body.info;
+        let qr =  req.body.qr;
+        let typer =  req.body.typer;
         let auth = req.cookies.auth;
-
-
-        let name_bank = fields["name_bank"];
-        let name =fields["name"];
-        let info = fields["info"];
-        let qr = fields["qr"];
-        let typer =  fields["typer"];
+        let file_exits = req.body.file_exits;
+        let file_name = req.body.file_name;
 
         if (!auth || !typer) {
             return res.status(200).json({
@@ -1028,7 +958,6 @@ const settingBank = async (req, res) => {
         }
 
         if (typer == 'momo') {
-            
             const [bank_recharge] = await connection.query(`SELECT * FROM bank_recharge WHERE phone = ?;`, [users[0].phone]);
             var transfer_mode = '';
             if(bank_recharge.length != 0)
@@ -1038,8 +967,10 @@ const settingBank = async (req, res) => {
             else{
                 transfer_mode = "manual";
             }
-            let file_name1 = fields["file_name"];
+
+            let file_name1 = req.body.file_name;
             const uploadDir1 = path.join(path_dir + '/src/public/qr_code/'+file_name1);
+
             const deleteRechargeQueries = bank_recharge.map(recharge => {
                 if(recharge.qr_code_image.toString().trim() != uploadDir1)
                 {
@@ -1053,14 +984,15 @@ const settingBank = async (req, res) => {
                 return deleteBankRechargeById(recharge.id)
             });
 
-            await Promise.all(deleteRechargeQueries)
+           await Promise.all(deleteRechargeQueries)
 
             //await connection.query(`UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ? WHERE type = 'upi'`, [name_bank, name, info, qr]);
 
-            const bankName = fields["bank_name"];
-            const username = fields["username"]
-            const upiId =  fields["upi_id"]
-            const usdtWalletAddress =  fields["usdt_wallet_address"]
+ 
+            const bankName = req.body.bank_name;
+            const username =  req.body.username;
+            const upiId =  req.body.upi_id;
+            const usdtWalletAddress =  req.body.usdt_wallet_address;
             let timeNow = Date.now();
 
             await connection.query("INSERT INTO bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ?, upi_wallet = ?, transfer_mode = ?,phone=?, colloborator_action = ?, time = ?, type = 'momo', status = 1;", [
@@ -2811,6 +2743,31 @@ const ReqAcceptReject = async (req, res) => {
 
 }
 
+const upload_qr_code = async (req, res) => {
+    console.log("fired");
+    try
+    {
+        let uploadfile = await upload(req, res, (err) =>{
+            if(err){
+                console.log(err);
+            }else{
+                console.log('file uploaded succcessfully');
+            }
+        });
+        return res.status(200).json({
+            message: 'Success',
+            status: true,
+            datas: 'uploaded',  
+        });
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: 'Failed',
+            status: false,
+        });
+    }
+}
 
 module.exports = {
     on_off_colloborator,
@@ -2825,7 +2782,6 @@ module.exports = {
     totalJoinTRX,
     middlewareAdminController,
     changeAdmin,
-    TRXchangeAdmin,
     membersPage,
     k3chatPage,
     d5chatPage,
@@ -2879,5 +2835,6 @@ module.exports = {
     makecolloborator,
     getdashboardInfo,
     getbankRequest,
-    ReqAcceptReject
+    ReqAcceptReject,
+    upload_qr_code,
 }

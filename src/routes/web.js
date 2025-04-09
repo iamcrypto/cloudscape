@@ -223,8 +223,9 @@ const initWebRouter = (app) => {
 
     router.post('/manager/settings/get', dailyController.middlewareDailyController, dailyController.settingGet);
     router.post('/manager/settings/list', dailyController.middlewareDailyController, dailyController.settings);
-    router.post('/manager/createBonus', dailyController.middlewareDailyController, dailyController.createBonus);
-    router.post('/manager/collo_bank', dailyController.middlewareDailyController, dailyController.settingCollo_Details);
+    router.post('/manager/createBonus', dailyController.middlewareDailyController, dailyController.createBonus); 
+    router.post('/manager/collo_bank',dailyController.middlewareDailyController, dailyController.settingCollo_Details);
+    router.post('/manager/upload_code',dailyController.middlewareDailyController,  dailyController.upload_qr_code); 
     router.post('/manager/listRedenvelops', dailyController.middlewareDailyController, dailyController.listRedenvelops);
 
     router.post('/manager/listRecharge', dailyController.middlewareDailyController, dailyController.listRechargeP);
@@ -273,6 +274,7 @@ const initWebRouter = (app) => {
     router.post('/admin/manager/infoCtv', adminController.middlewareAdminController, adminController.infoCtv); // get info account
     router.post('/admin/manager/infoCtv/select', adminController.middlewareAdminController, adminController.infoCtv2); // get info account
     router.post('/admin/manager/settings/bank', adminController.middlewareAdminController, adminController.settingBank); // get info account
+    router.post('/admin/manager/upload_code',adminController.middlewareAdminController, adminController.upload_qr_code);
     router.post('/admin/manager/settings/cskh', adminController.middlewareAdminController, adminController.settingCskh); // get info account
     router.post('/admin/manager/settings/buff', adminController.middlewareAdminController, adminController.settingbuff); // get info account
     router.post('/admin/manager/create/ctv', adminController.middlewareAdminController, adminController.register); // get info account
@@ -321,7 +323,6 @@ const initWebRouter = (app) => {
     router.post('/api/webapi/admin/totalJoin_trx', adminController.middlewareAdminController, adminController.totalJoinTRX); 
     router.post('/api/webapi/admin/change', adminController.middlewareAdminController, adminController.changeAdmin); // get info account
 
-    router.post('/api/webapi/admin/trx_change', adminController.middlewareAdminController, adminController.TRXchangeAdmin); 
     router.post('/api/webapi/admin/profileUser', adminController.middlewareAdminController, adminController.profileUser); // get info account
 
     // admin 5d 
