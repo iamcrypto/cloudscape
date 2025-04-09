@@ -6,6 +6,8 @@ import routes from './src/routes/web';
 import cronJobContronler from './src/controllers/cronJobContronler';
 import socketIoController from './src/controllers/socketIoController';
 const cors = require('cors');
+import fileUpload from 'express-fileupload';
+
 
 const corsOptions = {
     origin: 'https://api.bulkcampaigns.com', // Allow only requests from this origin
@@ -21,6 +23,7 @@ let cookieParser = require('cookie-parser');
 
 const app = express();
 app.use(cors());
+app.use(fileUpload())
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
@@ -30,6 +33,30 @@ const io = require('socket.io')(server);
 const port =   process.env.PORT;
 
 app.use(cookieParser());
+
+
+app.post('/upload', function(req, res) {
+    let sampleFile;
+    let uploadPath;
+    let name;
+  
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+  
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    sampleFile = req.files.foo;
+    name = req.body.fileName;
+    console.log(name);
+    uploadPath = __dirname + '/src/public/qr_code_collo/' + sampleFile.name;
+  
+    // Use the mv() method to place the file somewhere on your server
+    sampleFile.mv(uploadPath, function(err) {
+      if (err)
+        return res.status(500).send(err);
+      console.log("uploaded");
+    });
+  });
 
 
 // app.use(express.static('public'));

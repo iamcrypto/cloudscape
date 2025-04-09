@@ -71,12 +71,13 @@ const deleteBankRechargeById = async (id) => {
 }
 
 let path_dir = path.dirname(path.basename(__dirname));
-const uploadDir = path.join(path_dir + '/src/public/qr_code');
+const uploadDir = path.join(path_dir + '/src/public/qr_code_collo');
 let uploaded_fileName = '';
 const storage = multer.diskStorage({
     destination: uploadDir,
     filename: function(req, file, cb){
         uploaded_fileName = file.originalname;
+        
         cb(null, file.originalname);
     }
 })

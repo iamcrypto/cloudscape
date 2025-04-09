@@ -311,7 +311,6 @@
                                 body: formData,
                                 mode: "cors",
                               }).then(res =>{ res.json().then((data)=>{
-                                setTimeout(function() {
                                 if (data.status === true) {
                                     $.ajax({
                                         type: "POST",
@@ -333,7 +332,6 @@
                                     }
                                     });
                                 }
-                            }, 5000); 
                             });
                         });   
                         }    
