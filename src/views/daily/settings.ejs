@@ -201,7 +201,7 @@
                         else{
                             file_exits = "has_file";
                             file_name_up = $('#qr_code_scanner')[0].files[0].name.toString().trim();
-                            fetch('/manager/upload_code', {
+                            fetch('/manager/upload_code_collo', {
                                 method: 'POST', 
                                 body: formData,
                                 mode: "cors",

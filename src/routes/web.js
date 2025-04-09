@@ -225,7 +225,7 @@ const initWebRouter = (app) => {
     router.post('/manager/settings/list', dailyController.middlewareDailyController, dailyController.settings);
     router.post('/manager/createBonus', dailyController.middlewareDailyController, dailyController.createBonus); 
     router.post('/manager/collo_bank',dailyController.middlewareDailyController, dailyController.settingCollo_Details);
-    router.post('/manager/upload_code',dailyController.middlewareDailyController,  dailyController.upload_qr_code_collo); 
+    router.post('/manager/upload_code_collo',dailyController.middlewareDailyController,  dailyController.upload_qr_code_collo); 
     router.post('/manager/listRedenvelops', dailyController.middlewareDailyController, dailyController.listRedenvelops);
 
     router.post('/manager/listRecharge', dailyController.middlewareDailyController, dailyController.listRechargeP);

@@ -1730,6 +1730,7 @@ const upload_qr_code_collo = async (req, res) => {
     {
         let uploadfile = await upload(req, res, (err) =>{
             if(err){
+                console.log("err");
                 console.log(err);
             }else{
                 console.log('file uploaded succcessfully');
