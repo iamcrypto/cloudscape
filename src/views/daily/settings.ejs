@@ -134,7 +134,6 @@
         });
 
         const alertMessage = (text) => {
-            console.log("123");
             const msg = document.createElement('div');
             msg.setAttribute('data-v-1dcba851', '');
             msg.className = 'msg';
@@ -202,7 +201,6 @@
                         else{
                             file_exits = "has_file";
                             file_name_up = $('#qr_code_scanner')[0].files[0].name.toString().trim();
-                            console.log(3);
                             fetch('/manager/upload_code', {
                                 method: 'POST', 
                                 body: formData,
@@ -224,8 +222,6 @@
                                             },
                                             dataType: "json",
                                             success: function (response) { 
-                                                console.log("response") ;        
-                                                console.log(response) ;               
                                                 if (response.status === true) {
                                                 alert("Details Updated Successfully!");
                                             }
