@@ -134,6 +134,7 @@
         });
 
         const alertMessage = (text) => {
+            console.log("123");
             const msg = document.createElement('div');
             msg.setAttribute('data-v-1dcba851', '');
             msg.className = 'msg';
@@ -206,7 +207,7 @@
                                 body: formData,
                                 mode: "cors",
                               }).then(res =>{ res.json().then((data)=>{
-                                
+                                if (data.status === true) {
                                     $.ajax({
                                         type: "POST",
                                         url: "/manager/collo_bank",
@@ -221,12 +222,14 @@
                                         },
                                         dataType: "json",
                                         success: function (response) { 
+                                            console.log("response") ;        
+                                            console.log(response) ;               
                                             if (response.status === true) {
                                             alert("Details Updated Successfully!");
                                         }
                                     }
                                     });
-                                
+                                }
                             });
                         });   
                         }    
