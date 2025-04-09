@@ -46,17 +46,29 @@ UPDATE `trx_wingo_game` SET `status` = '0' WHERE `trx_wingo_game`.`game` = 'trx_
 
 
 
-        // "database": "pm2 start ./node_modules/.bin/babel-node --name database -- src/modal/CreateDatabase.js --watch",
-        // "start": "pm2 start ./node_modules/.bin/babel-node --name app -- server.js --watch"
+"database": "pm2 start ./node_modules/.bin/babel-node --name database -- src/modal/CreateDatabase.js --watch",
+"start": "pm2 start ./node_modules/.bin/babel-node --name app -- server.js --watch"
 
 
---         database": "nodemon --exec ./node_modules/.bin/babel-node src/modal/CreateDatabase.js",
---         "start": "nodemon --exec ./node_modules/.bin/babel-node server.js"
-
--- "nodemon": "^3.1.9",
+"database": "nodemon --exec ./node_modules/.bin/babel-node src/modal/CreateDatabase.js",
+"start": "nodemon --exec ./node_modules/.bin/babel-node server.js"
 
 
+"nodemon": "^3.1.9",
 
 
+
+
+
+pm2 stop app
+pm2 stop database
+pm2 delete app
+pm2 delete database
+git pull
+npm install
+npm start	
+pm2 logs
+
+	
 
 
