@@ -192,7 +192,9 @@
                                     typer: "momo",
                                 },
                                 dataType: "json",
-                                success: function (response) {                        
+                                success: function (response) {  
+                                    console.log("response");
+                                    console.log(response);                     
                                     if (response.status === true) {
                                     alert("Details Updated Successfully!");
                                 }
@@ -207,6 +209,8 @@
                                 body: formData,
                                 mode: "cors",
                               }).then(res =>{ res.json().then((data)=>{
+                                console.log("data") ; 
+                                console.log(data) ;               
                                 if (data.status === true) {
                                     $.ajax({
                                         type: "POST",
@@ -221,7 +225,9 @@
                                             typer: "momo",
                                         },
                                         dataType: "json",
-                                        success: function (response) {                        
+                                        success: function (response) { 
+                                            console.log("response") ;        
+                                            console.log(response) ;               
                                             if (response.status === true) {
                                             alert("Details Updated Successfully!");
                                         }
