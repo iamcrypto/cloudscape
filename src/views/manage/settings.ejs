@@ -262,7 +262,7 @@
             }, 1000);
         }
 
-        $('.edit-momo').click(async (e) => {
+        $(document).off('click', '.edit-momo').on("click", '.edit-momo', function(e){
             try {
                 e.preventDefault();
                 const bank_name = $('#edit-momo-name_bank').val();
@@ -270,6 +270,9 @@
                 const upi_id = $('#edit-momo-info').val();
                 const usdt_wallet_address = $('#edit-momo-qr').val();
                 const file_code = $('#qr_code_scanner')[0].files[0];
+                let formData = new FormData();    
+                formData.append('qr_code', file_code);                     
+                let file_exits = "";
                 if(upi_id.length != 0)
                 {
                     if($('#qr_code_scanner')[0].files.length != 0 || $('#qr_code_image').text().length != 0)
@@ -278,60 +281,69 @@
                         var tarr = $('#qr_code_image').text().split('/');
                         if($('#qr_code_scanner')[0].files.length == 0)
                         {
-                            
+                            file_exits = "no_file";
                             file_name_up = tarr[tarr.length-1];
+                            $.ajax({
+                                type: "POST",
+                                url: "/admin/manager/settings/bank",
+                                data: {
+                                    file_exits:file_exits,
+                                    file_name:file_name_up,
+                                    bank_name: bank_name,
+                                    username: username,
+                                    upi_id: upi_id,
+                                    usdt_wallet_address: usdt_wallet_address,
+                                    typer: "momo",
+                                },
+                                dataType: "json",
+                                success: function (response) {                        
+                                    if (response.status === true) {
+                                    alert("Details Updated Successfully!");
+                                }
+                            }
+                            });
                         }
                         else{
-                            file_name_up = $('#qr_code_scanner')[0].files[0].name
-                        }
-                        let formData = new FormData();    
-                        formData.append('qr_code', file_code);
-                        formData.append('file_name', file_name_up);
-                        formData.append("bank_name", bank_name);
-                        formData.append("username", username);
-                        formData.append("upi_id", upi_id);
-                        formData.append("usdt_wallet_address", usdt_wallet_address);
-                        formData.append("typer", "momo");
-
-                        fetch('/admin/manager/settings/bank', {
-                            method: 'POST', 
-                            body: formData,
-                            data: {
-                                file_name: file_name_up,
-                            }, 
-                            mode: "cors",
-                          }).then(res =>{ res.json().then((data)=>{
-                            if (data.status === true) {
-                                Swal.fire(
-                                'Good job!',
-                                'Details Updated Successfully!',
-                                'success'
-                            )
-                            }
-                          });
-                        }); 
+                            file_exits = "has_file";
+                            file_name_up = $('#qr_code_scanner')[0].files[0].name.toString().trim();
+                            fetch('/admin/manager/upload_code', {
+                                method: 'POST', 
+                                body: formData,
+                                mode: "cors",
+                              }).then(res =>{ res.json().then((data)=>{
+                                if (data.status === true) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/admin/manager/settings/bank",
+                                        data: {
+                                            file_exits:file_exits,
+                                            file_name:file_name_up,
+                                            bank_name: bank_name,
+                                            username: username,
+                                            upi_id: upi_id,
+                                            usdt_wallet_address: usdt_wallet_address,
+                                            typer: "momo",
+                                        },
+                                        dataType: "json",
+                                        success: function (response) {                        
+                                            if (response.status === true) {
+                                            alert("Details Updated Successfully!");
+                                        }
+                                    }
+                                    });
+                                }
+                            });
+                        });   
+                        }    
                     }
                     else
                     {
-                        Swal.fire({
-                            icon: "error",
-                            text: "Atleast one file is required!",
-                            color: "#716add",
-                            background: "#fff",
-                          });
+                        alert("Atleast one file is required!");
                     }
                 }
                 else{
-                    Swal.fire({
-                        icon: "error",
-                        text: "UPi id is required!",
-                        color: "#716add",
-                        background: "#fff"
-                      });     
-                }
-               
-                
-                
+                    alert("UPi id is required!");
+                }      
             } catch (error) {
                 console.log(error)
             }

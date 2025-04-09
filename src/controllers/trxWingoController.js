@@ -754,7 +754,6 @@ const manageResult = async (req, res) => {
       : 0;
 
     if (isPendingGame) {
-      console.log("inside");
       await connection.query(
         `
              UPDATE trx_wingo_game
@@ -771,7 +770,7 @@ const manageResult = async (req, res) => {
           game,
         ],
       );
-      console.log("inside 123");
+
       const sql = `UPDATE admin SET ${join} = ?`;
       await connection.execute(sql, [hash_result]);
     }
@@ -812,95 +811,103 @@ const addTrxWingo = async (game) => {
 
     if (isPendingGame) {
       // console.log("TRX WINGO GAME PENDING GAME INSERTIONS Start")
-      const isAdminManipulatedResult = false;
-      const [setting] = await connection.query('SELECT * FROM `admin` ');
-      let nextResult = '';
-      if (game == 1) nextResult = setting[0].trx_wingo1;
-      if (game == 3) nextResult = setting[0].trx_wingo3;
-      if (game == 5) nextResult = setting[0].trx_wingo5;
-      if (game == 10) nextResult = setting[0].trx_wingo10;
-      if (nextResult == '-1') {
-        const rndInt = randomIntFromInterval(0, 19);
-        let response = await axios({
-          method: "GET",
-          url: "https://apilist.tronscanapi.com/api/block?sort=-balance&start=0&limit=20&producer=&number=&start_timestamp=&end_timestamp=",
-          headers: {
-            "TRON-PRO-API-KEY": process.env.TRON_API_KEY,
-          },
-        });
-       // console.log(response.data.data);
-       const data_json = response.data.data[rndInt];
-       const NextBlock = [];
-       NextBlock.id = data_json.number;
-       NextBlock.hash = data_json.hash;
-       NextBlock.blockTime = data_json.timestamp;
-       NextBlock.timeSS = moment(data_json.timestamp).format("ss");
-        // const NextBlock = response.data.data
-        //   .map((item) => {
-        //     return {
-        //       id: item.number,
-        //       hash: item.hash,
-        //       blockTime: item.timestamp,
-        //       timeSS: moment(item.timestamp).format("ss"),
-        //     };
-        //   })
-        //   .find((item) => item.timeSS === process.env.TRX_WINGO_GAME_TIME_SS);
+      try{
 
-        if (NextBlock === undefined) {
-          throw new Error("NextBlock is undefined");
+        const isAdminManipulatedResult = false;
+        const [setting] = await connection.query('SELECT * FROM `admin` ');
+        let nextResult = '';
+        if (game == 1) nextResult = setting[0].trx_wingo1;
+        if (game == 3) nextResult = setting[0].trx_wingo3;
+        if (game == 5) nextResult = setting[0].trx_wingo5;
+        if (game == 10) nextResult = setting[0].trx_wingo10;
+        if (nextResult == '-1') {
+          const rndInt = randomIntFromInterval(0, 9);
+          let response = await axios({
+            method: "GET",
+            url: "https://apilist.tronscanapi.com/api/block?sort=-balance&start=0&limit=20&producer=&number=&start_timestamp=&end_timestamp=",
+            headers: {
+              "TRON-PRO-API-KEY": process.env.TRON_API_KEY,
+            },
+          });
+         // console.log(response.data.data);
+         const data_json = response.data.data[rndInt];
+         const NextBlock = [];
+         NextBlock.id = data_json.number;
+         NextBlock.hash = data_json.hash;
+         NextBlock.blockTime = data_json.timestamp;
+         NextBlock.timeSS = moment(data_json.timestamp).format("ss");
+          // const NextBlock = response.data.data
+          //   .map((item) => {
+          //     return {
+          //       id: item.number,
+          //       hash: item.hash,
+          //       blockTime: item.timestamp,
+          //       timeSS: moment(item.timestamp).format("ss"),
+          //     };
+          //   })
+          //   .find((item) => item.timeSS === process.env.TRX_WINGO_GAME_TIME_SS);
+  
+          if (NextBlock === undefined) {
+            throw new Error("NextBlock is undefined");
+          }
+  
+          const BlockId = NextBlock.id;
+          const BlockTime = NextBlock.blockTime;
+          const Hash = NextBlock.hash;
+  
+          let Result = generateResultByHash(Hash);
+  
+          // console.log({
+          //    BlockId,
+          //    BlockTime: moment(BlockTime).format("HH:mm:ss"),
+          //    Hash,
+          //    Result,
+          // })
+  
+          await connection.query(
+            `
+                 UPDATE trx_wingo_game
+                 SET result = ?, status = ?, block_id = ?, block_time = ?, hash = ?, release_status = 1
+                 WHERE period = ? AND game = ?
+                 `,
+            [
+              Result,
+              TRX_WINGO_GAME_STATUS_MAP.COMPLETED,
+              BlockId,
+              BlockTime,
+              Hash,
+              PendingGamePeriod,
+              join,
+            ],
+          );   
+          // console.log("TRX WINGO GAME PENDING GAME INSERTIONS Successfully")
         }
-
-        const BlockId = NextBlock.id;
-        const BlockTime = NextBlock.blockTime;
-        const Hash = NextBlock.hash;
-
-        let Result = generateResultByHash(Hash);
-
-        // console.log({
-        //    BlockId,
-        //    BlockTime: moment(BlockTime).format("HH:mm:ss"),
-        //    Hash,
-        //    Result,
-        // })
-
-        await connection.query(
-          `
-               UPDATE trx_wingo_game
-               SET result = ?, status = ?, block_id = ?, block_time = ?, hash = ?, release_status = 1
-               WHERE period = ? AND game = ?
-               `,
-          [
-            Result,
-            TRX_WINGO_GAME_STATUS_MAP.COMPLETED,
-            BlockId,
-            BlockTime,
-            Hash,
-            PendingGamePeriod,
-            join,
-          ],
-        );   
-         // console.log("TRX WINGO GAME PENDING GAME INSERTIONS Successfully")
-      } else {
-        await connection.query(
-          `
-               UPDATE trx_wingo_game
-               SET status = ?, release_status = 1
-               WHERE period = ? AND game = ?
-               `,
-          [
-            TRX_WINGO_GAME_STATUS_MAP.COMPLETED,
-            PendingGamePeriod,
-            join,
-          ],
-        );
-        let adminJoin = '';
-        if (game == 1) adminJoin = 'trx_wingo1';
-        if (game == 3) adminJoin = 'trx_wingo3';
-        if (game == 5) adminJoin = 'trx_wingo5';
-        if (game == 10) adminJoin = 'trx_wingo10';
-
-        await connection.execute(`UPDATE admin SET ${adminJoin} = ?`, ['-1']);
+      else {
+          await connection.query(
+            `
+                 UPDATE trx_wingo_game
+                 SET status = ?, release_status = 1
+                 WHERE period = ? AND game = ?
+                 `,
+            [
+              TRX_WINGO_GAME_STATUS_MAP.COMPLETED,
+              PendingGamePeriod,
+              join,
+            ],
+          );
+          let adminJoin = '';
+          if (game == 1) adminJoin = 'trx_wingo1';
+          if (game == 3) adminJoin = 'trx_wingo3';
+          if (game == 5) adminJoin = 'trx_wingo5';
+          if (game == 10) adminJoin = 'trx_wingo10';
+  
+          await connection.execute(`UPDATE admin SET ${adminJoin} = ?`, ['-1']);
+        }  
       }
+      catch (error) {
+        console.log(error);
+      }
+    
     }
 
     let gameRepresentationId = GameRepresentationIds.TRXWINGO[game];

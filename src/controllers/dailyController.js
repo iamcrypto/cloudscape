@@ -91,27 +91,23 @@ const upload = multer({
 
 const settingCollo_Details = async (req, res) => {
     try {
-        
-        let uploadfile = await upload(req, res, (err) =>{
-            if(err){
-                console.log(err);
-            }else{
-                console.log('file uploaded succcessfully');
-            }
-        });
-
-        const form = formidable({});
-        let fields;
-
-        [fields] = await form.parse(req);
+        console.log(1);
+        let name_bank = req.body.name_bank;
+        console.log(2);
+        let name = req.body.name;
+        console.log(3);
+        let info = req.body.info;
+        console.log(4);
+        let qr =  req.body.qr;
+        console.log(5);
+        let typer =  req.body.typer;
+        console.log(6);
         let auth = req.cookies.auth;
-
-
-        let name_bank = fields["name_bank"];
-        let name =fields["name"];
-        let info = fields["info"];
-        let qr = fields["qr"];
-        let typer =  fields["typer"];
+        console.log(7);
+        let file_exits = req.body.file_exits;
+        console.log(8);
+        let file_name = req.body.file_name;
+        console.log(9);
 
         if (!auth || !typer) {
             return res.status(200).json({
@@ -121,6 +117,7 @@ const settingCollo_Details = async (req, res) => {
             });
         }
         const [users] = await connection.query('SELECT * FROM users WHERE token = ?', [auth]);
+        console.log(10);
         if (typer == 'bank') {
             await connection.query(`UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ? WHERE type = 'bank' AND phone = ?`, [name_bank, name, info, users[0].phone]);
             return res.status(200).json({
@@ -131,44 +128,65 @@ const settingCollo_Details = async (req, res) => {
         }
 
         if (typer == 'momo') {
-            
+            console.log(11);
             const [bank_recharge] = await connection.query(`SELECT * FROM bank_recharge WHERE phone = ? AND status = 0;`, [users[0].phone]);
+            console.log(12);
             var transfer_mode = '';
             if(bank_recharge.length != 0)
             {
+                console.log(13);
                 transfer_mode = bank_recharge[0].transfer_mode;
             }
             else{
+                console.log(14);
                 transfer_mode = "manual";
             }
-            let file_name1 = fields["file_name"];
+            console.log(15);
+            let file_name1 = req.body.file_name;
             const uploadDir1 = path.join(path_dir + '/src/public/qr_code/'+file_name1);
+            console.log(16);
             const deleteRechargeQueries = bank_recharge.map(recharge => {
+                console.log(17);
                 if(recharge.qr_code_image.toString().trim() != uploadDir1)
                 {
+                    console.log(18);
                     if (fs.existsSync(recharge.qr_code_image.toString().trim())) {
+                        console.log(19);
                         fs.unlink(recharge.qr_code_image.toString().trim(),function(err){
+                            console.log(20);
                         if(err) return console.log(err);
+                        console.log(21);
                         console.log('file deleted successfully');
-                    });  
+                    }); 
+                    console.log(22); 
                     };
+                    console.log(23);
                 }
+                console.log(24);
                 return deleteBankRechargeById(recharge.id)
             });
+            console.log(25);
 
-            await Promise.all(deleteRechargeQueries)
-
+           await Promise.all(deleteRechargeQueries)
+           console.log(26);
             //await connection.query(`UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ? WHERE type = 'upi'`, [name_bank, name, info, qr]);
 
-            const bankName = fields["bank_name"];
-            const username = fields["username"]
-            const upiId =  fields["upi_id"]
-            const usdtWalletAddress =  fields["usdt_wallet_address"]
+ 
+            const bankName = req.body.bank_name;
+            console.log(27);
+            const username =  req.body.username;
+            console.log(28);
+            const upiId =  req.body.upi_id;
+            console.log(29);
+            const usdtWalletAddress =  req.body.usdt_wallet_address;
+            console.log(30);
             let timeNow = Date.now();
+            console.log(31);
 
             await connection.query("INSERT INTO bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ?, upi_wallet = ?, transfer_mode = ?,phone=?, colloborator_action = ?, time = ?, type = 'momo', status = 0;", [
                 bankName, username, upiId, uploadDir1, usdtWalletAddress,transfer_mode,users[0].phone, "off", timeNow
-            ])
+            ]);
+            console.log(32);
 
             return res.status(200).json({
                 message: 'Successfully changed',
@@ -1738,6 +1756,37 @@ const buffMoney = async(req, res) => {
         });
     }
 }
+
+const upload_qr_code = async (req, res) => {
+    console.log("u1");
+    try
+    {
+        console.log("u2");
+        let uploadfile = await upload(req, res, (err) =>{
+            console.log("u3");
+            if(err){
+                console.log("u4");
+                console.log(err);
+            }else{
+                console.log("u5");
+                console.log('file uploaded succcessfully');
+            }
+        });
+        console.log("u6");
+        return res.status(200).json({
+            message: 'Success',
+            status: true,
+            datas: 'uploaded',  
+        });
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: 'Failed',
+            status: false,
+        });
+    }
+}
   
 module.exports = {
     collo_handlWithdraw,
@@ -1768,5 +1817,6 @@ module.exports = {
     listRedenvelope,
     listBet,
     settingCollo_Details,
-    settingGet
+    settingGet,
+    upload_qr_code
 }
