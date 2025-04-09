@@ -1725,7 +1725,7 @@ const buffMoney = async(req, res) => {
     }
 }
 
-const upload_qr_code = async (req, res) => {
+const upload_qr_code_collo = async (req, res) => {
     try
     {
         let uploadfile = await upload(req, res, (err) =>{
@@ -1780,5 +1780,5 @@ module.exports = {
     listBet,
     settingCollo_Details,
     settingGet,
-    upload_qr_code
+    upload_qr_code_collo
 }
