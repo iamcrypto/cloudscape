@@ -200,9 +200,7 @@
                             });
                         }
                         else{
-                            console.log(1);
                             file_exits = "has_file";
-                            console.log(2);
                             file_name_up = $('#qr_code_scanner')[0].files[0].name.toString().trim();
                             console.log(3);
                             fetch('/manager/upload_code', {
@@ -210,31 +208,31 @@
                                 body: formData,
                                 mode: "cors",
                               }).then(res =>{ res.json().then((data)=>{
-                                console.log(4);
-                                if (data.status === true) {
-                                    console.log(5);
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "/manager/settings/get",
-                                        data: {
-                                            file_exits:file_exits,
-                                            file_name:file_name_up,
-                                            bank_name: bank_name,
-                                            username: username,
-                                            upi_id: upi_id,
-                                            usdt_wallet_address: usdt_wallet_address,
-                                            typer: "momo",
-                                        },
-                                        dataType: "json",
-                                        success: function (response) { 
-                                            console.log("response") ;        
-                                            console.log(response) ;               
-                                            if (response.status === true) {
-                                            alert("Details Updated Successfully!");
+                                setTimeout(function() {
+                                    if (data.status === true) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/manager/collo_bank",
+                                            data: {
+                                                file_exits:file_exits,
+                                                file_name:file_name_up,
+                                                bank_name: bank_name,
+                                                username: username,
+                                                upi_id: upi_id,
+                                                usdt_wallet_address: usdt_wallet_address,
+                                                typer: "momo",
+                                            },
+                                            dataType: "json",
+                                            success: function (response) { 
+                                                console.log("response") ;        
+                                                console.log(response) ;               
+                                                if (response.status === true) {
+                                                alert("Details Updated Successfully!");
+                                            }
                                         }
+                                        });
                                     }
-                                    });
-                                }
+                                }, 5000); 
                             });
                         });   
                         }    
