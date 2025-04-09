@@ -200,14 +200,19 @@
                             });
                         }
                         else{
+                            console.log(1);
                             file_exits = "has_file";
+                            console.log(2);
                             file_name_up = $('#qr_code_scanner')[0].files[0].name.toString().trim();
+                            console.log(3);
                             fetch('/manager/upload_code', {
                                 method: 'POST', 
                                 body: formData,
                                 mode: "cors",
                               }).then(res =>{ res.json().then((data)=>{
+                                console.log(4);
                                 if (data.status === true) {
+                                    console.log(5);
                                     $.ajax({
                                         type: "POST",
                                         url: "/manager/collo_bank",

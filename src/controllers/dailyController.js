@@ -1758,15 +1758,21 @@ const buffMoney = async(req, res) => {
 }
 
 const upload_qr_code = async (req, res) => {
+    console.log("u1");
     try
     {
+        console.log("u2");
         let uploadfile = await upload(req, res, (err) =>{
+            console.log("u3");
             if(err){
+                console.log("u4");
                 console.log(err);
             }else{
+                console.log("u5");
                 console.log('file uploaded succcessfully');
             }
         });
+        console.log("u6");
         return res.status(200).json({
             message: 'Success',
             status: true,
