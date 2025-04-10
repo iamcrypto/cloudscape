@@ -30,8 +30,6 @@ const corsOptions = {
 require('dotenv').config();
 let cookieParser = require('cookie-parser');
 
-
-
 const app = express();
 app.use(cors());
 app.use(fileUpload())
