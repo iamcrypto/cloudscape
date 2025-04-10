@@ -259,7 +259,7 @@
           $("#name_txt").text(response.datas[0].name_user);
           $("#upi_id_txt").text(response.datas[0].stk);
           $("#wallet_txt").text(response.datas[0].upi_wallet);
-          $("#qr_code_txt").attr("src",response.datas[0].qr_code_image.toString().trim().replace(/\\/g, "/").replace("src/public",""));
+          $("#qr_code_txt").attr("src","<%=ams_url%>" + response.datas[0].qr_code_image.toString().trim());
           $("#commentsDiv").css("display", "none");
           $('#myModal_req').modal('show');
         }

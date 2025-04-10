@@ -31,7 +31,8 @@ const profileMember = async(req, res) => {
 }
 
 const settingPage = async(req, res) => {
-    return res.render("daily/settings.ejs"); 
+    var ams_url = process.env.AWS_BUCKET_URL;
+    return res.render("daily/settings.ejs", {ams_url}); 
 }
 
 const listRecharge = async(req, res) => {
@@ -131,22 +132,10 @@ const settingCollo_Details = async (req, res) => {
             let file_name1 = req.body.file_name;
             const uploadDir1 = path.join(path_dir + '/src/public/qr_code/'+file_name1);
             const deleteRechargeQueries = bank_recharge.map(recharge => {
-                // if(recharge.qr_code_image.toString().trim() != uploadDir1)
-                // {
-                //     if (fs.existsSync(recharge.qr_code_image.toString().trim())) {
-                //         fs.unlink(recharge.qr_code_image.toString().trim(),function(err){
-                //         if(err) return console.log(err);
-                //         console.log('file deleted successfully');
-                //     }); 
-                //     };
-                // }
                 return deleteBankRechargeById(recharge.id)
             });
 
            await Promise.all(deleteRechargeQueries)
-            //await connection.query(`UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ?, qr_code_image = ? WHERE type = 'upi'`, [name_bank, name, info, qr]);
-
- 
             const bankName = req.body.bank_name;
             const username =  req.body.username;
             const upiId =  req.body.upi_id;
