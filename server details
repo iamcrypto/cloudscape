@@ -67,6 +67,11 @@ git pull
 npm install
 pm2 logs
 
+
+
+to delete git which is not pushed 
+
+git reset --soft HEAD~1
 	
 
 
