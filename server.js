@@ -8,8 +8,16 @@ import cronJobContronler from './src/controllers/cronJobContronler';
 import socketIoController from './src/controllers/socketIoController';
 const cors = require('cors');
 import fileUpload from 'express-fileupload';
-var AWS = require('aws-sdk');
 
+import { S3Client, CreateBucketCommand,PutObjectCommand } from "@aws-sdk/client-s3";
+
+const s3Client = new S3Client({region: process.env.AWS_REGION,  
+  credentials: {
+  accessKeyId: process.env.AWS_ACCESSKEY,
+  secretAccessKey:process.env.AWS_SEREATEACCESSKEY,
+},
+});
+export { s3Client };
 
 
 const corsOptions = {
@@ -34,7 +42,7 @@ const port =   process.env.PORT;
 
 app.use(cookieParser());
 
-app.post('/upload', function(req, res) {
+app.post('/upload', async function(req, res) {
     let sampleFile;
     let uploadPath;
     let c_rate;
@@ -66,42 +74,42 @@ app.post('/upload', function(req, res) {
         return res.status(500).send(err);
       console.log("uploaded");
     });
-
-
-  AWS.config.update({
-    region: process.env.AWS_REGION,
-    accessKeyId: process.env.AWS_ACCESSKEY,
-    secretAccessKey:process.env.AWS_SEREATEACCESSKEY
-  });
-  
-
-
-  const s3 = new AWS.S3();
-
-  // Binary data base64
-  const fileContent  = Buffer.from(req.files.fileUploaded.data, 'binary');
-
-  // Setting up S3 upload parameters
-  const params = {
+    const fileContent  = Buffer.from(req.files.fileUploaded.data, 'binary');
+    // const s3 = new S3({
+    //   credentials: {
+    //     accessKeyId: process.env.AWS_ACCESSKEY,
+    //     secretAccessKey: process.env.AWS_SEREATEACCESSKEY,
+    //   },
+    //   region: process.env.AWS_REGION,
+    //   signatureVersion: 'v4',
+    // });
+    
+    
+    const uploadParams = {
       Bucket: process.env.AWS_BUCKET,
-      Key: sampleFile.name, // File name you want to save as in S3
-      Body: fileContent 
+      Key:sampleFile.name,
+      Body: fileContent,
   };
+  try {
+    const results = await s3Client.send(new PutObjectCommand(uploadParams));
+    console.log(
+        "Successfully created " +
+        uploadParams.Key +
+        " and uploaded it to " +
+        uploadParams.Bucket +
+        "/" +
+        uploadParams.Key
+    );
+    
+    return results; // For unit tests.
+  } catch (err) {
+    console.log("Error", err);
+  }
 
-  // Uploading files to the bucket
-  s3.upload(params, function(err, data) {
-      if (err) {
-          throw err;
-      }
-      res.send({
-          "response_code": 200,
-          "response_message": "Success",
-          "response_data": data
-      });
-  });
+
+});
 
 
-  });
 
 
 // app.use(express.static('public'));

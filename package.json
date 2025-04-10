@@ -10,9 +10,11 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@aws-sdk/client-s3": "^3.420.0",
         "@babel/core": "7.15.5",
         "@babel/node": "7.15.4",
         "@babel/preset-env": "7.15.6",
+        "aws-sdk": "^2.1692.0",
         "axios": "^1.6.7",
         "babel-core": "^7.0.0-bridge.0",
         "body-parser": "^1.20.2",

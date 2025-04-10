@@ -65,7 +65,6 @@ pm2 delete app
 pm2 delete database
 git pull
 npm install
-npm start	
 pm2 logs
 
 	
