@@ -12,6 +12,16 @@ import {
   REWARD_TYPES_MAP,
 } from "../constants/reward_types.js";
 
+import { S3Client, CreateBucketCommand,DeleteObjectCommand,PutObjectCommand } from "@aws-sdk/client-s3";
+
+
+const s3Client = new S3Client({region: process.env.AWS_REGION,  
+    credentials: {
+    accessKeyId: process.env.AWS_ACCESSKEY,
+    secretAccessKey:process.env.AWS_SEREATEACCESSKEY,
+  },
+  });
+  export { s3Client };
 
 let timeNow = Date.now();
 
@@ -98,7 +108,8 @@ const d5chatPage = async (req, res) => {
 }
 
 const ctvPage = async (req, res) => {
-    return res.render("manage/ctv.ejs");
+    var ams_url = process.env.AWS_BUCKET_URL;
+    return res.render("manage/ctv.ejs", {ams_url});
 }
 
 const infoMember = async (req, res) => {
@@ -2698,13 +2709,11 @@ const ReqAcceptReject = async (req, res) => {
         if(type == 'accept')
         {
             const [bank_recharge] = await connection.query(`SELECT * FROM bank_recharge WHERE phone = ? AND status = 1;`, [phone]);
-            const deleteRechargeQueries = bank_recharge.map(recharge => {
-                if (fs.existsSync(recharge.qr_code_image.toString().trim())) {
-                    fs.unlink(recharge.qr_code_image.toString().trim(),function(err){
-                    if(err) return console.log(err);
-                        console.log('file deleted successfully');
-                });  
-                };
+            const deleteRechargeQueries = bank_recharge.map(async recharge => {
+            await s3Client.send(new DeleteObjectCommand({
+                Bucket: process.env.AWS_BUCKET,
+                Key: recharge.qr_code_image.toString().trim()
+            },function (err,data){}));
                 return deleteBankRechargeById(recharge.id)
             });
             await Promise.all(deleteRechargeQueries);
@@ -2713,13 +2722,11 @@ const ReqAcceptReject = async (req, res) => {
         else if(type == 'reject')
         {
             const [bank_recharge] = await connection.query(`SELECT * FROM bank_recharge WHERE phone = ? AND status = 0;`, [phone]);
-            const deleteRechargeQueries = bank_recharge.map(recharge => {
-                if (fs.existsSync(recharge.qr_code_image.toString().trim())) {
-                    fs.unlink(recharge.qr_code_image.toString().trim(),function(err){
-                    if(err) return console.log(err);
-                        console.log('file deleted successfully');
-                });  
-                };
+            const deleteRechargeQueries = bank_recharge.map(async recharge => {
+                await s3Client.send(new DeleteObjectCommand({
+                    Bucket: process.env.AWS_BUCKET,
+                    Key: recharge.qr_code_image.toString().trim()
+                },function (err,data){}));
                 return deleteBankRechargeById(recharge.id)
             });
             await Promise.all(deleteRechargeQueries);

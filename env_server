@@ -52,3 +52,6 @@ STAKE_ROI_3 = 4.5
 STAKE_ROI_6 = 5.0
 
 STAKE_ROI_12 = 5.5
+
+
+AWS_REGION = ap-south-1

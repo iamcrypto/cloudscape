@@ -65,7 +65,17 @@ pm2 delete app
 pm2 delete database
 git pull
 npm install
+npm start
 pm2 logs
+
+
+Iam user credentials
+
+https://559050242556.signin.aws.amazon.com/console
+
+binod
+
+hjEC6'3[
 
 
 

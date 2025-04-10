@@ -78,11 +78,11 @@
                                  <input type="text" class="form-control" placeholder="USDT Wallet Address" name="edit_upi_id">
                                <br>
                                 <label for="qr_code" style="color: #3498db;">Upload Qr Code</label>
-                                <input type='file' name='fileUploaded' id="qr_code_scanner" accept="image/*" required>
-                                <label id="qr_code_image" name="qr_code_image" style="color: green;" ></label>
+                                <input type='file' name='fileUploaded' id="qr_code_scanner" accept="image/*">
+                                <label id="qr_code_image" name="qr_code_image" style="color: green;float: right;margin-right: 25%;" ></label>
                                 <input type="hidden" id="qr_code_image_hdd" name="qr_code_image_hdd" value="">
 
-                                 <button type="submit" class="btn btn-primary">Submit</button>
+                                 <button type="submit" class="btn btn-primary" style="margin-top: 70px;">Submit</button>
 
                                 </form>
 
@@ -124,8 +124,10 @@
                 url: '/upload',
                 type: 'POST',
                 data: formData,
-                success: function (data) {
-                    alert(data);
+                success: function (response) {
+                    if (response.status === true) {
+                        alert("Details Updated Successfully!");
+                    }
                 },
                 cache: false,
                 contentType: false,
@@ -146,7 +148,8 @@
                 $('#edit-momo-info').val(momo.upi_id);
                 $('#edit-momo-qr').val(momo.usdt_wallet_address);
 
-                $('#qr_code_image').text(momo.qr_code_image.toString().trim().replace(/\\/g, "/").replace("src/public",document.location.origin));
+                $('#qr_code_image').text( momo.qr_code_image.toString().trim());
+                $('#qr_code_image_hdd').val(momo.qr_code_image.toString().trim());
                 $('#edit-banking-name_bank').val(bank.name_bank);
                 $('#edit-banking-name').val(bank.name_user);
                 $('#edit-banking-info').val(bank.stk);
@@ -177,96 +180,6 @@
                 }, 100);
             }, 1000);
         }
-
-        $('.edit-momo').click(async (e) => {
-            try {
-                e.preventDefault();
-                const bank_name = $('#edit-momo-name_bank').val();
-                const username = $('#edit-momo-name').val();
-                const upi_id = $('#edit-momo-info').val();
-                const usdt_wallet_address = $('#edit-momo-qr').val();
-                const file_code = $('#qr_code_scanner')[0].files[0];
-                let formData = new FormData();    
-                formData.append('qr_code', file_code);                     
-                let file_exits = "";
-                if(upi_id.length != 0)
-                {
-                    if($('#qr_code_scanner')[0].files.length != 0 || $('#qr_code_image').text().length != 0)
-                    {
-                        var file_name_up = '';
-                        var tarr = $('#qr_code_image').text().split('/');
-                        if($('#qr_code_scanner')[0].files.length == 0)
-                        {
-                            file_exits = "no_file";
-                            file_name_up = tarr[tarr.length-1];
-                            $.ajax({
-                                type: "POST",
-                                url: "/manager/collo_bank",
-                                data: {
-                                    file_exits:file_exits,
-                                    file_name:file_name_up,
-                                    bank_name: bank_name,
-                                    username: username,
-                                    upi_id: upi_id,
-                                    usdt_wallet_address: usdt_wallet_address,
-                                    typer: "momo",
-                                },
-                                dataType: "json",
-                                success: function (response) {  
-                                    if (response.status === true) {
-                                    alert("Details Updated Successfully!");
-                                }
-                            }
-                            });
-                        }
-                        else{
-                            file_exits = "has_file";
-                            file_name_up = $('#qr_code_scanner')[0].files[0].name.toString().trim();
-                            fetch('/manager/upload_code_collo', {
-                                method: 'POST', 
-                                body: formData,
-                                mode: "cors",
-                              }).then(res =>{ res.json().then((data)=>{
-                                setTimeout(function() {
-                                    if (data.status === true) {
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "/manager/collo_bank",
-                                            data: {
-                                                file_exits:file_exits,
-                                                file_name:file_name_up,
-                                                bank_name: bank_name,
-                                                username: username,
-                                                upi_id: upi_id,
-                                                usdt_wallet_address: usdt_wallet_address,
-                                                typer: "momo",
-                                            },
-                                            dataType: "json",
-                                            success: function (response) { 
-                                                if (response.status === true) {
-                                                alert("Details Updated Successfully!");
-                                            }
-                                        }
-                                        });
-                                    }
-                                }, 5000); 
-                            });
-                        });   
-                        }    
-                    }
-                    else
-                    {
-                        alert("Atleast one file is required!");
-                    }
-                }
-                else{
-                    alert("UPi id is required!");
-                }   
-            } catch (error) {
-                console.log(error)
-            }
-        });
-
         $.ajax({
             type: "POST",
             url: "/manager/settings/list",
