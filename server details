@@ -82,6 +82,7 @@ hjEC6'3[
 to delete git which is not pushed 
 
 git reset --soft HEAD~1
+
 	
 
 
