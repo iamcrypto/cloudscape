@@ -1415,44 +1415,7 @@ socket.on("data-server-trx-wingo", async function (msg) {
     console.log("lastGame.period");
     console.log(lastGame.period);
     console.log("firstGame.period");
-    // console.log(firstGame.stage);
-              
-            //   if (firstGame && firstGame.stage === lastBet.period) {
-            //     var modal = document.getElementById("trx_myModal");
-            //     modal.style.display = "block";
-            //     var myModalheader = document.getElementById("myModal_header");
-            //     var myModal_result = document.getElementById("myModal_result");
-            //     var lottery_result = document.getElementById("lottery_result");
-            //     var myModal_result_Period = document.getElementById("myModal_result_Period");
-            //     if (parseInt(lastBet.get) == 0) {
-            //         myModalheader.innerHTML = "Try Again";
-            //         myModal_result.innerHTML = "LOSS :" + firstGame.money;
-            //     } else {
-            //         myModalheader.innerHTML = "congratulations";
-            //         myModal_result.innerHTML = "WIN :" + firstGame.get;
-            //     }
-            //     myModal_result_Period.innerHTML = "Period : 1min " + firstGame.stage;
-                
-            //     let color;
-            //     let type;
-        
-            //     if (firstGame.result >= 0 && firstGame.result <= 4) {
-            //         type = "Small";
-            //     } else if (firstGame.result >= 5 && firstGame.result <= 9) {
-            //         type = "Big";
-            //     }
-        
-            //     if (firstGame.result == 0) {
-            //         color = "Red + Violet";
-            //     } else if (firstGame.result == 5) {
-            //         color = "Green + Violet";
-            //     } else if (firstGame.result % 2 == 0) {
-            //         color = "Red";
-            //     } else {
-            //         color = "Green";
-            //     }
-            //     lottery_result.innerHTML = "Lottery Result:<span class='btn-boox'>" + color + "</span><span class='btn-boox'>" + firstGame.result + "</span><span class='btn-boox'>" + type + "</span>";
-            // }
+ 
     const lastGameBets = betListData?.filter(
       (game) => game.stage === lastGame?.period,
     );
