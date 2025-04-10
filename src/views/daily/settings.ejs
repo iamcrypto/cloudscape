@@ -47,16 +47,12 @@
 
                 <div class="container-fluid">
                     <div class="row">
-
-                        <form ref='uploadForm' encType="multipart/form-data" class="" action="/upload" method="post">
-                            <input type="text" name="fileName" value=""><br>
-                            <input type="file" name="foo" value=""><br>
-                            <input type="submit" name="" value="upload!">
-                          </form>
                          
                         <div class="col-md-12">
                             <div style="padding: 10px 20px;margin-bottom: 200px;">
                                 <div class="form-group">
+                                    <form id="data" method="post" enctype="multipart/form-data">
+
                                 <!-- <div class="text-center">
                                      <label for="quantity">Change Deposit Information</label>
                                  </div>
@@ -75,19 +71,21 @@
                                  </div>
 
                                  <label for="edit-momo-name_bank" style="color: #3498db;">Rate</label>
-                                 <input type="text" class="form-control" placeholder="Rate"
-                                     id="edit-momo-name_bank" value=""><br>
-                                 <input type="text" class="form-control" placeholder="Wallet Owner Name"
-                                     id="edit-momo-name" value=""><br>
-                                 <input type="text" class="form-control" placeholder="UPI ID" id="edit-momo-info"
-                                     value="" required><br>
-                                 <input type="text" class="form-control" placeholder="USDT Wallet Address"
-                                     id="edit-momo-qr" value=""><br>
+                                 <input type="text" class="form-control" placeholder="Rate" name="edit_rate"
+                                 br>
+                                 <input type="text" class="form-control" placeholder="Wallet Owner Name" name="edit_username"><br>
+                                 <input type="text" class="form-control" placeholder="UPI ID" name="edit_qr_id" id="edit-momo-info"><br>
+                                 <input type="text" class="form-control" placeholder="USDT Wallet Address" name="edit_upi_id">
+                               <br>
                                 <label for="qr_code" style="color: #3498db;">Upload Qr Code</label>
                                 <input type='file' name='fileUploaded' id="qr_code_scanner" accept="image/*" required>
                                 <label id="qr_code_image" name="qr_code_image" style="color: green;" ></label>
-                                 <button type="submit" class="btn btn-primary edit-momo"
-                                     style="width: 100%;">Submit</button>
+                                <input type="hidden" id="qr_code_image_hdd" name="qr_code_image_hdd" value="">
+
+                                 <button type="submit" class="btn btn-primary">Submit</button>
+
+                                </form>
+
                              </div>
                                 <div class="form-group">
                                     <div class="text-center">
@@ -118,6 +116,22 @@
     crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
     <script>
+
+        $("form#data").submit(function(e) {
+            e.preventDefault();    
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: formData,
+                success: function (data) {
+                    alert(data)
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
 
         $.ajax({
             type: "POST",
