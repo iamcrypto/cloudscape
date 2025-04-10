@@ -33,7 +33,7 @@ let cookieParser = require('cookie-parser');
 
 const app = express();
 app.use(cors());
-app.use(fileUpload())
+app.use(fileUpload());
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
